@@ -1,0 +1,153 @@
+{
+    "Breakfast": {
+        "Aloo Paratha": 80,
+        "Paneer Paratha": 100,
+        "Poha": 60,
+        "Masala Dosa": 100,
+        "Idli Sambar": 80,
+        "Chole Bhature": 120,
+        "Poori Bhaji": 100,
+        "Veg Sandwich": 100
+    },
+
+    "Starter": {
+        "Veg Spring Roll": 180,
+        "Paneer Tikka": 220,
+        "Chicken Tikka": 260,
+        "Hara Bhara Kabab": 200,
+        "French Fries": 150,
+        "Chilli Paneer": 210,
+        "Chicken 65": 250,
+        "Stuffed Mushrooms": 230,
+        "Veg Manchurian": 200
+    },
+
+    "Soup": {
+        "Tomato Soup": 120,
+        "Sweet Corn Soup": 130,
+        "Hot and Sour Soup": 140,
+        "Manchow Soup": 150,
+        "Cream of Mushroom Soup": 160,
+        "Chicken Clear Soup": 170,
+        "Chicken Manchow Soup": 180
+    },
+
+    "Salad": {
+        "Fresh Garden Salad": 120,
+        "Russian Salad": 150,
+        "Greek Salad": 160,
+        "Caesar Salad": 170,
+        "Chicken Salad": 190,
+        "Fruit Salad": 140
+    },
+
+    "Main Course": {
+        "Dal Tadka": 160,
+        "Dal Makhani": 190,
+        "Paneer Butter Masala": 220,
+        "Kadai Paneer": 210,
+        "Shahi Paneer": 230,
+        "Mix Veg Curry": 170,
+        "Aloo Gobi": 160,
+        "Malai Kofta": 240,
+        "Chicken Curry": 250,
+        "Butter Chicken": 280,
+        "Chicken Kadai": 270,
+        "Mutton Rogan Josh": 320,
+        "Mutton Curry": 330
+    },
+
+    "Rice & Biryani": {
+        "Steamed Rice": 100,
+        "Jeera Rice": 120,
+        "Veg Pulao": 150,
+        "Veg Biryani": 200,
+        "Chicken Biryani": 260,
+        "Mutton Biryani": 320,
+        "Egg Biryani": 220,
+        "Hyderabadi Chicken Biryani": 280
+    },
+
+    "Roti / Naan": {
+        "Tandoori Roti": 30,
+        "Butter Roti": 40,
+        "Plain Naan": 45,
+        "Butter Naan": 50,
+        "Garlic Naan": 60,
+        "Cheese Naan": 90,
+        "Lachha Paratha": 60,
+        "Aloo Paratha": 70,
+        "Stuffed Kulcha": 80
+    },
+
+    "Chinese": {
+        "Veg Hakka Noodles": 180,
+        "Chicken Hakka Noodles": 220,
+        "Veg Fried Rice": 180,
+        "Chicken Fried Rice": 220,
+        "Veg Manchurian": 200,
+        "Chicken Manchurian": 250,
+        "Chilli Paneer": 210,
+        "Chilli Chicken": 250,
+        "Veg Schezwan Noodles": 200,
+        "Chicken Schezwan Noodles": 240
+    },
+
+    "Fast Food": {
+        "Veg Burger": 160,
+        "Chicken Burger": 210,
+        "Veg Pizza": 280,
+        "Chicken Pizza": 320,
+        "Veg Pasta": 200,
+        "Chicken Pasta": 260,
+        "Club Sandwich": 220,
+        "Grilled Veg Sandwich": 180,
+        "Chicken Sandwich": 230,
+        "Cheese Garlic Bread": 160
+    },
+
+    "Combo": {
+        "Veg Meal Combo": 299,
+        "Chicken Meal Combo": 399,
+        "Biryani Combo": 349,
+        "Burger Combo": 299,
+        "Pizza Combo": 399,
+        "Chinese Combo": 329,
+        "Family Combo": 699
+    },
+
+    "Dessert": {
+        "Gulab Jamun": 90,
+        "Rasgulla": 90,
+        "Ice Cream": 120,
+        "Chocolate Brownie": 150,
+        "Chocolate Cake": 140,
+        "Fruit Custard": 130,
+        "Kheer": 100,
+        "Tiramisu": 160
+    },
+
+    "Beverages": {
+        "Mineral Water": 40,
+        "Soft Drink": 60,
+        "Fresh Lime Soda": 70,
+        "Fresh Orange Juice": 100,
+        "Fresh Mango Juice": 110,
+        "Mixed Fruit Juice": 120,
+        "Milkshake": 130,
+        "Chocolate Milkshake": 150
+    },
+
+    "Tea & Coffee": {
+        "Masala Chai": 50,
+        "Ginger Tea": 60,
+        "Black Tea": 40,
+        "Green Tea": 60,
+        "Lemon Tea": 50,
+        "Hot Coffee": 80,
+        "Cold Coffee": 100,
+        "Cappuccino": 120,
+        "Cafe Latte": 130,
+        "Espresso": 100
+    }
+}

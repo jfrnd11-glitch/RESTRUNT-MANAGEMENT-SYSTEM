@@ -1,0 +1,19 @@
+[
+    {
+        "user_id": "0001",
+        "name": "JAYANT KUMAR",
+        "mobile": "7050973230",
+        "aadhaar": "828786964658",
+        "password": "Jayant@123",
+        "role": "admin"
+    },
+    {
+        "user_id": "1234",
+        "name": "sumit kumar",
+        "mobile": "7482950459",
+        "aadhaar": "541895375287",
+        "password": "Sumit@000",
+        "role": "waitstaff",
+        "created_by": "0001"
+    }
+]
