@@ -7,9 +7,9 @@
         "Idli Sambar": 80,
         "Chole Bhature": 120,
         "Poori Bhaji": 100,
-        "Veg Sandwich": 100
+        "Veg Sandwich": 100,
+        "jayant specle": 100
     },
-
     "Starter": {
         "Veg Spring Roll": 180,
         "Paneer Tikka": 220,
@@ -21,7 +21,6 @@
         "Stuffed Mushrooms": 230,
         "Veg Manchurian": 200
     },
-
     "Soup": {
         "Tomato Soup": 120,
         "Sweet Corn Soup": 130,
@@ -31,7 +30,6 @@
         "Chicken Clear Soup": 170,
         "Chicken Manchow Soup": 180
     },
-
     "Salad": {
         "Fresh Garden Salad": 120,
         "Russian Salad": 150,
@@ -40,7 +38,6 @@
         "Chicken Salad": 190,
         "Fruit Salad": 140
     },
-
     "Main Course": {
         "Dal Tadka": 160,
         "Dal Makhani": 190,
@@ -56,7 +53,6 @@
         "Mutton Rogan Josh": 320,
         "Mutton Curry": 330
     },
-
     "Rice & Biryani": {
         "Steamed Rice": 100,
         "Jeera Rice": 120,
@@ -67,7 +63,6 @@
         "Egg Biryani": 220,
         "Hyderabadi Chicken Biryani": 280
     },
-
     "Roti / Naan": {
         "Tandoori Roti": 30,
         "Butter Roti": 40,
@@ -79,7 +74,6 @@
         "Aloo Paratha": 70,
         "Stuffed Kulcha": 80
     },
-
     "Chinese": {
         "Veg Hakka Noodles": 180,
         "Chicken Hakka Noodles": 220,
@@ -92,7 +86,6 @@
         "Veg Schezwan Noodles": 200,
         "Chicken Schezwan Noodles": 240
     },
-
     "Fast Food": {
         "Veg Burger": 160,
         "Chicken Burger": 210,
@@ -105,7 +98,6 @@
         "Chicken Sandwich": 230,
         "Cheese Garlic Bread": 160
     },
-
     "Combo": {
         "Veg Meal Combo": 299,
         "Chicken Meal Combo": 399,
@@ -115,7 +107,6 @@
         "Chinese Combo": 329,
         "Family Combo": 699
     },
-
     "Dessert": {
         "Gulab Jamun": 90,
         "Rasgulla": 90,
@@ -126,7 +117,6 @@
         "Kheer": 100,
         "Tiramisu": 160
     },
-
     "Beverages": {
         "Mineral Water": 40,
         "Soft Drink": 60,
@@ -137,7 +127,6 @@
         "Milkshake": 130,
         "Chocolate Milkshake": 150
     },
-
     "Tea & Coffee": {
         "Masala Chai": 50,
         "Ginger Tea": 60,

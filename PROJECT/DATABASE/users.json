@@ -15,5 +15,14 @@
         "password": "Sumit@000",
         "role": "waitstaff",
         "created_by": "0001"
+    },
+    {
+        "user_id": "00012",
+        "name": "rajmnai",
+        "mobile": "9939939427",
+        "aadhaar": "123456789012",
+        "password": "Rajmani@1234",
+        "role": "waitstaff",
+        "created_by": "0001"
     }
 ]

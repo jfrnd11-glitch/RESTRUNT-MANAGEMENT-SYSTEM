@@ -31,27 +31,12 @@ def load_menu():
             return json.load(file)
 
     except FileNotFoundError:
-        return []
+        return {}
 
 
 def save_menu(menu):
     with open(FILE_NAME, "w") as file:
         json.dump(menu, file, indent=4)
-
-
-def generate_food_id(menu):
-    if not menu:
-        return "F001"
-
-    numbers = []
-
-    for item in menu:
-        number = int(item["food_id"][1:])
-        numbers.append(number)
-
-    new_number = max(numbers) + 1
-
-    return f"F{new_number:03d}"
 
 
 def get_name():
@@ -60,10 +45,13 @@ def get_name():
 
         if not name:
             print(Fore.RED + "Food name cannot be empty!")
+
         elif len(name) < 2:
             print(Fore.RED + "Food name must contain at least 2 characters!")
+
         elif not all(char.isalpha() or char.isspace() for char in name):
             print(Fore.RED + "Food name can contain only letters and spaces!")
+
         else:
             return name
 
@@ -71,25 +59,16 @@ def get_name():
 def get_price():
     while True:
         try:
-            price = float(input(Fore.CYAN + "Price: "))
+            price = float(input(Fore.CYAN + "Price: ").strip())
 
             if price <= 0:
                 print(Fore.RED + "Price must be greater than 0!")
+
             else:
-                return price
+                return int(price) if price.is_integer() else price
 
         except ValueError:
             print(Fore.RED + "Please enter a valid price!")
-
-
-def get_description():
-    while True:
-        description = input(Fore.CYAN + "Description: ").strip()
-
-        if not description:
-            print(Fore.RED + "Description cannot be empty!")
-        else:
-            return description
 
 
 def select_category():
@@ -100,7 +79,7 @@ def select_category():
 
     while True:
         try:
-            choice = int(input(Fore.CYAN + "Enter choice: "))
+            choice = int(input(Fore.CYAN + "Enter choice: ").strip())
 
             if 1 <= choice <= len(CATEGORIES):
                 return CATEGORIES[choice - 1]
@@ -111,38 +90,31 @@ def select_category():
             print(Fore.RED + "Please enter a number!")
 
 
-def get_availability():
-    while True:
-        choice = input(Fore.CYAN + "Available? (yes/no): ").strip().lower()
-
-        if choice == "yes":
-            return True
-
-        if choice == "no":
-            return False
-
-        print(Fore.RED + "Please enter yes or no!")
-
-
 def add_food():
     menu = load_menu()
 
     print(Fore.MAGENTA + "\n========== ADD FOOD ==========")
 
-    food = {
-        "food_id": generate_food_id(menu),
-        "name": get_name(),
-        "category": select_category(),
-        "price": get_price(),
-        "description": get_description(),
-        "available": get_availability(),
-    }
+    category = select_category()
+    food_name = get_name()
 
-    menu.append(food)
+    if category not in menu:
+        menu[category] = {}
+
+    if food_name in menu[category]:
+        print(Fore.RED + "\n❌ Food already exists in this category!")
+        return
+
+    price = get_price()
+
+    menu[category][food_name] = price
+
     save_menu(menu)
 
-    print(Fore.GREEN + "\nFood added successfully!")
-    print(Fore.GREEN + f"Food ID: {food['food_id']}")
+    print(Fore.GREEN + "\n✅ Food added successfully!")
+    print(Fore.GREEN + f"🍴 Food     : {food_name}")
+    print(Fore.GREEN + f"📂 Category : {category}")
+    print(Fore.GREEN + f"💰 Price    : ₹{price}")
 
 
 def view_food():
@@ -154,33 +126,40 @@ def view_food():
         print(Fore.YELLOW + "No food available!")
         return
 
-    for category in CATEGORIES:
+    for category, foods in menu.items():
 
-        category_items = [item for item in menu if item["category"] == category]
+        print()
+        print(Fore.YELLOW + f"--- {category} ---")
 
-        if category_items:
-            print(Fore.YELLOW + f"\n--- {category} ---")
-
-            for item in category_items:
-                status = "Available" if item["available"] else "Not Available"
-
-                print(
-                    f"{item['food_id']} | "
-                    f"{item['name']} | "
-                    f"₹{item['price']} | "
-                    f"{status}"
-                )
-                print(Fore.CYAN + f"Description: {item['description']}")
+        for food_name, price in foods.items():
+            print(Fore.CYAN + f"{food_name} : ₹{price}")
 
 
 def find_food(menu):
-    food_id = input(Fore.CYAN + "Enter Food ID: ").strip().upper()
+    category = select_category()
 
-    for item in menu:
-        if item["food_id"] == food_id:
-            return item
+    if category not in menu or not menu[category]:
+        print(Fore.RED + "\n❌ No food found in this category!")
+        return None, None
 
-    return None
+    print(Fore.YELLOW + f"\n--- {category} ---")
+
+    foods = list(menu[category].keys())
+
+    for index, food_name in enumerate(foods, start=1):
+        print(f"{index}. {food_name} : ₹{menu[category][food_name]}")
+
+    while True:
+        try:
+            choice = int(input(Fore.CYAN + "Enter food choice: ").strip())
+
+            if 1 <= choice <= len(foods):
+                return category, foods[choice - 1]
+
+            print(Fore.RED + "Invalid food choice!")
+
+        except ValueError:
+            print(Fore.RED + "Please enter a number!")
 
 
 def update_food():
@@ -188,50 +167,81 @@ def update_food():
 
     print(Fore.MAGENTA + "\n========== UPDATE FOOD ==========")
 
-    food = find_food(menu)
+    category, food_name = find_food(menu)
 
-    if food is None:
-        print(Fore.RED + "Food not found!")
+    if food_name is None:
         return
 
-    print(Fore.YELLOW + f"\nFood: {food['name']}")
+    print(Fore.YELLOW + f"\nFood: {food_name}")
+    print(Fore.YELLOW + f"Price: ₹{menu[category][food_name]}")
 
-    print("\n1. Update Name")
+    print()
+    print("1. Update Name")
     print("2. Update Category")
     print("3. Update Price")
-    print("4. Update Description")
-    print("5. Update Availability")
+    print("4. Back")
 
     while True:
-        try:
-            choice = int(input(Fore.CYAN + "Enter choice: "))
 
-            if choice == 1:
-                food["name"] = get_name()
+        choice = input(Fore.CYAN + "Enter choice: ").strip()
 
-            elif choice == 2:
-                food["category"] = select_category()
+        if choice == "1":
 
-            elif choice == 3:
-                food["price"] = get_price()
+            new_name = get_name()
 
-            elif choice == 4:
-                food["description"] = get_description()
-
-            elif choice == 5:
-                food["available"] = get_availability()
+            if new_name in menu[category]:
+                print(Fore.RED + "Food already exists!")
 
             else:
-                print(Fore.RED + "Invalid choice!")
-                continue
+                price = menu[category][food_name]
+
+                del menu[category][food_name]
+                menu[category][new_name] = price
+
+                save_menu(menu)
+
+                print(Fore.GREEN + "✅ Food name updated successfully!")
+                break
+
+        elif choice == "2":
+
+            new_category = select_category()
+
+            if new_category == category:
+                print(Fore.YELLOW + "Food is already in this category!")
+
+            elif food_name in menu[new_category]:
+                print(Fore.RED + "Food already exists in this category!")
+
+            else:
+                price = menu[category][food_name]
+
+                del menu[category][food_name]
+                menu[new_category][food_name] = price
+
+                save_menu(menu)
+
+                print(Fore.GREEN + "✅ Food category updated successfully!")
+                break
+
+        elif choice == "3":
+
+            new_price = get_price()
+
+            menu[category][food_name] = new_price
 
             save_menu(menu)
 
-            print(Fore.GREEN + "Food updated successfully!")
+            print(Fore.GREEN + "✅ Food price updated successfully!")
             break
 
-        except ValueError:
-            print(Fore.RED + "Please enter a valid number!")
+        elif choice == "4":
+
+            break
+
+        else:
+
+            print(Fore.RED + "Invalid choice!")
 
 
 def delete_food():
@@ -239,55 +249,70 @@ def delete_food():
 
     print(Fore.MAGENTA + "\n========== DELETE FOOD ==========")
 
-    food = find_food(menu)
+    category, food_name = find_food(menu)
 
-    if food is None:
-        print(Fore.RED + "Food not found!")
+    if food_name is None:
         return
 
-    print(Fore.YELLOW + f"Food: {food['name']}")
+    price = menu[category][food_name]
 
-    confirm = input(Fore.CYAN + "Are you sure? (yes/no): ").strip().lower()
+    print(Fore.YELLOW + f"\nFood    : {food_name}")
+    print(Fore.YELLOW + f"Category: {category}")
+    print(Fore.YELLOW + f"Price   : ₹{price}")
+
+    confirm = input(Fore.CYAN + "\nAre you sure? (yes/no): ").strip().lower()
 
     if confirm == "yes":
-        menu.remove(food)
+
+        del menu[category][food_name]
+
         save_menu(menu)
 
-        print(Fore.GREEN + "Food deleted successfully!")
+        print(Fore.GREEN + "\n✅ Food deleted successfully!")
+
+    elif confirm == "no":
+
+        print(Fore.YELLOW + "\nDelete cancelled!")
 
     else:
-        print(Fore.YELLOW + "Delete cancelled!")
+
+        print(Fore.RED + "\nPlease enter yes or no!")
 
 
 def menu_management():
+
     while True:
 
         print(Fore.MAGENTA + "\n========== MENU MANAGEMENT ==========")
 
-        print("1. ➕ Add Food")
-        print("2. 👀 View Food")
-        print("3. ✏️ Update Food")
-        print("4. 🗑️ Delete Food")
-        print("5. 🚪 Back")
+        print(Fore.CYAN + "1. ➕ Add Food")
+        print(Fore.CYAN + "2. 👀 View Food")
+        print(Fore.CYAN + "3. ✏️ Update Food")
+        print(Fore.CYAN + "4. 🗑️ Delete Food")
+        print(Fore.YELLOW + "5. 🚪 Back")
 
         choice = input(Fore.CYAN + "Enter choice: ").strip()
 
         if choice == "1":
+
             add_food()
 
         elif choice == "2":
+
             view_food()
 
         elif choice == "3":
+
             update_food()
 
         elif choice == "4":
+
             delete_food()
 
         elif choice == "5":
+
             break
 
         else:
-            print(Fore.RED + "Invalid choice!")
 
-menu_management()
+            print(Fore.RED + "Invalid choice!")
