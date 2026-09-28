@@ -1,7 +1,6 @@
-from colorama import Fore, init
 from PROJECT.MENU.menu_management import add_food, view_food, update_food, delete_food
-
-init(autoreset=True)
+from PROJECT.AUTH.singup import add_waitstaff, remove_waitstaff, load_users
+from PROJECT.BOOKING.booking_management import booking_management
 
 
 class AdminManagement:
@@ -14,31 +13,31 @@ class AdminManagement:
         while True:
 
             print()
-            print(Fore.MAGENTA + "🍽️ =========================================")
-            print(Fore.YELLOW + "             👨‍💼 ADMIN DASHBOARD")
-            print(Fore.MAGENTA + "🍽️ =========================================")
+            print("=========================================")
+            print("            ADMIN DASHBOARD")
+            print("=========================================")
 
-            print(Fore.GREEN + f"👤 Name : {self.user['name']}")
-            print(Fore.CYAN + "🔐 Role : ADMIN")
+            print("Name :", self.user["name"])
+            print("Role : ADMIN")
 
-            print(Fore.MAGENTA + "-------------------------------------------")
+            print("-----------------------------------------")
 
-            print(Fore.CYAN + "1. 📊 Dashboard")
-            print(Fore.CYAN + "2. 🍴 Menu Management")
-            print(Fore.CYAN + "3. 📅 Booking Management")
-            print(Fore.CYAN + "4. 🧾 Order Management")
-            print(Fore.CYAN + "5. 💰 Billing")
-            print(Fore.CYAN + "6. 📦 Inventory Management")
-            print(Fore.CYAN + "7. ➕ Add Waitstaff")
-            print(Fore.CYAN + "8. 🗑️ Remove Waitstaff")
-            print(Fore.CYAN + "9. 👀 View Waitstaff")
-            print(Fore.YELLOW + "10. 🚪 Logout")
+            print("1. Dashboard")
+            print("2. Menu Management")
+            print("3. Booking Management")
+            print("4. Order Management")
+            print("5. Billing")
+            print("6. Inventory Management")
+            print("7. Add Waitstaff")
+            print("8. Remove Waitstaff")
+            print("9. View Waitstaff")
+            print("10. Logout")
 
-            choice = input(Fore.WHITE + "\n👉 Enter your choice: ").strip()
+            choice = input("\nEnter your choice: ").strip()
 
             if choice == "1":
 
-                print(Fore.GREEN + "\n📊 Dashboard opened.")
+                self.dashboard()
 
             elif choice == "2":
 
@@ -46,57 +45,106 @@ class AdminManagement:
 
             elif choice == "3":
 
-                print(Fore.GREEN + "\n📅 Booking Management opened.")
+                  booking_management()
 
             elif choice == "4":
 
-                print(Fore.GREEN + "\n🧾 Order Management opened.")
+                print("\nOrder Management opened.")
 
             elif choice == "5":
 
-                print(Fore.GREEN + "\n💰 Billing opened.")
+                print("\nBilling opened.")
 
             elif choice == "6":
 
-                print(Fore.GREEN + "\n📦 Inventory Management opened.")
+                print("\nInventory Management opened.")
 
             elif choice == "7":
 
-                print(Fore.GREEN + "\n➕ Add Waitstaff opened.")
+                add_waitstaff(self.user["user_id"])
 
             elif choice == "8":
 
-                print(Fore.RED + "\n🗑️ Remove Waitstaff opened.")
+                remove_waitstaff()
 
             elif choice == "9":
 
-                print(Fore.GREEN + "\n👀 View Waitstaff opened.")
+                users = load_users()
+
+                print("\nWaitstaff List")
+                print("---------------")
+
+                found = False
+
+                for user in users:
+
+                    if user.get("role") == "waitstaff":
+
+                        print("User ID:", user["user_id"])
+                        print("Name:", user["name"])
+                        print("Email:", user["email"])
+                        print("Mobile:", user["mobile"])
+                        print("--------------------")
+
+                        found = True
+
+                if not found:
+                    print("No waitstaff account found.")
 
             elif choice == "10":
 
-                print(Fore.YELLOW + "\n🚪 Logging out...")
+                print("\nLogging out...")
                 break
 
             else:
 
-                print(Fore.RED + "\n❌ Invalid choice. Please try again.")
+                print("\nInvalid choice. Please try again.")
+
+    def dashboard(self):
+
+        users = load_users()
+
+        total_waitstaff = 0
+
+        for user in users:
+
+            if user.get("role") == "waitstaff":
+                total_waitstaff += 1
+
+        print()
+        print("=========================================")
+        print("             ADMIN DASHBOARD")
+        print("=========================================")
+
+        print("Name :", self.user["name"])
+        print("Role : ADMIN")
+
+        print("-----------------------------------------")
+
+        print("Total Waitstaff  :", total_waitstaff)
+        print("Total Menu Items : Coming Soon")
+        print("Total Bookings   : Coming Soon")
+        print("Total Orders     : Coming Soon")
+        print("Total Sales      : Coming Soon")
+
+        print("-----------------------------------------")
 
     def menu_management(self):
 
         while True:
 
             print()
-            print(Fore.MAGENTA + "🍴 =========================================")
-            print(Fore.YELLOW + "             🍴 MENU MANAGEMENT")
-            print(Fore.MAGENTA + "🍴 =========================================")
+            print("=========================================")
+            print("             MENU MANAGEMENT")
+            print("=========================================")
 
-            print(Fore.CYAN + "1. ➕ Add Food")
-            print(Fore.CYAN + "2. 👀 View Food")
-            print(Fore.CYAN + "3. ✏️ Update Food")
-            print(Fore.CYAN + "4. 🗑️ Delete Food")
-            print(Fore.YELLOW + "5. 🔙 Back")
+            print("1. Add Food")
+            print("2. View Food")
+            print("3. Update Food")
+            print("4. Delete Food")
+            print("5. Back")
 
-            choice = input(Fore.WHITE + "\n👉 Enter your choice: ").strip()
+            choice = input("\nEnter your choice: ").strip()
 
             if choice == "1":
 
@@ -120,4 +168,4 @@ class AdminManagement:
 
             else:
 
-                print(Fore.RED + "\n❌ Invalid choice. Please try again.")
+                print("\nInvalid choice. Please try again.")

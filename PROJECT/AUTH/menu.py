@@ -1,17 +1,8 @@
-from colorama import init, Fore
-
 from PROJECT.AUTH.signin import signin
-from PROJECT.AUTH.singup import create_admin, add_waitstaff
+from PROJECT.AUTH.singup import create_admin
 
 from PROJECT.DASHBOARD.admin_management import AdminManagement
 from PROJECT.DASHBOARD.waitstaff_management import WaitstaffManagement
-
-init(autoreset=True)
-
-
-# ==============================
-# MAIN MENU
-# ==============================
 
 
 def main():
@@ -21,35 +12,44 @@ def main():
     while True:
 
         print()
-        print(Fore.MAGENTA + "🍽️ =========================================")
-        print(Fore.YELLOW + "       🍴 RESTAURANT MANAGEMENT SYSTEM 🍴")
-        print(Fore.MAGENTA + "🍽️ =========================================")
+        print("=========================================")
+        print("      RESTAURANT MANAGEMENT SYSTEM")
+        print("=========================================")
 
-        print(Fore.CYAN + "🔐 1. Sign In")
-        print(Fore.RED + "🚪 2. Exit")
+        print("1. Admin Login")
+        print("2. Waitstaff Login")
+        print("3. Exit")
 
-        choice = input(Fore.WHITE + "\n👉 Enter your choice: ").strip()
+        choice = input("Enter your choice: ").strip()
 
         if choice == "1":
 
             user = signin()
 
-            if user:
+            if user is None:
+                continue
 
-                if user["role"] == "admin":
-
-                    AdminManagement(user).show()
-
-                elif user["role"] == "waitstaff":
-
-                    WaitstaffManagement(user).show()
+            if user["role"] == "admin":
+                AdminManagement(user).show()
+            else:
+                print("This account is not an Admin account.")
 
         elif choice == "2":
 
-            print(Fore.GREEN + "\n👋 Thank you for using Restaurant Management System.")
+            user = signin()
 
+            if user is None:
+                continue
+
+            if user["role"] == "waitstaff":
+                WaitstaffManagement(user).show()
+            else:
+                print("This account is not a Waitstaff account.")
+
+        elif choice == "3":
+
+            print("\nThank you for using Restaurant Management System.")
             break
 
         else:
-
-            print(Fore.RED + "\n❌ Invalid choice. Please try again.")
+            print("\nInvalid choice. Please enter 1, 2 or 3.")

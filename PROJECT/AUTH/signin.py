@@ -2,122 +2,121 @@ import json
 import os
 import msvcrt
 
-from colorama import init, Fore
-
-# ==============================
-# COLORAMA
-# ==============================
-
-init(autoreset=True)
-
-
-# ==============================
-# DATABASE PATH
-# ==============================
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATABASE_DIR = os.path.join(BASE_DIR, "DATABASE")
 FILE_NAME = os.path.join(DATABASE_DIR, "users.json")
 
 
-# ==============================
-# LOAD USERS
-# ==============================
-
-
 def load_users():
-
     if not os.path.exists(FILE_NAME):
         return []
 
     try:
-
         with open(FILE_NAME, "r") as file:
             return json.load(file)
-
     except (json.JSONDecodeError, FileNotFoundError):
-
         return []
 
 
-# ==============================
-# PASSWORD INPUT
-# ==============================
-
-
 def get_password(message):
-
-    print(Fore.CYAN + message, end="", flush=True)
+    print(message, end="", flush=True)
 
     password = ""
 
     while True:
-
         char = msvcrt.getwch()
 
         if char == "\r":
-
             print()
             break
 
-        elif char == "\b":
-
+        if char == "\b":
             if password:
-
                 password = password[:-1]
                 print("\b \b", end="", flush=True)
-
         else:
-
             password += char
             print("*", end="", flush=True)
 
     return password
 
 
-# ==============================
-# SIGN IN
-# ==============================
-
-
 def signin():
-
     users = load_users()
 
     if not users:
-
-        print()
-        print(Fore.RED + "❌ No account found.")
-
-        print(Fore.YELLOW + "⚠️ Please create an Admin account first.")
-
+        print("\nNo account found.")
+        print("Please create an Admin account first.")
         return None
 
-    print()
-    print(Fore.MAGENTA + "🍽️ =======================================")
+    while True:
+        print("\nSign In")
+        print("-------")
+        print("1. Login with User ID")
+        print("2. Login with Email")
+        print("3. Back")
 
-    print(Fore.YELLOW + "             🔐 SIGN IN")
+        choice = input("Enter choice: ").strip()
 
-    print(Fore.MAGENTA + "🍽️ =======================================")
+        if choice == "1":
+            user_id = input("User ID: ").strip()
 
-    user_id = input(Fore.CYAN + "🆔 User ID: ").strip()
+            if not user_id:
+                print("User ID cannot be empty.")
+                continue
 
-    password = get_password("🔑 Password: ")
+            user = None
 
-    for user in users:
+            for item in users:
+                if item.get("user_id") == user_id:
+                    user = item
+                    break
 
-        if user["user_id"] == user_id and user["password"] == password:
+            if user is None:
+                print("User ID not found.")
+                continue
 
-            print()
-            print(Fore.GREEN + "✅ Login successful!")
+            password = get_password("Password: ")
 
-            print(Fore.CYAN + f"👋 Welcome, {user['name']}!")
+            if user.get("password") == password:
+                print("\nLogin successful.")
+                print("Welcome,", user.get("name"))
+                print("Role:", user.get("role").title())
+                return user
 
-            print(Fore.YELLOW + f"👤 Role: {user['role'].title()}")
+            print("Incorrect password.")
 
-            return user
+        elif choice == "2":
+            email = input("Email: ").strip().lower()
 
-    print()
-    print(Fore.RED + "❌ Invalid User ID or Password.")
+            if not email:
+                print("Email cannot be empty.")
+                continue
 
-    return None
+            user = None
+
+            for item in users:
+                if item.get("email", "").lower() == email:
+                    user = item
+                    break
+
+            if user is None:
+                print("Email not found.")
+                continue
+
+            password = get_password("Password: ")
+
+            if user.get("password") == password:
+                print("\nLogin successful.")
+                print("Welcome,", user.get("name"))
+                print("Role:", user.get("role").title())
+                return user
+
+            print("Incorrect password.")
+
+        elif choice == "3":
+            return None
+
+        else:
+            print("Invalid choice. Please enter 1, 2 or 3.")

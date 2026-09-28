@@ -1,6 +1,5 @@
-from colorama import Fore, init
-
-init(autoreset=True)
+from PROJECT.MENU.menu_management import view_food
+from PROJECT.BOOKING.booking_management import booking_management
 
 
 class WaitstaffManagement:
@@ -13,72 +12,73 @@ class WaitstaffManagement:
         while True:
 
             print()
-            print(Fore.MAGENTA + "🍽️ =========================================")
-            print(Fore.YELLOW + "            👨‍🍳 WAITSTAFF DASHBOARD")
-            print(Fore.MAGENTA + "🍽️ =========================================")
+            print("=========================================")
+            print("           WAITSTAFF DASHBOARD")
+            print("=========================================")
 
-            print(Fore.GREEN + f"👤 Name : {self.user['name']}")
-            print(Fore.CYAN + "🔐 Role : WAITSTAFF")
+            print("Name :", self.user["name"])
+            print("Role : WAITSTAFF")
 
-            print(Fore.MAGENTA + "-------------------------------------------")
+            print("-----------------------------------------")
 
-            print(Fore.CYAN + "🍴 1. View Menu")
-            print(Fore.CYAN + "📅 2. Booking Management")
-            print(Fore.CYAN + "🧾 3. Order Management")
-            print(Fore.CYAN + "🔄 4. Update Order")
-            print(Fore.CYAN + "💰 5. Billing")
-            print(Fore.YELLOW + "🔙 6. Back")
+            print("1. View Menu")
+            print("2. Booking Management")
+            print("3. Order Management")
+            print("4. Update Order")
+            print("5. Billing")
+            print("6. Back")
 
-            choice = input(Fore.WHITE + "\n👉 Enter your choice: ").strip()
+            choice = input("\nEnter your choice: ").strip()
 
             if choice == "1":
-                self.view_menu()
+
+                view_food()
 
             elif choice == "2":
-                self.booking_management()
+
+                booking_management()
 
             elif choice == "3":
+
                 self.order_management()
 
             elif choice == "4":
+
                 self.update_order()
 
             elif choice == "5":
+
                 self.billing()
 
             elif choice == "6":
-                print(Fore.YELLOW + "\n🔙 Returning...")
+
+                print("\nReturning to previous menu.")
                 break
 
             else:
-                print(Fore.RED + "\n❌ Invalid choice. Please try again.")
 
-    def view_menu(self):
-
-        print()
-        print(Fore.GREEN + "🍴 View Menu opened.")
-        print(Fore.YELLOW + "👉 Waitstaff can view available food items.")
+                print("\nInvalid choice. Please try again.")
 
     def booking_management(self):
 
         print()
-        print(Fore.GREEN + "📅 Booking Management opened.")
-        print(Fore.YELLOW + "👉 Booking module will be connected here.")
+        print("Booking Management opened.")
+        print("Booking module will be connected here.")
 
     def order_management(self):
 
         print()
-        print(Fore.GREEN + "🧾 Order Management opened.")
-        print(Fore.YELLOW + "👉 Order module will be connected here.")
+        print("Order Management opened.")
+        print("Order module will be connected here.")
 
     def update_order(self):
 
         print()
-        print(Fore.GREEN + "🔄 Update Order opened.")
-        print(Fore.YELLOW + "👉 Order update module will be connected here.")
+        print("Update Order opened.")
+        print("Order update module will be connected here.")
 
     def billing(self):
 
         print()
-        print(Fore.GREEN + "💰 Billing opened.")
-        print(Fore.YELLOW + "👉 Billing module will be connected here.")
+        print("Billing opened.")
+        print("Billing module will be connected here.")
