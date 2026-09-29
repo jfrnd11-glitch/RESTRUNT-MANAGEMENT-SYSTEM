@@ -1,6 +1,14 @@
+import json
+import os
+
 from PROJECT.MENU.menu_management import add_food, view_food, update_food, delete_food
 from PROJECT.AUTH.singup import add_staff, remove_staff, load_users
 from PROJECT.BOOKING.booking_management import booking_management
+from PROJECT.ORDER.order_management import order_menu
+from PROJECT.BILLING.billing_management import billing_menu
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DATABASE_DIR = os.path.join(BASE_DIR, "DATABASE")
 
 
 class AdminManagement:
@@ -49,11 +57,11 @@ class AdminManagement:
 
             elif choice == "4":
 
-                print("\nOrder Management opened.")
+                order_menu()
 
             elif choice == "5":
 
-                print("\nBilling opened.")
+                billing_menu()
 
             elif choice == "6":
 
@@ -111,6 +119,11 @@ class AdminManagement:
             if user.get("role") == "staff":
                 total_staff += 1
 
+        total_menu = self.get_total_menu()
+        total_bookings = self.get_total_bookings()
+        total_orders = self.get_total_orders()
+        total_sales = self.get_total_sales()
+
         print()
         print("=========================================")
         print("             ADMIN DASHBOARD")
@@ -122,12 +135,93 @@ class AdminManagement:
         print("-----------------------------------------")
 
         print("Total Staff      :", total_staff)
-        print("Total Menu Items : Coming Soon")
-        print("Total Bookings   : Coming Soon")
-        print("Total Orders     : Coming Soon")
-        print("Total Sales      : Coming Soon")
+        print("Total Menu Items :", total_menu)
+        print("Total Bookings   :", total_bookings)
+        print("Total Orders     :", total_orders)
+        print("Total Sales      : ₹", total_sales)
 
         print("-----------------------------------------")
+
+    def get_total_menu(self):
+
+        file_path = os.path.join(DATABASE_DIR, "menu.json")
+
+        try:
+
+            with open(file_path, "r") as file:
+                menu = json.load(file)
+
+            total = 0
+
+            for category in menu.values():
+
+                if isinstance(category, dict):
+                    total += len(category)
+
+            return total
+
+        except (FileNotFoundError, json.JSONDecodeError):
+
+            return 0
+
+    def get_total_bookings(self):
+
+        file_path = os.path.join(DATABASE_DIR, "booking.json")
+
+        try:
+
+            with open(file_path, "r") as file:
+                bookings = json.load(file)
+
+            if isinstance(bookings, list):
+                return len(bookings)
+
+            return 0
+
+        except (FileNotFoundError, json.JSONDecodeError):
+
+            return 0
+
+    def get_total_orders(self):
+
+        file_path = os.path.join(DATABASE_DIR, "orders.json")
+
+        try:
+
+            with open(file_path, "r") as file:
+                orders = json.load(file)
+
+            if isinstance(orders, list):
+                return len(orders)
+
+            return 0
+
+        except (FileNotFoundError, json.JSONDecodeError):
+
+            return 0
+
+    def get_total_sales(self):
+
+        file_path = os.path.join(DATABASE_DIR, "bills.json")
+
+        try:
+
+            with open(file_path, "r") as file:
+                bills = json.load(file)
+
+            total_sales = 0
+
+            if isinstance(bills, list):
+
+                for bill in bills:
+
+                    total_sales += bill.get("final_amount", 0)
+
+            return total_sales
+
+        except (FileNotFoundError, json.JSONDecodeError):
+
+            return 0
 
     def menu_management(self):
 

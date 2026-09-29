@@ -1,6 +1,8 @@
 from PROJECT.MENU.menu_management import view_food
 from PROJECT.BOOKING.booking_management import booking_management
-
+from PROJECT.ORDER.order_management import order_menu
+from PROJECT.ORDER.order_management import order_menu, update_order_status
+from PROJECT.BILLING.billing_management import billing_menu
 
 class StaffManagement:
 
@@ -60,25 +62,17 @@ class StaffManagement:
                 print("\nInvalid choice. Please try again.")
 
     def booking_management(self):
-
-        print()
-        print("Booking Management opened.")
-        print("Booking module will be connected here.")
+                
+        booking_management()
 
     def order_management(self):
 
-        print()
-        print("Order Management opened.")
-        print("Order module will be connected here.")
+        order_menu()
 
     def update_order(self):
 
-        print()
-        print("Update Order opened.")
-        print("Order update module will be connected here.")
+        update_order_status()
 
     def billing(self):
 
-        print()
-        print("Billing opened.")
-        print("Billing module will be connected here.")
+        billing_menu()
