@@ -14,17 +14,29 @@ TABLES = {
 }
 
 
+# =========================
+# LOAD BOOKINGS
+# =========================
+
+
 def load_bookings():
 
     if not os.path.exists(FILE_NAME):
         return []
 
     try:
+
         with open(FILE_NAME, "r") as file:
             return json.load(file)
 
     except (json.JSONDecodeError, FileNotFoundError):
+
         return []
+
+
+# =========================
+# SAVE BOOKINGS
+# =========================
 
 
 def save_bookings(bookings):
@@ -35,6 +47,11 @@ def save_bookings(bookings):
         json.dump(bookings, file, indent=4)
 
 
+# =========================
+# CUSTOMER NAME
+# =========================
+
+
 def get_customer_name():
 
     while True:
@@ -42,13 +59,21 @@ def get_customer_name():
         name = input("Customer Name: ").strip()
 
         if len(name) < 3:
+
             print("Name must contain at least 3 characters.")
 
         elif not all(char.isalpha() or char.isspace() for char in name):
+
             print("Name can contain only letters and spaces.")
 
         else:
+
             return name
+
+
+# =========================
+# MOBILE
+# =========================
 
 
 def get_mobile(bookings, current_mobile=None):
@@ -58,15 +83,19 @@ def get_mobile(bookings, current_mobile=None):
         mobile = input("Mobile Number: ").strip()
 
         if not mobile:
+
             print("Mobile number cannot be empty.")
 
         elif not mobile.isdigit():
+
             print("Mobile number must contain digits only.")
 
         elif len(mobile) != 10:
+
             print("Mobile number must contain exactly 10 digits.")
 
         elif mobile[0] not in "6789":
+
             print("Mobile number must start with 6, 7, 8 or 9.")
 
         elif any(
@@ -75,10 +104,17 @@ def get_mobile(bookings, current_mobile=None):
             and mobile != current_mobile
             for booking in bookings
         ):
+
             print("This mobile number already has a booking.")
 
         else:
+
             return mobile
+
+
+# =========================
+# BOOKING DATE
+# =========================
 
 
 def get_booking_date():
@@ -92,13 +128,21 @@ def get_booking_date():
             booking_date = datetime.strptime(date, "%d-%m-%Y").date()
 
             if booking_date < datetime.now().date():
+
                 print("Booking date cannot be in the past.")
 
             else:
+
                 return date
 
         except ValueError:
+
             print("Enter date in DD-MM-YYYY format.")
+
+
+# =========================
+# BOOKING TIME
+# =========================
 
 
 def get_booking_time():
@@ -110,10 +154,17 @@ def get_booking_time():
         try:
 
             datetime.strptime(time, "%I:%M %p")
+
             return time
 
         except ValueError:
+
             print("Enter time in HH:MM AM/PM format.")
+
+
+# =========================
+# NUMBER OF GUESTS
+# =========================
 
 
 def get_guests():
@@ -123,51 +174,78 @@ def get_guests():
         guests = input("Number of Guests: ").strip()
 
         if not guests.isdigit():
+
             print("Number of guests must contain digits only.")
 
         elif int(guests) <= 0:
+
             print("Number of guests must be greater than 0.")
 
         else:
+
             return int(guests)
+
+
+# =========================
+# REQUIRED TABLE TYPES
+# =========================
 
 
 def get_tables_for_guests(guests):
 
     if guests <= 2:
+
         return ["2"]
 
     elif guests <= 4:
+
         return ["4"]
 
     elif guests <= 6:
+
         return ["6"]
 
     elif guests <= 8:
+
         return ["6", "2"]
 
     elif guests <= 10:
+
         return ["6", "4"]
 
     elif guests <= 12:
+
         return ["6", "6"]
 
     else:
+
         tables = []
 
         while guests > 6:
+
             tables.append("6")
             guests -= 6
 
         if guests > 0:
+
             if guests <= 2:
+
                 tables.append("2")
+
             elif guests <= 4:
+
                 tables.append("4")
+
             else:
+
                 tables.append("6")
 
         return tables
+
+
+# =========================
+# AVAILABLE TABLES
+# =========================
 
 
 def get_available_tables(bookings, booking_date, booking_time):
@@ -185,6 +263,7 @@ def get_available_tables(bookings, booking_date, booking_time):
             tables = booking.get("table_number", [])
 
             if isinstance(tables, str):
+
                 tables = [tables]
 
             booked_tables.extend(tables)
@@ -196,30 +275,116 @@ def get_available_tables(bookings, booking_date, booking_time):
         for table in table_list:
 
             if table not in booked_tables:
+
                 available_tables[size].append(table)
 
     return available_tables
 
 
-def assign_tables(bookings, guests, booking_date, booking_time):
+# =========================
+# SHOW AVAILABLE TABLES
+# =========================
+
+
+def show_available_tables(bookings, booking_date, booking_time):
+
+    available_tables = get_available_tables(bookings, booking_date, booking_time)
+
+    print()
+    print("=========================================")
+    print("          AVAILABLE TABLES")
+    print("=========================================")
+
+    print("Date:", booking_date)
+
+    print("Time:", booking_time)
+
+    print()
+
+    for size, tables in available_tables.items():
+
+        print(f"{size} SEATER")
+
+        print("-----------------------------------------")
+
+        if tables:
+
+            print("Available:", ", ".join(tables))
+
+        else:
+
+            print("No table available.")
+
+        print()
+
+    return available_tables
+
+
+# =========================
+# SELECT TABLES
+# =========================
+
+
+def select_tables(bookings, guests, booking_date, booking_time):
 
     required_tables = get_tables_for_guests(guests)
 
     available_tables = get_available_tables(bookings, booking_date, booking_time)
 
-    assigned_tables = []
+    print()
+    print("=========================================")
+    print("          SELECT TABLE")
+    print("=========================================")
+
+    print(f"Guests: {guests}")
+
+    print("Required table capacity:", " + ".join(required_tables))
+
+    selected_tables = []
 
     for size in required_tables:
 
-        size = str(size)
+        tables = available_tables[size]
 
-        if not available_tables[size]:
+        if not tables:
+
+            print(f"\nNo {size}-seater table available.")
+
             return None
 
-        table = available_tables[size].pop(0)
-        assigned_tables.append(table)
+        print()
+        print(f"Available {size}-Seater Tables:")
 
-    return assigned_tables
+        for index, table in enumerate(tables, start=1):
+
+            print(f"{index}. {table}")
+
+        while True:
+
+            try:
+
+                choice = int(input(f"Select {size}-seater table: ").strip())
+
+                if 1 <= choice <= len(tables):
+
+                    selected_table = tables[choice - 1]
+
+                    selected_tables.append(selected_table)
+
+                    break
+
+                print("Invalid table choice.")
+
+            except ValueError:
+
+                print("Please enter a number.")
+
+    return selected_tables
+
+
+# =========================
+# GENERATE BOOKING ID
+# =========================
 
 
 def generate_booking_id(bookings):
@@ -233,9 +398,15 @@ def generate_booking_id(bookings):
         exists = any(booking.get("booking_id") == booking_id for booking in bookings)
 
         if not exists:
+
             return booking_id
 
         number += 1
+
+
+# =========================
+# NEW BOOKING
+# =========================
 
 
 def new_booking():
@@ -257,11 +428,19 @@ def new_booking():
 
     guests = get_guests()
 
-    tables = assign_tables(bookings, guests, booking_date, booking_time)
+    # Show available tables first
+
+    show_available_tables(bookings, booking_date, booking_time)
+
+    # Select table
+
+    tables = select_tables(bookings, guests, booking_date, booking_time)
 
     if tables is None:
+
         print()
-        print("Required tables are not available for this date and time.")
+        print("Required tables are not available.")
+
         return
 
     booking_id = generate_booking_id(bookings)
@@ -283,8 +462,15 @@ def new_booking():
 
     print()
     print("Booking created successfully.")
+
     print("Booking ID:", booking_id)
+
     print("Table:", ", ".join(tables))
+
+
+# =========================
+# VIEW BOOKINGS
+# =========================
 
 
 def view_bookings():
@@ -297,26 +483,41 @@ def view_bookings():
     print("=========================================")
 
     if not bookings:
+
         print("No bookings found.")
+
         return
 
     for booking in bookings:
 
         print("Booking ID :", booking["booking_id"])
+
         print("Name       :", booking["customer_name"])
+
         print("Mobile     :", booking["mobile"])
+
         print("Date       :", booking["booking_date"])
+
         print("Time       :", booking["booking_time"])
+
         print("Guests     :", booking["guests"])
 
         tables = booking.get("table_number", [])
 
         if isinstance(tables, str):
+
             tables = [tables]
 
         print("Table      :", ", ".join(tables))
+
         print("Status     :", booking["status"])
+
         print("-----------------------------------------")
+
+
+# =========================
+# SEARCH BOOKING
+# =========================
 
 
 def search_booking():
@@ -324,7 +525,9 @@ def search_booking():
     bookings = load_bookings()
 
     if not bookings:
+
         print("\nNo bookings found.")
+
         return
 
     print()
@@ -344,26 +547,41 @@ def search_booking():
         ):
 
             print()
+
             print("Booking ID :", booking["booking_id"])
+
             print("Name       :", booking["customer_name"])
+
             print("Mobile     :", booking["mobile"])
+
             print("Date       :", booking["booking_date"])
+
             print("Time       :", booking["booking_time"])
+
             print("Guests     :", booking["guests"])
 
             tables = booking.get("table_number", [])
 
             if isinstance(tables, str):
+
                 tables = [tables]
 
             print("Table      :", ", ".join(tables))
+
             print("Status     :", booking["status"])
 
             found = True
+
             break
 
     if not found:
+
         print("\nBooking not found.")
+
+
+# =========================
+# UPDATE BOOKING
+# =========================
 
 
 def update_booking():
@@ -371,7 +589,9 @@ def update_booking():
     bookings = load_bookings()
 
     if not bookings:
+
         print("\nNo bookings found.")
+
         return
 
     print()
@@ -386,39 +606,59 @@ def update_booking():
     for item in bookings:
 
         if item["booking_id"] == booking_id:
+
             booking = item
+
             break
 
     if booking is None:
+
         print("\nBooking not found.")
+
         return
 
     if booking["status"] == "Cancelled":
+
         print("\nCancelled booking cannot be updated.")
+
         return
 
     print("\nLeave input empty to keep the old value.")
+
+    # -------------------------
+    # NAME
+    # -------------------------
 
     name = input(f"Customer Name [{booking['customer_name']}]: ").strip()
 
     if name:
 
         if len(name) < 3 or not all(char.isalpha() or char.isspace() for char in name):
+
             print("Invalid name.")
+
             return
 
         booking["customer_name"] = name
+
+    # -------------------------
+    # MOBILE
+    # -------------------------
 
     mobile = input(f"Mobile Number [{booking['mobile']}]: ").strip()
 
     if mobile:
 
         if not mobile.isdigit() or len(mobile) != 10:
+
             print("Invalid mobile number.")
+
             return
 
         if mobile[0] not in "6789":
+
             print("Mobile number must start with 6, 7, 8 or 9.")
+
             return
 
         for item in bookings:
@@ -428,15 +668,28 @@ def update_booking():
                 and item.get("mobile") == mobile
                 and item.get("status") != "Cancelled"
             ):
+
                 print("This mobile number already has a booking.")
+
                 return
 
         booking["mobile"] = mobile
 
+    # -------------------------
+    # OLD VALUES
+    # -------------------------
+
     old_date = booking["booking_date"]
+
     old_time = booking["booking_time"]
+
     old_guests = booking["guests"]
+
     old_tables = booking.get("table_number", [])
+
+    # -------------------------
+    # DATE
+    # -------------------------
 
     date = input(f"Booking Date [{old_date}]: ").strip()
 
@@ -447,46 +700,72 @@ def update_booking():
             booking_date = datetime.strptime(date, "%d-%m-%Y").date()
 
             if booking_date < datetime.now().date():
+
                 print("Booking date cannot be in the past.")
+
                 return
 
         except ValueError:
+
             print("Invalid date.")
+
             return
 
     else:
+
         date = old_date
+
+    # -------------------------
+    # TIME
+    # -------------------------
 
     time = input(f"Booking Time [{old_time}]: ").strip().upper()
 
     if time:
 
         try:
+
             datetime.strptime(time, "%I:%M %p")
 
         except ValueError:
+
             print("Invalid time.")
+
             return
 
     else:
+
         time = old_time
+
+    # -------------------------
+    # GUESTS
+    # -------------------------
 
     guests_input = input(f"Number of Guests [{old_guests}]: ").strip()
 
     if guests_input:
 
         if not guests_input.isdigit():
+
             print("Invalid number of guests.")
+
             return
 
         guests = int(guests_input)
 
         if guests <= 0:
+
             print("Number of guests must be greater than 0.")
+
             return
 
     else:
+
         guests = old_guests
+
+    # -------------------------
+    # CHECK TABLE CHANGE
+    # -------------------------
 
     date_or_time_changed = date != old_date or time != old_time
 
@@ -494,24 +773,28 @@ def update_booking():
 
     if date_or_time_changed or guests_changed:
 
-        new_tables = assign_tables(
-            [item for item in bookings if item["booking_id"] != booking_id],
-            guests,
-            date,
-            time,
-        )
+        other_bookings = [item for item in bookings if item["booking_id"] != booking_id]
+
+        show_available_tables(other_bookings, date, time)
+
+        new_tables = select_tables(other_bookings, guests, date, time)
 
         if new_tables is None:
-            print("\nRequired tables are not available " "for the new date and time.")
+
+            print("\nRequired tables are not available.")
+
             return
 
         booking["table_number"] = new_tables
 
     else:
+
         booking["table_number"] = old_tables
 
     booking["booking_date"] = date
+
     booking["booking_time"] = time
+
     booking["guests"] = guests
 
     save_bookings(bookings)
@@ -521,9 +804,15 @@ def update_booking():
     tables = booking.get("table_number", [])
 
     if isinstance(tables, str):
+
         tables = [tables]
 
     print("Table:", ", ".join(tables))
+
+
+# =========================
+# CANCEL BOOKING
+# =========================
 
 
 def cancel_booking():
@@ -531,7 +820,9 @@ def cancel_booking():
     bookings = load_bookings()
 
     if not bookings:
+
         print("\nNo bookings found.")
+
         return
 
     print()
@@ -546,7 +837,9 @@ def cancel_booking():
         if booking["booking_id"] == booking_id:
 
             if booking["status"] == "Cancelled":
+
                 print("\nBooking is already cancelled.")
+
                 return
 
             booking["status"] = "Cancelled"
@@ -554,10 +847,38 @@ def cancel_booking():
             save_bookings(bookings)
 
             print("\nBooking cancelled successfully.")
+
             print("Assigned tables are now available.")
+
             return
 
     print("\nBooking not found.")
+
+
+# =========================
+# AVAILABLE TABLES MENU
+# =========================
+
+
+def available_tables_menu():
+
+    bookings = load_bookings()
+
+    print()
+    print("=========================================")
+    print("          CHECK AVAILABLE TABLES")
+    print("=========================================")
+
+    booking_date = get_booking_date()
+
+    booking_time = get_booking_time()
+
+    show_available_tables(bookings, booking_date, booking_time)
+
+
+# =========================
+# BOOKING MANAGEMENT
+# =========================
 
 
 def booking_management():
@@ -570,31 +891,49 @@ def booking_management():
         print("=========================================")
 
         print("1. New Booking")
+
         print("2. View Bookings")
+
         print("3. Search Booking")
+
         print("4. Update Booking")
+
         print("5. Cancel Booking")
-        print("6. Back")
+
+        print("6. Available Tables")
+
+        print("7. Back")
 
         choice = input("\nEnter your choice: ").strip()
 
         if choice == "1":
+
             new_booking()
 
         elif choice == "2":
+
             view_bookings()
 
         elif choice == "3":
+
             search_booking()
 
         elif choice == "4":
+
             update_booking()
 
         elif choice == "5":
+
             cancel_booking()
 
         elif choice == "6":
+
+            available_tables_menu()
+
+        elif choice == "7":
+
             break
 
         else:
+
             print("\nInvalid choice. Please try again.")

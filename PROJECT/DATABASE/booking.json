@@ -1,17 +1,1 @@
-[
-    {
-        "booking_id": "B001",
-        "customer_name": "aman kumar",
-        "mobile": "7549861207",
-        "booking_date": "23-09-2026",
-        "booking_time": "09:00 AM",
-        "guests": 21,
-        "table_number": [
-            "T21",
-            "T22",
-            "T23",
-            "T11"
-        ],
-        "status": "Confirmed"
-    }
-]
+[]

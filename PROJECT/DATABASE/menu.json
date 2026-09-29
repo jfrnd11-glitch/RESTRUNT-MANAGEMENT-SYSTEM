@@ -1,68 +1,454 @@
 {
     "Breakfast": {
-        "Aloo Paratha": 80,
-        "Paneer Paratha": 100,
-        "Poha": 60,
-        "Masala Dosa": 100,
-        "Idli Sambar": 80,
-        "Chole Bhature": 120,
-        "Poori Bhaji": 100,
-        "Veg Sandwich": 100,
-        "jayant specle": 100
+        "Aloo Paratha": {
+            "Half": 50,
+            "Full": 80
+        },
+        "Paneer Paratha": {
+            "Half": 70,
+            "Full": 100
+        },
+        "Poha": {
+            "Half": 40,
+            "Full": 60
+        },
+        "Masala Dosa": {
+            "Half": 70,
+            "Full": 100
+        },
+        "Idli Sambar": {
+            "Half": 50,
+            "Full": 80
+        },
+        "Chole Bhature": {
+            "Half": 80,
+            "Full": 120
+        },
+        "Poori Bhaji": {
+            "Half": 70,
+            "Full": 100
+        },
+        "Veg Sandwich": {
+            "Half": 60,
+            "Full": 100
+        },
+        "Jayant Special": {
+            "Half": 70,
+            "Full": 100
+        },
+        "Upma": {
+            "Half": 50,
+            "Full": 80
+        },
+        "Bread Omelette": {
+            "Half": 70,
+            "Full": 100
+        },
+        "Masala Omelette": {
+            "Half": 70,
+            "Full": 100
+        }
     },
+
+    "South Indian": {
+        "Plain Dosa": {
+            "Half": 60,
+            "Full": 80
+        },
+        "Masala Dosa": {
+            "Half": 70,
+            "Full": 100
+        },
+        "Mysore Masala Dosa": {
+            "Half": 90,
+            "Full": 130
+        },
+        "Paneer Dosa": {
+            "Half": 100,
+            "Full": 150
+        },
+        "Rava Dosa": {
+            "Half": 80,
+            "Full": 120
+        },
+        "Onion Dosa": {
+            "Half": 70,
+            "Full": 110
+        },
+        "Idli Sambar": {
+            "Half": 50,
+            "Full": 80
+        },
+        "Medu Vada": {
+            "Half": 50,
+            "Full": 80
+        },
+        "Vada Sambar": {
+            "Half": 60,
+            "Full": 90
+        },
+        "Onion Uttapam": {
+            "Half": 80,
+            "Full": 110
+        },
+        "Masala Uttapam": {
+            "Half": 90,
+            "Full": 120
+        },
+        "Paneer Uttapam": {
+            "Half": 100,
+            "Full": 140
+        },
+        "Pongal": {
+            "Half": 70,
+            "Full": 100
+        },
+        "Upma": {
+            "Half": 50,
+            "Full": 80
+        },
+        "Lemon Rice": {
+            "Half": 70,
+            "Full": 100
+        },
+        "Curd Rice": {
+            "Half": 70,
+            "Full": 100
+        }
+    },
+
+    "North Indian": {
+        "Chole Bhature": {
+            "Half": 80,
+            "Full": 120
+        },
+        "Rajma Rice": {
+            "Half": 90,
+            "Full": 140
+        },
+        "Dal Tadka": {
+            "Half": 90,
+            "Full": 160
+        },
+        "Dal Makhani": {
+            "Half": 110,
+            "Full": 190
+        },
+        "Paneer Butter Masala": {
+            "Half": 130,
+            "Full": 220
+        },
+        "Kadai Paneer": {
+            "Half": 120,
+            "Full": 210
+        },
+        "Shahi Paneer": {
+            "Half": 130,
+            "Full": 230
+        },
+        "Mix Veg Curry": {
+            "Half": 100,
+            "Full": 170
+        },
+        "Aloo Gobi": {
+            "Half": 90,
+            "Full": 160
+        },
+        "Malai Kofta": {
+            "Half": 140,
+            "Full": 240
+        },
+        "Chana Masala": {
+            "Half": 90,
+            "Full": 150
+        },
+        "Palak Paneer": {
+            "Half": 120,
+            "Full": 210
+        },
+        "Matar Paneer": {
+            "Half": 115,
+            "Full": 200
+        },
+        "Dum Aloo": {
+            "Half": 100,
+            "Full": 180
+        }
+    },
+
+    "North Indian Thali": {
+        "Veg Thali": 180,
+        "Special Veg Thali": 250,
+        "Paneer Thali": 280,
+        "Non Veg Thali": 350,
+        "Special Non Veg Thali": 450,
+        "Deluxe Thali": 500
+    },
+
+    "South Indian Thali": {
+        "Mini South Indian Thali": 140,
+        "South Indian Veg Thali": 180,
+        "Special South Indian Thali": 250,
+        "South Indian Deluxe Thali": 320
+    },
+
     "Starter": {
-        "Veg Spring Roll": 180,
-        "Paneer Tikka": 220,
-        "Chicken Tikka": 260,
-        "Hara Bhara Kabab": 200,
-        "French Fries": 150,
-        "Chilli Paneer": 210,
-        "Chicken 65": 250,
-        "Stuffed Mushrooms": 230,
-        "Veg Manchurian": 200
+        "Veg Spring Roll": {
+            "Half": 100,
+            "Full": 180
+        },
+        "Paneer Tikka": {
+            "Half": 130,
+            "Full": 220
+        },
+        "Chicken Tikka": {
+            "Half": 150,
+            "Full": 260
+        },
+        "Hara Bhara Kabab": {
+            "Half": 120,
+            "Full": 200
+        },
+        "French Fries": {
+            "Half": 90,
+            "Full": 150
+        },
+        "Chilli Paneer": {
+            "Half": 120,
+            "Full": 210
+        },
+        "Chicken 65": {
+            "Half": 140,
+            "Full": 250
+        },
+        "Stuffed Mushrooms": {
+            "Half": 130,
+            "Full": 230
+        },
+        "Veg Manchurian": {
+            "Half": 110,
+            "Full": 200
+        },
+        "Crispy Corn": {
+            "Half": 100,
+            "Full": 180
+        },
+        "Paneer Pakora": {
+            "Half": 100,
+            "Full": 180
+        },
+        "Chicken Pakora": {
+            "Half": 130,
+            "Full": 220
+        },
+        "Fish Finger": {
+            "Half": 150,
+            "Full": 280
+        }
     },
+
     "Soup": {
-        "Tomato Soup": 120,
-        "Sweet Corn Soup": 130,
-        "Hot and Sour Soup": 140,
-        "Manchow Soup": 150,
-        "Cream of Mushroom Soup": 160,
-        "Chicken Clear Soup": 170,
-        "Chicken Manchow Soup": 180
+        "Tomato Soup": {
+            "Small": 80,
+            "Medium": 100,
+            "Full": 120
+        },
+        "Sweet Corn Soup": {
+            "Small": 90,
+            "Medium": 110,
+            "Full": 130
+        },
+        "Hot and Sour Soup": {
+            "Small": 100,
+            "Medium": 120,
+            "Full": 140
+        },
+        "Manchow Soup": {
+            "Small": 110,
+            "Medium": 130,
+            "Full": 150
+        },
+        "Cream of Mushroom Soup": {
+            "Small": 120,
+            "Medium": 140,
+            "Full": 160
+        },
+        "Chicken Clear Soup": {
+            "Small": 120,
+            "Medium": 145,
+            "Full": 170
+        },
+        "Chicken Manchow Soup": {
+            "Small": 130,
+            "Medium": 155,
+            "Full": 180
+        },
+        "Vegetable Clear Soup": {
+            "Small": 80,
+            "Medium": 100,
+            "Full": 120
+        },
+        "Cream of Tomato Soup": {
+            "Small": 90,
+            "Medium": 115,
+            "Full": 140
+        },
+        "Chicken Sweet Corn Soup": {
+            "Small": 130,
+            "Medium": 155,
+            "Full": 180
+        }
     },
+
     "Salad": {
-        "Fresh Garden Salad": 120,
-        "Russian Salad": 150,
-        "Greek Salad": 160,
-        "Caesar Salad": 170,
-        "Chicken Salad": 190,
-        "Fruit Salad": 140
+        "Fresh Garden Salad": {
+            "Half": 70,
+            "Full": 120
+        },
+        "Russian Salad": {
+            "Half": 90,
+            "Full": 150
+        },
+        "Greek Salad": {
+            "Half": 100,
+            "Full": 160
+        },
+        "Caesar Salad": {
+            "Half": 110,
+            "Full": 170
+        },
+        "Chicken Salad": {
+            "Half": 120,
+            "Full": 190
+        },
+        "Fruit Salad": {
+            "Half": 80,
+            "Full": 140
+        },
+        "Green Salad": {
+            "Half": 60,
+            "Full": 100
+        },
+        "Sprout Salad": {
+            "Half": 70,
+            "Full": 120
+        }
     },
+
     "Main Course": {
-        "Dal Tadka": 160,
-        "Dal Makhani": 190,
-        "Paneer Butter Masala": 220,
-        "Kadai Paneer": 210,
-        "Shahi Paneer": 230,
-        "Mix Veg Curry": 170,
-        "Aloo Gobi": 160,
-        "Malai Kofta": 240,
-        "Chicken Curry": 250,
-        "Butter Chicken": 280,
-        "Chicken Kadai": 270,
-        "Mutton Rogan Josh": 320,
-        "Mutton Curry": 330
+        "Dal Tadka": {
+            "Half": 90,
+            "Full": 160
+        },
+        "Dal Makhani": {
+            "Half": 110,
+            "Full": 190
+        },
+        "Paneer Butter Masala": {
+            "Half": 130,
+            "Full": 220
+        },
+        "Kadai Paneer": {
+            "Half": 120,
+            "Full": 210
+        },
+        "Shahi Paneer": {
+            "Half": 130,
+            "Full": 230
+        },
+        "Mix Veg Curry": {
+            "Half": 100,
+            "Full": 170
+        },
+        "Aloo Gobi": {
+            "Half": 90,
+            "Full": 160
+        },
+        "Malai Kofta": {
+            "Half": 140,
+            "Full": 240
+        },
+        "Chicken Curry": {
+            "Half": 150,
+            "Full": 250
+        },
+        "Butter Chicken": {
+            "Half": 170,
+            "Full": 280
+        },
+        "Chicken Kadai": {
+            "Half": 160,
+            "Full": 270
+        },
+        "Mutton Rogan Josh": {
+            "Half": 190,
+            "Full": 320
+        },
+        "Mutton Curry": {
+            "Half": 200,
+            "Full": 330
+        },
+        "Palak Paneer": {
+            "Half": 120,
+            "Full": 210
+        },
+        "Matar Paneer": {
+            "Half": 115,
+            "Full": 200
+        },
+        "Kofta Curry": {
+            "Half": 130,
+            "Full": 220
+        },
+        "Kadai Chicken": {
+            "Half": 160,
+            "Full": 270
+        }
     },
+
     "Rice & Biryani": {
-        "Steamed Rice": 100,
-        "Jeera Rice": 120,
-        "Veg Pulao": 150,
-        "Veg Biryani": 200,
-        "Chicken Biryani": 260,
-        "Mutton Biryani": 320,
-        "Egg Biryani": 220,
-        "Hyderabadi Chicken Biryani": 280
+        "Steamed Rice": {
+            "Half": 60,
+            "Full": 100
+        },
+        "Jeera Rice": {
+            "Half": 70,
+            "Full": 120
+        },
+        "Veg Pulao": {
+            "Half": 90,
+            "Full": 150
+        },
+        "Veg Biryani": {
+            "Half": 120,
+            "Full": 200
+        },
+        "Chicken Biryani": {
+            "Half": 150,
+            "Full": 260
+        },
+        "Mutton Biryani": {
+            "Half": 180,
+            "Full": 320
+        },
+        "Egg Biryani": {
+            "Half": 130,
+            "Full": 220
+        },
+        "Hyderabadi Chicken Biryani": {
+            "Half": 160,
+            "Full": 280
+        },
+        "Mutton Pulao": {
+            "Half": 170,
+            "Full": 300
+        },
+        "Egg Fried Rice": {
+            "Half": 120,
+            "Full": 200
+        }
     },
+
     "Roti / Naan": {
         "Tandoori Roti": 30,
         "Butter Roti": 40,
@@ -72,32 +458,184 @@
         "Cheese Naan": 90,
         "Lachha Paratha": 60,
         "Aloo Paratha": 70,
-        "Stuffed Kulcha": 80
+        "Stuffed Kulcha": 80,
+        "Paneer Kulcha": 100,
+        "Amritsari Kulcha": 110,
+        "Missi Roti": 50
     },
+
+    "Tandoor": {
+        "Tandoori Chicken": {
+            "Half": 280,
+            "Full": 500
+        },
+        "Chicken Seekh Kebab": {
+            "Half": 260,
+            "Full": 450
+        },
+        "Mutton Seekh Kebab": {
+            "Half": 320,
+            "Full": 550
+        },
+        "Paneer Tikka": {
+            "Half": 220,
+            "Full": 380
+        },
+        "Malai Paneer Tikka": {
+            "Half": 240,
+            "Full": 400
+        },
+        "Tandoori Mushroom": {
+            "Half": 200,
+            "Full": 350
+        },
+        "Tandoori Fish": {
+            "Half": 350,
+            "Full": 600
+        },
+        "Chicken Malai Tikka": {
+            "Half": 280,
+            "Full": 480
+        }
+    },
+
     "Chinese": {
-        "Veg Hakka Noodles": 180,
-        "Chicken Hakka Noodles": 220,
-        "Veg Fried Rice": 180,
-        "Chicken Fried Rice": 220,
-        "Veg Manchurian": 200,
-        "Chicken Manchurian": 250,
-        "Chilli Paneer": 210,
-        "Chilli Chicken": 250,
-        "Veg Schezwan Noodles": 200,
-        "Chicken Schezwan Noodles": 240
+        "Veg Hakka Noodles": {
+            "Half": 100,
+            "Full": 180
+        },
+        "Chicken Hakka Noodles": {
+            "Half": 130,
+            "Full": 220
+        },
+        "Veg Fried Rice": {
+            "Half": 100,
+            "Full": 180
+        },
+        "Chicken Fried Rice": {
+            "Half": 130,
+            "Full": 220
+        },
+        "Veg Manchurian": {
+            "Half": 110,
+            "Full": 200
+        },
+        "Chicken Manchurian": {
+            "Half": 140,
+            "Full": 250
+        },
+        "Chilli Paneer": {
+            "Half": 120,
+            "Full": 210
+        },
+        "Chilli Chicken": {
+            "Half": 140,
+            "Full": 250
+        },
+        "Veg Schezwan Noodles": {
+            "Half": 110,
+            "Full": 200
+        },
+        "Chicken Schezwan Noodles": {
+            "Half": 140,
+            "Full": 240
+        },
+        "Veg Chowmein": {
+            "Half": 100,
+            "Full": 170
+        },
+        "Chicken Chowmein": {
+            "Half": 130,
+            "Full": 220
+        },
+        "Schezwan Fried Rice": {
+            "Half": 120,
+            "Full": 220
+        },
+        "Chicken Schezwan Fried Rice": {
+            "Half": 150,
+            "Full": 260
+        }
     },
+
     "Fast Food": {
         "Veg Burger": 160,
         "Chicken Burger": 210,
-        "Veg Pizza": 280,
-        "Chicken Pizza": 320,
-        "Veg Pasta": 200,
-        "Chicken Pasta": 260,
+        "Veg Pizza": {
+            "Medium": 280,
+            "Large": 380
+        },
+        "Chicken Pizza": {
+            "Medium": 320,
+            "Large": 450
+        },
+        "Veg Pasta": {
+            "Half": 120,
+            "Full": 200
+        },
+        "Chicken Pasta": {
+            "Half": 150,
+            "Full": 260
+        },
         "Club Sandwich": 220,
         "Grilled Veg Sandwich": 180,
         "Chicken Sandwich": 230,
-        "Cheese Garlic Bread": 160
+        "Cheese Garlic Bread": 160,
+        "Paneer Burger": 190,
+        "Cheese Burger": 180,
+        "French Fries": 150,
+        "Cheese Fries": 190
     },
+
+    "Snacks": {
+        "Samosa": 40,
+        "Paneer Pakora": 120,
+        "Onion Pakora": 100,
+        "Bread Pakora": 80,
+        "Chicken Pakora": 160,
+        "Aloo Tikki": 80,
+        "Dahi Puri": 100,
+        "Pani Puri": 80,
+        "Papdi Chaat": 100,
+        "Samosa Chaat": 110,
+        "Bhel Puri": 90,
+        "Sev Puri": 100,
+        "Kachori": 50,
+        "Dahi Vada": 100
+    },
+
+    "Mughlai": {
+        "Chicken Handi": {
+            "Half": 170,
+            "Full": 280
+        },
+        "Chicken Do Pyaza": {
+            "Half": 160,
+            "Full": 270
+        },
+        "Chicken Changezi": {
+            "Half": 180,
+            "Full": 300
+        },
+        "Mutton Handi": {
+            "Half": 200,
+            "Full": 340
+        },
+        "Mutton Korma": {
+            "Half": 210,
+            "Full": 350
+        },
+        "Mughlai Chicken": {
+            "Half": 190,
+            "Full": 320
+        },
+        "Shahi Korma": {
+            "Half": 180,
+            "Full": 300
+        },
+        "Mughlai Paratha": 120
+    },
+
     "Combo": {
         "Veg Meal Combo": 299,
         "Chicken Meal Combo": 399,
@@ -105,38 +643,121 @@
         "Burger Combo": 299,
         "Pizza Combo": 399,
         "Chinese Combo": 329,
-        "Family Combo": 699
+        "Family Combo": 699,
+        "Paneer Combo": 349,
+        "South Indian Combo": 249
     },
+
     "Dessert": {
         "Gulab Jamun": 90,
         "Rasgulla": 90,
-        "Ice Cream": 120,
+        "Ice Cream": {
+            "Small": 80,
+            "Medium": 120,
+            "Large": 160
+        },
         "Chocolate Brownie": 150,
         "Chocolate Cake": 140,
         "Fruit Custard": 130,
         "Kheer": 100,
-        "Tiramisu": 160
+        "Tiramisu": 160,
+        "Rasmalai": 120,
+        "Gajar Ka Halwa": 110,
+        "Kulfi": 100,
+        "Brownie with Ice Cream": 190
     },
+
     "Beverages": {
-        "Mineral Water": 40,
-        "Soft Drink": 60,
-        "Fresh Lime Soda": 70,
-        "Fresh Orange Juice": 100,
-        "Fresh Mango Juice": 110,
-        "Mixed Fruit Juice": 120,
-        "Milkshake": 130,
-        "Chocolate Milkshake": 150
+        "Mineral Water": {
+            "Small": 20,
+            "Medium": 40,
+            "Large": 60
+        },
+        "Soft Drink": {
+            "Small": 40,
+            "Medium": 60,
+            "Large": 90
+        },
+        "Fresh Lime Soda": {
+            "Small": 50,
+            "Medium": 70,
+            "Large": 90
+        },
+        "Fresh Orange Juice": {
+            "Small": 70,
+            "Medium": 100,
+            "Large": 140
+        },
+        "Fresh Mango Juice": {
+            "Small": 80,
+            "Medium": 110,
+            "Large": 150
+        },
+        "Mixed Fruit Juice": {
+            "Small": 90,
+            "Medium": 120,
+            "Large": 160
+        },
+        "Milkshake": {
+            "Small": 90,
+            "Medium": 130,
+            "Large": 170
+        },
+        "Chocolate Milkshake": {
+            "Small": 100,
+            "Medium": 150,
+            "Large": 190
+        },
+        "Lassi": {
+            "Small": 60,
+            "Medium": 90,
+            "Large": 120
+        },
+        "Sweet Lassi": {
+            "Small": 60,
+            "Medium": 90,
+            "Large": 120
+        }
     },
+
     "Tea & Coffee": {
-        "Masala Chai": 50,
-        "Ginger Tea": 60,
-        "Black Tea": 40,
-        "Green Tea": 60,
-        "Lemon Tea": 50,
-        "Hot Coffee": 80,
-        "Cold Coffee": 100,
-        "Cappuccino": 120,
-        "Cafe Latte": 130,
+        "Masala Chai": {
+            "Small": 30,
+            "Medium": 50
+        },
+        "Ginger Tea": {
+            "Small": 40,
+            "Medium": 60
+        },
+        "Black Tea": {
+            "Small": 30,
+            "Medium": 40
+        },
+        "Green Tea": {
+            "Small": 40,
+            "Medium": 60
+        },
+        "Lemon Tea": {
+            "Small": 30,
+            "Medium": 50
+        },
+        "Hot Coffee": {
+            "Small": 50,
+            "Medium": 80
+        },
+        "Cold Coffee": {
+            "Small": 70,
+            "Medium": 100,
+            "Large": 130
+        },
+        "Cappuccino": {
+            "Small": 80,
+            "Medium": 120
+        },
+        "Cafe Latte": {
+            "Small": 90,
+            "Medium": 130
+        },
         "Espresso": 100
     }
 }
