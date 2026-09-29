@@ -2,7 +2,7 @@ from PROJECT.MENU.menu_management import view_food
 from PROJECT.BOOKING.booking_management import booking_management
 
 
-class WaitstaffManagement:
+class StaffManagement:
 
     def __init__(self, user):
         self.user = user
@@ -13,11 +13,11 @@ class WaitstaffManagement:
 
             print()
             print("=========================================")
-            print("           WAITSTAFF DASHBOARD")
+            print("           STAFF DASHBOARD")
             print("=========================================")
 
             print("Name :", self.user["name"])
-            print("Role : WAITSTAFF")
+            print("Role : STAFF")
 
             print("-----------------------------------------")
 

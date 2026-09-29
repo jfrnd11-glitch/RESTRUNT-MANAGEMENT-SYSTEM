@@ -225,6 +225,7 @@ def create_admin():
     }
 
     users.append(admin)
+
     save_users(users)
 
     print("\nAdmin account created successfully.")
@@ -235,12 +236,12 @@ def create_admin():
     return True
 
 
-def add_waitstaff(admin_id):
+def add_staff(admin_id):
 
     users = load_users()
 
-    print("\nAdd Waitstaff")
-    print("-------------")
+    print("\nAdd Staff")
+    print("---------")
 
     user_id = get_user_id(users)
     name = get_name()
@@ -249,64 +250,66 @@ def add_waitstaff(admin_id):
     aadhaar = get_aadhaar(users)
     password = get_valid_password()
 
-    waitstaff = {
+    staff = {
         "user_id": user_id,
         "name": name,
         "email": email,
         "mobile": mobile,
         "aadhaar": aadhaar,
         "password": password,
-        "role": "waitstaff",
+        "role": "staff",
         "created_by": admin_id,
     }
 
-    users.append(waitstaff)
+    users.append(staff)
+
     save_users(users)
 
-    print("\nWaitstaff account created successfully.")
+    print("\nStaff account created successfully.")
     print("User ID:", user_id)
     print("Name:", name)
     print("Email:", email)
 
 
-def remove_waitstaff():
+def remove_staff():
 
     users = load_users()
 
-    waitstaff = []
+    staff = []
 
     for user in users:
 
-        if user.get("role") == "waitstaff":
-            waitstaff.append(user)
+        if user.get("role") == "staff":
+            staff.append(user)
 
-    if not waitstaff:
-        print("\nNo waitstaff account found.")
+    if not staff:
+        print("\nNo staff account found.")
         return
 
-    print("\nWaitstaff List")
-    print("--------------")
+    print("\nStaff List")
+    print("----------")
 
-    for user in waitstaff:
+    for user in staff:
 
         print("User ID:", user["user_id"])
         print("Name:", user["name"])
         print("Email:", user["email"])
         print("--------------------")
 
-    user_id = input("Enter Waitstaff User ID to remove: ").strip()
+    user_id = input("Enter Staff User ID to remove: ").strip()
 
     for user in users:
 
-        if user.get("user_id") == user_id and user.get("role") == "waitstaff":
+        if user.get("user_id") == user_id and user.get("role") == "staff":
 
             users.remove(user)
+
             save_users(users)
 
-            print("\nWaitstaff removed successfully.")
+            print("\nStaff removed successfully.")
             return
 
-    print("\nWaitstaff User ID not found.")
+    print("\nStaff User ID not found.")
 
 
 if __name__ == "__main__":

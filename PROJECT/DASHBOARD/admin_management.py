@@ -1,5 +1,5 @@
 from PROJECT.MENU.menu_management import add_food, view_food, update_food, delete_food
-from PROJECT.AUTH.singup import add_waitstaff, remove_waitstaff, load_users
+from PROJECT.AUTH.singup import add_staff, remove_staff, load_users
 from PROJECT.BOOKING.booking_management import booking_management
 
 
@@ -28,9 +28,9 @@ class AdminManagement:
             print("4. Order Management")
             print("5. Billing")
             print("6. Inventory Management")
-            print("7. Add Waitstaff")
-            print("8. Remove Waitstaff")
-            print("9. View Waitstaff")
+            print("7. Add Staff")
+            print("8. Remove Staff")
+            print("9. View Staff")
             print("10. Logout")
 
             choice = input("\nEnter your choice: ").strip()
@@ -45,7 +45,7 @@ class AdminManagement:
 
             elif choice == "3":
 
-                  booking_management()
+                booking_management()
 
             elif choice == "4":
 
@@ -61,24 +61,24 @@ class AdminManagement:
 
             elif choice == "7":
 
-                add_waitstaff(self.user["user_id"])
+                add_staff(self.user["user_id"])
 
             elif choice == "8":
 
-                remove_waitstaff()
+                remove_staff()
 
             elif choice == "9":
 
                 users = load_users()
 
-                print("\nWaitstaff List")
-                print("---------------")
+                print("\nStaff List")
+                print("----------")
 
                 found = False
 
                 for user in users:
 
-                    if user.get("role") == "waitstaff":
+                    if user.get("role") == "staff":
 
                         print("User ID:", user["user_id"])
                         print("Name:", user["name"])
@@ -89,7 +89,7 @@ class AdminManagement:
                         found = True
 
                 if not found:
-                    print("No waitstaff account found.")
+                    print("No staff account found.")
 
             elif choice == "10":
 
@@ -104,12 +104,12 @@ class AdminManagement:
 
         users = load_users()
 
-        total_waitstaff = 0
+        total_staff = 0
 
         for user in users:
 
-            if user.get("role") == "waitstaff":
-                total_waitstaff += 1
+            if user.get("role") == "staff":
+                total_staff += 1
 
         print()
         print("=========================================")
@@ -121,7 +121,7 @@ class AdminManagement:
 
         print("-----------------------------------------")
 
-        print("Total Waitstaff  :", total_waitstaff)
+        print("Total Staff      :", total_staff)
         print("Total Menu Items : Coming Soon")
         print("Total Bookings   : Coming Soon")
         print("Total Orders     : Coming Soon")

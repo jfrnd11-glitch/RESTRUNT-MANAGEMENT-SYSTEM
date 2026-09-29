@@ -7,5 +7,15 @@
         "aadhaar": "288786964658",
         "password": "Jayant@123",
         "role": "admin"
+    },
+    {
+        "user_id": "0012",
+        "name": "sumit kumar",
+        "email": "sumit123@gmail.com",
+        "mobile": "7482950459",
+        "aadhaar": "780536510954",
+        "password": "Sumit@321",
+        "role": "staff",
+        "created_by": "0001"
     }
 ]
