@@ -4,52 +4,73 @@ from PROJECT.AUTH.singup import create_admin
 from PROJECT.DASHBOARD.admin_management import AdminManagement
 from PROJECT.DASHBOARD.staff_management import StaffManagement
 
+from PROJECT.LOGS.error_hendal import error_handler
+
 
 def main():
 
-    create_admin()
+    try:
 
-    while True:
+        create_admin()
 
-        print()
-        print("=========================================")
-        print("      RESTAURANT MANAGEMENT SYSTEM")
-        print("=========================================")
+        while True:
 
-        print("1. Admin Login")
-        print("2. Staff Login")
-        print("3. Exit")
+            print()
+            print("=========================================")
+            print("      RESTAURANT MANAGEMENT SYSTEM")
+            print("=========================================")
 
-        choice = input("Enter your choice: ").strip()
+            print("1. Admin Login")
+            print("2. Staff Login")
+            print("3. Exit")
 
-        if choice == "1":
+            choice = input("Enter your choice: ").strip()
 
-            user = signin()
+            if choice == "1":
 
-            if user is None:
-                continue
+                user = signin()
 
-            if user["role"] == "admin":
-                AdminManagement(user).show()
+                if user is None:
+                    continue
+
+                if user["role"] == "admin":
+                    AdminManagement(user).show()
+
+                else:
+                    print("This account is not an Admin account.")
+
+            elif choice == "2":
+
+                user = signin()
+
+                if user is None:
+                    continue
+
+                if user["role"] == "staff":
+                    StaffManagement(user).show()
+
+                else:
+                    print("This account is not a Staff account.")
+
+            elif choice == "3":
+
+                print("\nThank you for using Restaurant Management System.")
+                break
+
             else:
-                print("This account is not an Admin account.")
 
-        elif choice == "2":
+                print("\nInvalid choice. Please enter 1, 2 or 3.")
 
-            user = signin()
+                error_handler.log_error(
+                    "Main", "main", f"Invalid choice entered: {choice}"
+                )
 
-            if user is None:
-                continue
+    except Exception as error:
 
-            if user["role"] == "staff":
-                StaffManagement(user).show()
-            else:
-                print("This account is not a Staff account.")
+        error_handler.log_exception("Main", "main", error)
 
-        elif choice == "3":
+        print("\nSomething went wrong.")
+        print("Error has been saved in error.json.")
 
-            print("\nThank you for using Restaurant Management System.")
-            break
 
-        else:
-            print("\nInvalid choice. Please enter 1, 2 or 3.")
+main()

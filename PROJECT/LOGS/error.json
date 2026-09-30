@@ -1,0 +1,32 @@
+[
+    {
+        "time": "2026-09-30 10:13:06",
+        "level": "EXCEPTION",
+        "class": null,
+        "function": "test_error",
+        "message": "invalid literal for int() with base 10: 'abc'",
+        "line": 10,
+        "file": "C:\\RESTRUNT-MANAGEMENT-SYSTEM\\PROJECT\\LOGS\\test_error.py"
+    },
+    {
+        "time": "2026-09-30 12:32:53",
+        "level": "ERROR",
+        "class": "Signin",
+        "function": "signin",
+        "message": "User ID not found: 73537"
+    },
+    {
+        "time": "2026-09-30 13:03:07",
+        "level": "ERROR",
+        "class": "Signin",
+        "function": "signin",
+        "message": "Incorrect password for User ID: 0001"
+    },
+    {
+        "time": "2026-09-30 13:03:34",
+        "level": "ERROR",
+        "class": "BookingManagement",
+        "function": "booking_management",
+        "message": "Invalid menu choice: 9"
+    }
+]

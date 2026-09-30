@@ -1,8 +1,9 @@
 from PROJECT.MENU.menu_management import view_food
 from PROJECT.BOOKING.booking_management import booking_management
-from PROJECT.ORDER.order_management import order_menu
 from PROJECT.ORDER.order_management import order_menu, update_order_status
 from PROJECT.BILLING.billing_management import billing_menu
+from PROJECT.LOGS.error_hendal import error_handler
+
 
 class StaffManagement:
 
@@ -11,68 +12,112 @@ class StaffManagement:
 
     def show(self):
 
-        while True:
+        try:
 
-            print()
-            print("=========================================")
-            print("           STAFF DASHBOARD")
-            print("=========================================")
+            while True:
 
-            print("Name :", self.user["name"])
-            print("Role : STAFF")
+                print()
+                print("=========================================")
+                print("           STAFF DASHBOARD")
+                print("=========================================")
 
-            print("-----------------------------------------")
+                print("Name :", self.user["name"])
+                print("Role : STAFF")
 
-            print("1. View Menu")
-            print("2. Booking Management")
-            print("3. Order Management")
-            print("4. Update Order")
-            print("5. Billing")
-            print("6. Back")
+                print("-----------------------------------------")
 
-            choice = input("\nEnter your choice: ").strip()
+                print("1. View Menu")
+                print("2. Booking Management")
+                print("3. Order Management")
+                print("4. Update Order")
+                print("5. Billing")
+                print("6. Back")
 
-            if choice == "1":
+                choice = input("\nEnter your choice: ").strip()
 
-                view_food()
+                if choice == "1":
 
-            elif choice == "2":
+                    view_food()
 
-                booking_management()
+                elif choice == "2":
 
-            elif choice == "3":
+                    self.booking_management()
 
-                self.order_management()
+                elif choice == "3":
 
-            elif choice == "4":
+                    self.order_management()
 
-                self.update_order()
+                elif choice == "4":
 
-            elif choice == "5":
+                    self.update_order()
 
-                self.billing()
+                elif choice == "5":
 
-            elif choice == "6":
+                    self.billing()
 
-                print("\nReturning to previous menu.")
-                break
+                elif choice == "6":
 
-            else:
+                    print("\nReturning to previous menu.")
+                    break
 
-                print("\nInvalid choice. Please try again.")
+                else:
+
+                    print("\nInvalid choice. Please try again.")
+
+                    error_handler.log_error(
+                        "StaffManagement", "show", f"Invalid choice entered: {choice}"
+                    )
+
+        except Exception as e:
+
+            error_handler.log_exception("StaffManagement", "show", e)
+
+            print("\nSomething went wrong.")
 
     def booking_management(self):
-                
-        booking_management()
+
+        try:
+
+            booking_management()
+
+        except Exception as e:
+
+            error_handler.log_exception("StaffManagement", "booking_management", e)
+
+            print("\nUnable to open Booking Management.")
 
     def order_management(self):
 
-        order_menu()
+        try:
+
+            order_menu()
+
+        except Exception as e:
+
+            error_handler.log_exception("StaffManagement", "order_management", e)
+
+            print("\nUnable to open Order Management.")
 
     def update_order(self):
 
-        update_order_status()
+        try:
+
+            update_order_status()
+
+        except Exception as e:
+
+            error_handler.log_exception("StaffManagement", "update_order", e)
+
+            print("\nUnable to update order.")
 
     def billing(self):
 
-        billing_menu()
+        try:
+
+            billing_menu()
+
+        except Exception as e:
+
+            error_handler.log_exception("StaffManagement", "billing", e)
+
+            print("\nUnable to open Billing.")
