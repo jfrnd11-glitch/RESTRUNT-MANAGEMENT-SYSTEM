@@ -37,6 +37,30 @@ class ErrorHandler:
 
             print("Logging Failed:", e)
 
+    def log_info(self, class_name, function_name, message):
+
+        log_data = {
+            "time": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "level": "INFO",
+            "class": class_name,
+            "function": function_name,
+            "message": message,
+        }
+
+        self.write_log(log_data)
+
+    def log_warning(self, class_name, function_name, message):
+
+        log_data = {
+            "time": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "level": "WARNING",
+            "class": class_name,
+            "function": function_name,
+            "message": message,
+        }
+
+        self.write_log(log_data)
+
     def log_error(self, class_name, function_name, message):
 
         log_data = {

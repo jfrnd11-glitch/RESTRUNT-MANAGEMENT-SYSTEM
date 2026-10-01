@@ -28,5 +28,214 @@
         "class": "BookingManagement",
         "function": "booking_management",
         "message": "Invalid menu choice: 9"
+    },
+    {
+        "time": "2026-10-01 10:07:55",
+        "level": "INFO",
+        "class": "AdminManagement",
+        "function": "dashboard",
+        "message": "Dashboard opened successfully"
+    },
+    {
+        "time": "2026-10-01 10:08:17",
+        "level": "INFO",
+        "class": "BookingManagement",
+        "function": "view_bookings",
+        "message": "1 booking(s) displayed"
+    },
+    {
+        "time": "2026-10-01 11:19:40",
+        "level": "ERROR",
+        "class": "BookingManagement",
+        "function": "booking_management",
+        "message": "Invalid menu choice: 9"
+    },
+    {
+        "time": "2026-10-01 11:20:15",
+        "level": "ERROR",
+        "class": "BookingManagement",
+        "function": "get_mobile",
+        "message": "Mobile number is not exactly 10 digits"
+    },
+    {
+        "time": "2026-10-01 11:20:28",
+        "level": "ERROR",
+        "class": "BookingManagement",
+        "function": "get_mobile",
+        "message": "Mobile number is not exactly 10 digits"
+    },
+    {
+        "time": "2026-10-01 11:22:41",
+        "level": "INFO",
+        "class": "BookingManagement",
+        "function": "new_booking",
+        "message": "Booking created successfully: B0002"
+    },
+    {
+        "time": "2026-10-01 11:22:51",
+        "level": "INFO",
+        "class": "BookingManagement",
+        "function": "view_bookings",
+        "message": "2 booking(s) displayed"
+    },
+    {
+        "time": "2026-10-01 14:09:38",
+        "level": "INFO",
+        "class": "AdminManagement",
+        "function": "view_staff",
+        "message": "Staff list viewed"
+    },
+    {
+        "time": "2026-10-01 14:10:28",
+        "level": "INFO",
+        "class": "BookingManagement",
+        "function": "available_tables_menu",
+        "message": "Available tables checked"
+    },
+    {
+        "time": "2026-10-01 14:11:03",
+        "level": "ERROR",
+        "class": "BookingManagement",
+        "function": "change_booking_status",
+        "message": "Booking not found: B001"
+    },
+    {
+        "time": "2026-10-01 14:11:20",
+        "level": "INFO",
+        "class": "BookingManagement",
+        "function": "view_bookings",
+        "message": "2 booking(s) displayed"
+    },
+    {
+        "time": "2026-10-01 14:12:11",
+        "level": "INFO",
+        "class": "BookingManagement",
+        "function": "change_booking_status",
+        "message": "Status changed for B0002: Confirmed"
+    },
+    {
+        "time": "2026-10-01 14:12:58",
+        "level": "INFO",
+        "class": "BookingManagement",
+        "function": "view_bookings",
+        "message": "2 booking(s) displayed"
+    },
+    {
+        "time": "2026-10-01 14:13:27",
+        "level": "INFO",
+        "class": "BookingManagement",
+        "function": "booking_management",
+        "message": "Booking Management closed"
+    },
+    {
+        "time": "2026-10-01 14:18:49",
+        "level": "WARNING",
+        "class": "Billing",
+        "function": "generate_bill",
+        "message": "Cancelled order: O001"
+    },
+    {
+        "time": "2026-10-01 14:18:55",
+        "level": "EXCEPTION",
+        "class": "Billing",
+        "function": "view_bills",
+        "message": "'date'",
+        "line": 138,
+        "file": "c:\\RESTRUNT-MANAGEMENT-SYSTEM\\PROJECT\\BILLING\\billing_management.py"
+    },
+    {
+        "time": "2026-10-01 14:20:02",
+        "level": "WARNING",
+        "class": "Billing",
+        "function": "update_payment",
+        "message": "Bill already paid: B001"
+    },
+    {
+        "time": "2026-10-01 14:20:17",
+        "level": "WARNING",
+        "class": "Billing",
+        "function": "generate_bill",
+        "message": "Cancelled order: O001"
+    },
+    {
+        "time": "2026-10-01 14:20:22",
+        "level": "INFO",
+        "class": "Billing",
+        "function": "billing_menu",
+        "message": "Billing Management closed"
+    },
+    {
+        "time": "2026-10-01 14:37:45",
+        "level": "INFO",
+        "class": "Billing",
+        "function": "generate_bill",
+        "message": "Bill generated successfully: B002"
+    },
+    {
+        "time": "2026-10-01 14:39:06",
+        "level": "INFO",
+        "class": "Billing",
+        "function": "update_payment",
+        "message": "Payment updated for Bill: B002"
+    },
+    {
+        "time": "2026-10-01 14:39:11",
+        "level": "EXCEPTION",
+        "class": "Billing",
+        "function": "view_bills",
+        "message": "'date'",
+        "line": 138,
+        "file": "c:\\RESTRUNT-MANAGEMENT-SYSTEM\\PROJECT\\BILLING\\billing_management.py"
+    },
+    {
+        "time": "2026-10-01 14:39:39",
+        "level": "EXCEPTION",
+        "class": "Billing",
+        "function": "view_bills",
+        "message": "'date'",
+        "line": 138,
+        "file": "c:\\RESTRUNT-MANAGEMENT-SYSTEM\\PROJECT\\BILLING\\billing_management.py"
+    },
+    {
+        "time": "2026-10-01 14:52:24",
+        "level": "INFO",
+        "class": "Billing",
+        "function": "billing_menu",
+        "message": "Billing Management closed"
+    },
+    {
+        "time": "2026-10-01 14:54:10",
+        "level": "INFO",
+        "class": "Billing",
+        "function": "view_bills",
+        "message": "2 bill(s) displayed"
+    },
+    {
+        "time": "2026-10-01 15:09:59",
+        "level": "INFO",
+        "class": "Billing",
+        "function": "billing_menu",
+        "message": "Billing Management closed"
+    },
+    {
+        "time": "2026-10-01 15:10:17",
+        "level": "INFO",
+        "class": "AdminManagement",
+        "function": "show",
+        "message": "Admin logged out"
+    },
+    {
+        "time": "2026-10-01 15:15:21",
+        "level": "INFO",
+        "class": "AdminManagement",
+        "function": "show",
+        "message": "Admin logged out"
+    },
+    {
+        "time": "2026-10-01 15:16:56",
+        "level": "INFO",
+        "class": "AdminManagement",
+        "function": "show",
+        "message": "Admin logged out"
     }
 ]

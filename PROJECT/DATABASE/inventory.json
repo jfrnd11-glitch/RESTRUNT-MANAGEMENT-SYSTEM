@@ -1,0 +1,485 @@
+[
+    {
+        "item_id": "I001",
+        "name": "Rice",
+        "category": "Grains",
+        "quantity": 100,
+        "unit": "kg"
+    },
+    {
+        "item_id": "I002",
+        "name": "Wheat Flour",
+        "category": "Grains",
+        "quantity": 80,
+        "unit": "kg"
+    },
+    {
+        "item_id": "I003",
+        "name": "Maida",
+        "category": "Grains",
+        "quantity": 50,
+        "unit": "kg"
+    },
+    {
+        "item_id": "I004",
+        "name": "Rava",
+        "category": "Grains",
+        "quantity": 30,
+        "unit": "kg"
+    },
+    {
+        "item_id": "I005",
+        "name": "Poha",
+        "category": "Grains",
+        "quantity": 25,
+        "unit": "kg"
+    },
+    {
+        "item_id": "I006",
+        "name": "Besan",
+        "category": "Grains",
+        "quantity": 25,
+        "unit": "kg"
+    },
+    {
+        "item_id": "I007",
+        "name": "Toor Dal",
+        "category": "Pulses",
+        "quantity": 30,
+        "unit": "kg"
+    },
+    {
+        "item_id": "I008",
+        "name": "Moong Dal",
+        "category": "Pulses",
+        "quantity": 25,
+        "unit": "kg"
+    },
+    {
+        "item_id": "I009",
+        "name": "Urad Dal",
+        "category": "Pulses",
+        "quantity": 25,
+        "unit": "kg"
+    },
+    {
+        "item_id": "I010",
+        "name": "Chana",
+        "category": "Pulses",
+        "quantity": 30,
+        "unit": "kg"
+    },
+    {
+        "item_id": "I011",
+        "name": "Rajma",
+        "category": "Pulses",
+        "quantity": 25,
+        "unit": "kg"
+    },
+    {
+        "item_id": "I012",
+        "name": "Black Urad Dal",
+        "category": "Pulses",
+        "quantity": 20,
+        "unit": "kg"
+    },
+    {
+        "item_id": "I013",
+        "name": "Paneer",
+        "category": "Dairy",
+        "quantity": 25,
+        "unit": "kg"
+    },
+    {
+        "item_id": "I014",
+        "name": "Milk",
+        "category": "Dairy",
+        "quantity": 40,
+        "unit": "litre"
+    },
+    {
+        "item_id": "I015",
+        "name": "Curd",
+        "category": "Dairy",
+        "quantity": 25,
+        "unit": "kg"
+    },
+    {
+        "item_id": "I016",
+        "name": "Butter",
+        "category": "Dairy",
+        "quantity": 15,
+        "unit": "kg"
+    },
+    {
+        "item_id": "I017",
+        "name": "Cheese",
+        "category": "Dairy",
+        "quantity": 15,
+        "unit": "kg"
+    },
+    {
+        "item_id": "I018",
+        "name": "Cream",
+        "category": "Dairy",
+        "quantity": 15,
+        "unit": "litre"
+    },
+    {
+        "item_id": "I019",
+        "name": "Chicken",
+        "category": "Meat",
+        "quantity": 50,
+        "unit": "kg"
+    },
+    {
+        "item_id": "I020",
+        "name": "Mutton",
+        "category": "Meat",
+        "quantity": 35,
+        "unit": "kg"
+    },
+    {
+        "item_id": "I021",
+        "name": "Fish",
+        "category": "Meat",
+        "quantity": 25,
+        "unit": "kg"
+    },
+    {
+        "item_id": "I022",
+        "name": "Egg",
+        "category": "Meat",
+        "quantity": 200,
+        "unit": "piece"
+    },
+    {
+        "item_id": "I023",
+        "name": "Potato",
+        "category": "Vegetable",
+        "quantity": 60,
+        "unit": "kg"
+    },
+    {
+        "item_id": "I024",
+        "name": "Onion",
+        "category": "Vegetable",
+        "quantity": 60,
+        "unit": "kg"
+    },
+    {
+        "item_id": "I025",
+        "name": "Tomato",
+        "category": "Vegetable",
+        "quantity": 50,
+        "unit": "kg"
+    },
+    {
+        "item_id": "I026",
+        "name": "Green Chilli",
+        "category": "Vegetable",
+        "quantity": 10,
+        "unit": "kg"
+    },
+    {
+        "item_id": "I027",
+        "name": "Capsicum",
+        "category": "Vegetable",
+        "quantity": 15,
+        "unit": "kg"
+    },
+    {
+        "item_id": "I028",
+        "name": "Cabbage",
+        "category": "Vegetable",
+        "quantity": 20,
+        "unit": "kg"
+    },
+    {
+        "item_id": "I029",
+        "name": "Carrot",
+        "category": "Vegetable",
+        "quantity": 20,
+        "unit": "kg"
+    },
+    {
+        "item_id": "I030",
+        "name": "Cauliflower",
+        "category": "Vegetable",
+        "quantity": 20,
+        "unit": "kg"
+    },
+    {
+        "item_id": "I031",
+        "name": "Green Peas",
+        "category": "Vegetable",
+        "quantity": 20,
+        "unit": "kg"
+    },
+    {
+        "item_id": "I032",
+        "name": "Spinach",
+        "category": "Vegetable",
+        "quantity": 15,
+        "unit": "kg"
+    },
+    {
+        "item_id": "I033",
+        "name": "Mushroom",
+        "category": "Vegetable",
+        "quantity": 15,
+        "unit": "kg"
+    },
+    {
+        "item_id": "I034",
+        "name": "Garlic",
+        "category": "Vegetable",
+        "quantity": 10,
+        "unit": "kg"
+    },
+    {
+        "item_id": "I035",
+        "name": "Ginger",
+        "category": "Vegetable",
+        "quantity": 10,
+        "unit": "kg"
+    },
+    {
+        "item_id": "I036",
+        "name": "Lemon",
+        "category": "Fruit",
+        "quantity": 15,
+        "unit": "kg"
+    },
+    {
+        "item_id": "I037",
+        "name": "Orange",
+        "category": "Fruit",
+        "quantity": 20,
+        "unit": "kg"
+    },
+    {
+        "item_id": "I038",
+        "name": "Mango",
+        "category": "Fruit",
+        "quantity": 20,
+        "unit": "kg"
+    },
+    {
+        "item_id": "I039",
+        "name": "Mixed Fruits",
+        "category": "Fruit",
+        "quantity": 20,
+        "unit": "kg"
+    },
+    {
+        "item_id": "I040",
+        "name": "Cooking Oil",
+        "category": "Oil",
+        "quantity": 50,
+        "unit": "litre"
+    },
+    {
+        "item_id": "I041",
+        "name": "Ghee",
+        "category": "Oil",
+        "quantity": 20,
+        "unit": "kg"
+    },
+    {
+        "item_id": "I042",
+        "name": "Salt",
+        "category": "Spices",
+        "quantity": 25,
+        "unit": "kg"
+    },
+    {
+        "item_id": "I043",
+        "name": "Sugar",
+        "category": "Spices",
+        "quantity": 30,
+        "unit": "kg"
+    },
+    {
+        "item_id": "I044",
+        "name": "Red Chilli Powder",
+        "category": "Spices",
+        "quantity": 10,
+        "unit": "kg"
+    },
+    {
+        "item_id": "I045",
+        "name": "Turmeric Powder",
+        "category": "Spices",
+        "quantity": 10,
+        "unit": "kg"
+    },
+    {
+        "item_id": "I046",
+        "name": "Coriander Powder",
+        "category": "Spices",
+        "quantity": 10,
+        "unit": "kg"
+    },
+    {
+        "item_id": "I047",
+        "name": "Garam Masala",
+        "category": "Spices",
+        "quantity": 8,
+        "unit": "kg"
+    },
+    {
+        "item_id": "I048",
+        "name": "Cumin",
+        "category": "Spices",
+        "quantity": 8,
+        "unit": "kg"
+    },
+    {
+        "item_id": "I049",
+        "name": "Black Pepper",
+        "category": "Spices",
+        "quantity": 6,
+        "unit": "kg"
+    },
+    {
+        "item_id": "I050",
+        "name": "Mustard Seeds",
+        "category": "Spices",
+        "quantity": 6,
+        "unit": "kg"
+    },
+    {
+        "item_id": "I051",
+        "name": "Curry Leaves",
+        "category": "Herbs",
+        "quantity": 5,
+        "unit": "kg"
+    },
+    {
+        "item_id": "I052",
+        "name": "Coriander Leaves",
+        "category": "Herbs",
+        "quantity": 8,
+        "unit": "kg"
+    },
+    {
+        "item_id": "I053",
+        "name": "Mint Leaves",
+        "category": "Herbs",
+        "quantity": 5,
+        "unit": "kg"
+    },
+    {
+        "item_id": "I054",
+        "name": "Tea",
+        "category": "Beverages",
+        "quantity": 8,
+        "unit": "kg"
+    },
+    {
+        "item_id": "I055",
+        "name": "Coffee",
+        "category": "Beverages",
+        "quantity": 8,
+        "unit": "kg"
+    },
+    {
+        "item_id": "I056",
+        "name": "Coconut",
+        "category": "Other",
+        "quantity": 15,
+        "unit": "kg"
+    },
+    {
+        "item_id": "I057",
+        "name": "Bread",
+        "category": "Bakery",
+        "quantity": 50,
+        "unit": "packet"
+    },
+    {
+        "item_id": "I058",
+        "name": "Noodles",
+        "category": "Chinese",
+        "quantity": 30,
+        "unit": "kg"
+    },
+    {
+        "item_id": "I059",
+        "name": "Tomato Sauce",
+        "category": "Sauces",
+        "quantity": 15,
+        "unit": "litre"
+    },
+    {
+        "item_id": "I060",
+        "name": "Soya Sauce",
+        "category": "Sauces",
+        "quantity": 10,
+        "unit": "litre"
+    },
+    {
+        "item_id": "I061",
+        "name": "Chilli Sauce",
+        "category": "Sauces",
+        "quantity": 10,
+        "unit": "litre"
+    },
+    {
+        "item_id": "I062",
+        "name": "Vinegar",
+        "category": "Sauces",
+        "quantity": 10,
+        "unit": "litre"
+    },
+    {
+        "item_id": "I063",
+        "name": "Corn Flour",
+        "category": "Chinese",
+        "quantity": 15,
+        "unit": "kg"
+    },
+    {
+        "item_id": "I064",
+        "name": "Bread Crumbs",
+        "category": "Bakery",
+        "quantity": 15,
+        "unit": "kg"
+    },
+    {
+        "item_id": "I065",
+        "name": "Vanilla Ice Cream",
+        "category": "Dessert",
+        "quantity": 15,
+        "unit": "kg"
+    },
+    {
+        "item_id": "I066",
+        "name": "Chocolate",
+        "category": "Dessert",
+        "quantity": 10,
+        "unit": "kg"
+    },
+    {
+        "item_id": "I067",
+        "name": "Dry Fruits",
+        "category": "Dessert",
+        "quantity": 8,
+        "unit": "kg"
+    },
+    {
+        "item_id": "I068",
+        "name": "Mineral Water",
+        "category": "Beverages",
+        "quantity": 200,
+        "unit": "bottle"
+    },
+    {
+        "item_id": "I069",
+        "name": "Soft Drink",
+        "category": "Beverages",
+        "quantity": 150,
+        "unit": "bottle"
+    }
+]

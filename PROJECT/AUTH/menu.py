@@ -61,10 +61,6 @@ def main():
 
                 print("\nInvalid choice. Please enter 1, 2 or 3.")
 
-                error_handler.log_error(
-                    "Main", "main", f"Invalid choice entered: {choice}"
-                )
-
     except Exception as error:
 
         error_handler.log_exception("Main", "main", error)

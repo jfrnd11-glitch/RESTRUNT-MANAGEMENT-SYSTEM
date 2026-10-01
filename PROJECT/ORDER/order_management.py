@@ -94,7 +94,25 @@ def create_order():
     print("\n========== CREATE ORDER ==========")
 
     customer_name = get_customer_name()
-    table_no = get_table_number()
+
+    print("\n1. Dine-In")
+    print("2. Takeaway")
+
+    while True:
+        order_type_choice = input("Select order type: ").strip()
+
+        if order_type_choice == "1":
+            order_type = "Dine-In"
+            table_no = get_table_number()
+            break
+
+        elif order_type_choice == "2":
+            order_type = "Takeaway"
+            table_no = None
+            break
+
+        else:
+            print("Invalid choice!")
 
     items = []
     total = 0
@@ -262,6 +280,7 @@ def create_order():
     order = {
         "order_id": generate_order_id(orders),
         "customer_name": customer_name,
+        "order_type": order_type,
         "table_no": table_no,
         "items": items,
         "total": total,
@@ -276,7 +295,10 @@ def create_order():
 
     print(f"Order ID     : {order['order_id']}")
     print(f"Customer     : {order['customer_name']}")
-    print(f"Table Number : {order['table_no']}")
+    print(f"Order Type   : {order['order_type']}")
+
+    if order["order_type"] == "Dine-In":
+        print(f"Table Number : {order['table_no']}")
 
     print("\nItems:")
 
@@ -343,7 +365,8 @@ def update_order_status():
         print(
             f"{order['order_id']} | "
             f"{order['customer_name']} | "
-            f"Table: {order['table_no']} | "
+            f"Type: {order.get('order_type', 'Dine-In')} | "
+            f"Table: {order.get('table_no') if order.get('order_type', 'Dine-In') == 'Dine-In' else 'N/A'} | "
             f"Status: {order['status']}"
         )
 
@@ -412,7 +435,8 @@ def cancel_order():
         print(
             f"{order['order_id']} | "
             f"{order['customer_name']} | "
-            f"Table: {order['table_no']} | "
+            f"Type: {order.get('order_type', 'Dine-In')} | "
+            f"Table: {order.get('table_no') if order.get('order_type', 'Dine-In') == 'Dine-In' else 'N/A'} | "
             f"Status: {order['status']}"
         )
 

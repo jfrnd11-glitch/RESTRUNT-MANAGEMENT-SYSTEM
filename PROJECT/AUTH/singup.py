@@ -2,6 +2,7 @@ import json
 import os
 import re
 import msvcrt
+import uuid
 
 from PROJECT.LOGS.error_hendal import error_handler
 
@@ -21,25 +22,20 @@ def load_users():
             return json.load(file)
 
     except (json.JSONDecodeError, FileNotFoundError) as e:
-
         error_handler.log_exception("Signup", "load_users", e)
-
         return []
 
 
 def save_users(users):
 
     try:
-
         os.makedirs(DATABASE_DIR, exist_ok=True)
 
         with open(FILE_NAME, "w") as file:
             json.dump(users, file, indent=4)
 
     except Exception as e:
-
         error_handler.log_exception("Signup", "save_users", e)
-
         print("Unable to save user data.")
 
 
@@ -64,9 +60,8 @@ def get_password(message):
                 print("\b \b", end="", flush=True)
 
         else:
-
             password += char
-            print("*", end="", flush=True)
+            print("#", end="", flush=True)
 
     return password
 
@@ -78,30 +73,26 @@ def get_user_id(users):
         user_id = input("User ID: ").strip()
 
         if not user_id:
-
             print("User ID cannot be empty.")
 
-            error_handler.log_error("Signup", "get_user_id", "User ID cannot be empty")
-
         elif not user_id.isdigit():
-
             print("User ID must contain digits only.")
 
-            error_handler.log_error(
-                "Signup", "get_user_id", f"Invalid User ID entered: {user_id}"
-            )
-
         elif any(user["user_id"] == user_id for user in users):
-
             print("User ID already exists.")
 
-            error_handler.log_error(
-                "Signup", "get_user_id", f"User ID already exists: {user_id}"
-            )
-
         else:
-
             return user_id
+
+
+def generate_staff_id(users):
+
+    while True:
+
+        staff_id = str(uuid.uuid4().int)[:10]
+
+        if not any(user.get("user_id") == staff_id for user in users):
+            return staff_id
 
 
 def get_name():
@@ -111,23 +102,12 @@ def get_name():
         name = input("Name: ").strip()
 
         if len(name) < 3:
-
             print("Name must contain at least 3 characters.")
 
-            error_handler.log_error(
-                "Signup", "get_name", f"Name is less than 3 characters: {name}"
-            )
-
         elif not all(char.isalpha() or char.isspace() for char in name):
-
             print("Name can contain only letters and spaces.")
 
-            error_handler.log_error(
-                "Signup", "get_name", f"Invalid name entered: {name}"
-            )
-
         else:
-
             return name
 
 
@@ -138,29 +118,15 @@ def get_email(users):
         email = input("Email: ").strip().lower()
 
         if not email:
-
             print("Email cannot be empty.")
 
-            error_handler.log_error("Signup", "get_email", "Email cannot be empty")
-
         elif not re.fullmatch(r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}", email):
-
             print("Enter a valid email address.")
 
-            error_handler.log_error(
-                "Signup", "get_email", f"Invalid email entered: {email}"
-            )
-
         elif any(user["email"].lower() == email for user in users):
-
             print("Email already registered.")
 
-            error_handler.log_error(
-                "Signup", "get_email", f"Email already registered: {email}"
-            )
-
         else:
-
             return email
 
 
@@ -171,51 +137,21 @@ def get_mobile(users):
         mobile = input("Mobile Number: ").strip()
 
         if not mobile:
-
             print("Mobile number cannot be empty.")
 
-            error_handler.log_error(
-                "Signup", "get_mobile", "Mobile number cannot be empty"
-            )
-
         elif not mobile.isdigit():
-
             print("Mobile number must contain digits only.")
 
-            error_handler.log_error(
-                "Signup", "get_mobile", f"Invalid mobile number entered: {mobile}"
-            )
-
         elif len(mobile) != 10:
-
             print("Mobile number must contain exactly 10 digits.")
 
-            error_handler.log_error(
-                "Signup",
-                "get_mobile",
-                f"Mobile number must contain exactly 10 digits: {mobile}",
-            )
-
         elif mobile[0] not in "6789":
-
             print("Mobile number must start with 6, 7, 8 or 9.")
 
-            error_handler.log_error(
-                "Signup",
-                "get_mobile",
-                f"Invalid mobile number starting digit: {mobile}",
-            )
-
         elif any(user["mobile"] == mobile for user in users):
-
             print("Mobile number already registered.")
 
-            error_handler.log_error(
-                "Signup", "get_mobile", f"Mobile number already registered: {mobile}"
-            )
-
         else:
-
             return mobile
 
 
@@ -226,47 +162,21 @@ def get_aadhaar(users):
         aadhaar = input("Aadhaar Number: ").strip()
 
         if not aadhaar:
-
             print("Aadhaar number cannot be empty.")
 
-            error_handler.log_error(
-                "Signup", "get_aadhaar", "Aadhaar number cannot be empty"
-            )
-
         elif not aadhaar.isdigit():
-
             print("Aadhaar must contain digits only.")
 
-            error_handler.log_error(
-                "Signup", "get_aadhaar", "Aadhaar contains non-digit characters"
-            )
-
         elif len(aadhaar) != 12:
-
             print("Aadhaar must contain exactly 12 digits.")
 
-            error_handler.log_error(
-                "Signup",
-                "get_aadhaar",
-                f"Aadhaar must contain exactly 12 digits: {aadhaar}",
-            )
-
         elif aadhaar[0] == "0":
-
             print("Aadhaar cannot start with 0.")
 
-            error_handler.log_error("Signup", "get_aadhaar", "Aadhaar starts with 0")
-
         elif any(user["aadhaar"] == aadhaar for user in users):
-
             print("Aadhaar already registered.")
 
-            error_handler.log_error(
-                "Signup", "get_aadhaar", "Aadhaar already registered"
-            )
-
         else:
-
             return aadhaar
 
 
@@ -277,69 +187,29 @@ def get_valid_password():
         password = get_password("Password: ")
 
         if len(password) < 8:
-
             print("Password must contain at least 8 characters.")
-
-            error_handler.log_error(
-                "Signup",
-                "get_valid_password",
-                "Password must contain at least 8 characters",
-            )
-
             continue
 
         if not re.search(r"[A-Z]", password):
-
             print("Password must contain an uppercase letter.")
-
-            error_handler.log_error(
-                "Signup", "get_valid_password", "Password missing uppercase letter"
-            )
-
             continue
 
         if not re.search(r"[a-z]", password):
-
             print("Password must contain a lowercase letter.")
-
-            error_handler.log_error(
-                "Signup", "get_valid_password", "Password missing lowercase letter"
-            )
-
             continue
 
         if not re.search(r"[0-9]", password):
-
             print("Password must contain a number.")
-
-            error_handler.log_error(
-                "Signup", "get_valid_password", "Password missing number"
-            )
-
             continue
 
         if not re.search(r"[^A-Za-z0-9]", password):
-
             print("Password must contain a special character.")
-
-            error_handler.log_error(
-                "Signup", "get_valid_password", "Password missing special character"
-            )
-
             continue
 
         confirm = get_password("Confirm Password: ")
 
         if password != confirm:
-
             print("Passwords do not match.")
-
-            error_handler.log_error(
-                "Signup",
-                "get_valid_password",
-                "Password and Confirm Password do not match",
-            )
-
             continue
 
         return password
@@ -377,7 +247,6 @@ def create_admin():
         }
 
         users.append(admin)
-
         save_users(users)
 
         print("\nAdmin account created successfully.")
@@ -390,8 +259,8 @@ def create_admin():
     except Exception as e:
 
         error_handler.log_exception("Signup", "create_admin", e)
-
         print("Something went wrong while creating Admin account.")
+
         return False
 
 
@@ -404,7 +273,10 @@ def add_staff(admin_id):
         print("\nAdd Staff")
         print("---------")
 
-        user_id = get_user_id(users)
+        user_id = generate_staff_id(users)
+
+        print("Generated Staff ID:", user_id)
+
         name = get_name()
         email = get_email(users)
         mobile = get_mobile(users)
@@ -423,18 +295,16 @@ def add_staff(admin_id):
         }
 
         users.append(staff)
-
         save_users(users)
 
         print("\nStaff account created successfully.")
-        print("User ID:", user_id)
+        print("Staff ID:", user_id)
         print("Name:", name)
         print("Email:", email)
 
     except Exception as e:
 
         error_handler.log_exception("Signup", "add_staff", e)
-
         print("Something went wrong while creating Staff account.")
 
 
@@ -452,11 +322,7 @@ def remove_staff():
                 staff.append(user)
 
         if not staff:
-
             print("\nNo staff account found.")
-
-            error_handler.log_error("Signup", "remove_staff", "No staff account found")
-
             return
 
         print("\nStaff List")
@@ -464,7 +330,7 @@ def remove_staff():
 
         for user in staff:
 
-            print("User ID:", user["user_id"])
+            print("Staff ID:", user["user_id"])
             print("Name:", user["name"])
             print("Email:", user["email"])
             print("--------------------")
@@ -472,13 +338,7 @@ def remove_staff():
         user_id = input("Enter Staff User ID to remove: ").strip()
 
         if not user_id:
-
             print("Staff User ID cannot be empty.")
-
-            error_handler.log_error(
-                "Signup", "remove_staff", "Staff User ID cannot be empty"
-            )
-
             return
 
         for user in users:
@@ -486,26 +346,14 @@ def remove_staff():
             if user.get("user_id") == user_id and user.get("role") == "staff":
 
                 users.remove(user)
-
                 save_users(users)
 
                 print("\nStaff removed successfully.")
-
                 return
 
         print("\nStaff User ID not found.")
 
-        error_handler.log_error(
-            "Signup", "remove_staff", f"Staff User ID not found: {user_id}"
-        )
-
     except Exception as e:
 
         error_handler.log_exception("Signup", "remove_staff", e)
-
         print("Something went wrong while removing Staff.")
-
-
-if __name__ == "__main__":
-
-    create_admin()

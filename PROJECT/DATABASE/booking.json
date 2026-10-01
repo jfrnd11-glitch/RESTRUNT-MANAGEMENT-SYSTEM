@@ -1,14 +1,1 @@
-[
-    {
-        "booking_id": "B0001",
-        "customer_name": "Rajmani Kumar",
-        "mobile": "7639025419",
-        "booking_date": "30-09-2026",
-        "booking_time": "10:00 AM",
-        "guests": 2,
-        "table_number": [
-            "T01"
-        ],
-        "status": "Completed"
-    }
-]
+[]
