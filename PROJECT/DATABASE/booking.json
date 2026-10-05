@@ -1,1 +1,26 @@
-[]
+[
+    {
+        "booking_id": "B0001",
+        "customer_name": "Abhi",
+        "mobile": "7050973230",
+        "booking_date": "21-11-2026",
+        "booking_time": "11:16 AM",
+        "guests": 2,
+        "table_number": [
+            "T02"
+        ],
+        "status": "Confirmed"
+    },
+    {
+        "booking_id": "B0002",
+        "customer_name": "Ary",
+        "mobile": "7050973230",
+        "booking_date": "04-10-2026",
+        "booking_time": "5:00 AM",
+        "guests": 2,
+        "table_number": [
+            "T01"
+        ],
+        "status": "Pending"
+    }
+]

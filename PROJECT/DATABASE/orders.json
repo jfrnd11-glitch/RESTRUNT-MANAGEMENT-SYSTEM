@@ -1,1 +1,28 @@
-[]
+[
+    {
+        "order_id": "O001",
+        "customer_name": "ARY",
+        "order_type": "Dine-In",
+        "table_no": "T01",
+        "items": [
+            {
+                "category": "Salad",
+                "name": "Chicken Salad",
+                "size": "Half",
+                "price": 120,
+                "quantity": 2,
+                "total": 240
+            },
+            {
+                "category": "Salad",
+                "name": "Chicken Salad",
+                "size": "Full",
+                "price": 190,
+                "quantity": 2,
+                "total": 380
+            }
+        ],
+        "total": 620,
+        "status": "Pending"
+    }
+]

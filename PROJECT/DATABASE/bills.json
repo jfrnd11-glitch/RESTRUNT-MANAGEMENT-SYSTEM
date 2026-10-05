@@ -1,1 +1,37 @@
-[]
+[
+    {
+        "bill_id": "B001",
+        "order_id": "O001",
+        "customer_name": "ARY",
+        "table_no": "T01",
+        "date": "2026-10-04",
+        "time": "07:43:44",
+        "items": [
+            {
+                "category": "Salad",
+                "name": "Chicken Salad",
+                "size": "Half",
+                "price": 120,
+                "quantity": 2,
+                "total": 240
+            },
+            {
+                "category": "Salad",
+                "name": "Chicken Salad",
+                "size": "Full",
+                "price": 190,
+                "quantity": 2,
+                "total": 380
+            }
+        ],
+        "subtotal": 620.0,
+        "discount_rate": 0,
+        "discount": 0.0,
+        "tax_rate": 5,
+        "tax": 31.0,
+        "grand_total": 651.0,
+        "payment_status": "Paid",
+        "payment_method": "UPI",
+        "payment_number": "1234"
+    }
+]

@@ -237,5 +237,131 @@
         "class": "AdminManagement",
         "function": "show",
         "message": "Admin logged out"
+    },
+    {
+        "time": "2026-10-04 07:32:03",
+        "level": "ERROR",
+        "class": "AdminManagement",
+        "function": "show",
+        "message": "Invalid choice entered: -1"
+    },
+    {
+        "time": "2026-10-04 07:32:06",
+        "level": "ERROR",
+        "class": "AdminManagement",
+        "function": "show",
+        "message": "Invalid choice entered: 0"
+    },
+    {
+        "time": "2026-10-04 07:32:09",
+        "level": "INFO",
+        "class": "AdminManagement",
+        "function": "dashboard",
+        "message": "Dashboard opened successfully"
+    },
+    {
+        "time": "2026-10-04 07:32:36",
+        "level": "INFO",
+        "class": "AdminManagement",
+        "function": "dashboard",
+        "message": "Dashboard opened successfully"
+    },
+    {
+        "time": "2026-10-04 07:34:49",
+        "level": "ERROR",
+        "class": "BookingManagement",
+        "function": "get_booking_date",
+        "message": "Past booking date entered: 21-9-2025"
+    },
+    {
+        "time": "2026-10-04 07:35:46",
+        "level": "ERROR",
+        "class": "BookingManagement",
+        "function": "get_booking_time",
+        "message": "Invalid booking time: 00"
+    },
+    {
+        "time": "2026-10-04 07:36:29",
+        "level": "INFO",
+        "class": "BookingManagement",
+        "function": "new_booking",
+        "message": "Booking created successfully: B0001"
+    },
+    {
+        "time": "2026-10-04 07:36:37",
+        "level": "INFO",
+        "class": "BookingManagement",
+        "function": "view_bookings",
+        "message": "1 booking(s) displayed"
+    },
+    {
+        "time": "2026-10-04 07:37:02",
+        "level": "ERROR",
+        "class": "BookingManagement",
+        "function": "change_booking_status",
+        "message": "Booking not found: B001"
+    },
+    {
+        "time": "2026-10-04 07:37:18",
+        "level": "INFO",
+        "class": "BookingManagement",
+        "function": "change_booking_status",
+        "message": "Status changed for B0001: Confirmed"
+    },
+    {
+        "time": "2026-10-04 07:37:57",
+        "level": "INFO",
+        "class": "BookingManagement",
+        "function": "available_tables_menu",
+        "message": "Available tables checked"
+    },
+    {
+        "time": "2026-10-04 07:38:42",
+        "level": "INFO",
+        "class": "BookingManagement",
+        "function": "new_booking",
+        "message": "Booking created successfully: B0002"
+    },
+    {
+        "time": "2026-10-04 07:39:32",
+        "level": "INFO",
+        "class": "BookingManagement",
+        "function": "booking_management",
+        "message": "Booking Management closed"
+    },
+    {
+        "time": "2026-10-04 07:43:44",
+        "level": "INFO",
+        "class": "Billing",
+        "function": "generate_bill",
+        "message": "Bill generated successfully: B001"
+    },
+    {
+        "time": "2026-10-04 07:44:00",
+        "level": "INFO",
+        "class": "Billing",
+        "function": "view_bills",
+        "message": "1 bill(s) displayed"
+    },
+    {
+        "time": "2026-10-04 07:45:34",
+        "level": "INFO",
+        "class": "Billing",
+        "function": "update_payment",
+        "message": "Payment updated for Bill: B001"
+    },
+    {
+        "time": "2026-10-04 07:45:52",
+        "level": "INFO",
+        "class": "Billing",
+        "function": "view_bills",
+        "message": "1 bill(s) displayed"
+    },
+    {
+        "time": "2026-10-04 07:46:15",
+        "level": "INFO",
+        "class": "Billing",
+        "function": "billing_menu",
+        "message": "Billing Management closed"
     }
 ]
