@@ -625,7 +625,8 @@
         "Chinese Combo": 329,
         "Family Combo": 699,
         "Paneer Combo": 349,
-        "South Indian Combo": 249
+        "South Indian Combo": 249,
+        "panir combo": 200
     },
     "Dessert": {
         "Gulab Jamun": 90,

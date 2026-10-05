@@ -398,5 +398,26 @@
         "class": null,
         "function": "get_aadhaar",
         "message": "Aadhaar must contain exactly 12 digits."
+    },
+    {
+        "time": "2026-10-05 21:21:25",
+        "level": "WARNING",
+        "class": null,
+        "function": "signin",
+        "message": "Invalid choice. Please enter 1, 2 or 3."
+    },
+    {
+        "time": "2026-10-05 21:21:45",
+        "level": "WARNING",
+        "class": null,
+        "function": "signin",
+        "message": "Incorrect password."
+    },
+    {
+        "time": "2026-10-05 21:24:14",
+        "level": "ERROR",
+        "class": "Billing",
+        "function": "generate_bill",
+        "message": "Bill already exists for order: O001"
     }
 ]

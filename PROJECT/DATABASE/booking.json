@@ -46,5 +46,18 @@
             "T01"
         ],
         "status": "Pending"
+    },
+    {
+        "booking_id": "B0005",
+        "customer_name": "Hemant Kumar",
+        "mobile": "8457389509",
+        "booking_date": "5-10-2026",
+        "booking_time": "10:00 PM",
+        "duration": 1,
+        "guests": 1,
+        "table_number": [
+            "T01"
+        ],
+        "status": "Confirmed"
     }
 ]
