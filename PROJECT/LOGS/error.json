@@ -370,5 +370,33 @@
         "class": "BookingManagement",
         "function": "validate_booking_datetime",
         "message": "Past booking date/time entered: 05-10-2026 6:00 AM"
+    },
+    {
+        "time": "2026-10-05 13:36:42",
+        "level": "WARNING",
+        "class": null,
+        "function": "signin",
+        "message": "Incorrect password."
+    },
+    {
+        "time": "2026-10-05 13:37:05",
+        "level": "WARNING",
+        "class": null,
+        "function": "signin",
+        "message": "User ID not found."
+    },
+    {
+        "time": "2026-10-05 13:43:55",
+        "level": "WARNING",
+        "class": null,
+        "function": "get_aadhaar",
+        "message": "Aadhaar must contain exactly 12 digits."
+    },
+    {
+        "time": "2026-10-05 13:44:03",
+        "level": "WARNING",
+        "class": null,
+        "function": "get_aadhaar",
+        "message": "Aadhaar must contain exactly 12 digits."
     }
 ]

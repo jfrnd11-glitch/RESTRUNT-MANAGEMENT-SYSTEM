@@ -27,5 +27,15 @@
         "password": "Ravi@4321",
         "role": "staff",
         "created_by": "0001"
+    },
+    {
+        "user_id": "1174581695",
+        "name": "rohit kumar",
+        "email": "rohit123@gmail.com",
+        "mobile": "8452091564",
+        "aadhaar": "123456789006",
+        "password": "Rohit@000",
+        "role": "staff",
+        "created_by": "0001"
     }
 ]

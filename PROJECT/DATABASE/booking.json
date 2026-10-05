@@ -34,5 +34,17 @@
             "T02"
         ],
         "status": "Pending"
+    },
+    {
+        "booking_id": "B0004",
+        "customer_name": "Dinesh",
+        "mobile": "8365830912",
+        "booking_date": "05-10-2026",
+        "booking_time": "2:00 PM",
+        "guests": 2,
+        "table_number": [
+            "T01"
+        ],
+        "status": "Pending"
     }
 ]

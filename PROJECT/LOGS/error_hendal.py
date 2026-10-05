@@ -2,54 +2,70 @@ import json
 import os
 from datetime import datetime
 import traceback
+import inspect
 
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+LOG_DIR = os.path.join(BASE_DIR, "LOGS")
+LOG_FILE = os.path.join(LOG_DIR, "error.json")
 
 class ErrorHandler:
 
     def __init__(self):
 
-        BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-        LOGS_DIR = os.path.join(BASE_DIR, "LOGS")
-
-        self.log_file = os.path.join(LOGS_DIR, "error.json")
-
-        os.makedirs(LOGS_DIR, exist_ok=True)
-
-        if not os.path.exists(self.log_file):
-
-            with open(self.log_file, "w") as f:
-                json.dump([], f)
+        os.makedirs(LOG_DIR, exist_ok=True)
+        if not os.path.exists(LOG_FILE):
+            with open(LOG_FILE, "w", encoding="utf-8") as file:
+                json.dump([], file, indent=4)
 
     def write_log(self, log_data):
 
         try:
 
-            with open(self.log_file, "r") as f:
-                data = json.load(f)
+            with open(LOG_FILE, "r", encoding="utf-8") as file:
+                data = json.load(file)
 
             data.append(log_data)
 
-            with open(self.log_file, "w") as f:
-                json.dump(data, f, indent=4)
+            with open(LOG_FILE, "w", encoding="utf-8") as file:
+                json.dump(data, file, indent=4, ensure_ascii=False)
 
-        except Exception as e:
+        except Exception:
+            pass
 
-            print("Logging Failed:", e)
+    def get_location(self):
 
-    def log_info(self, class_name, function_name, message):
+        try:
 
-        log_data = {
-            "time": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-            "level": "INFO",
-            "class": class_name,
-            "function": function_name,
-            "message": message,
-        }
+            frame = inspect.currentframe()
 
-        self.write_log(log_data)
+            while frame:
 
-    def log_warning(self, class_name, function_name, message):
+                filename = frame.f_code.co_filename
+
+                if "error_hendal.py" not in filename:
+
+                    function_name = frame.f_code.co_name
+
+                    class_name = None
+
+                    if "self" in frame.f_locals:
+
+                        class_name = frame.f_locals["self"].__class__.__name__
+
+                    return class_name, function_name
+
+                frame = frame.f_back
+
+        except Exception:
+            pass
+
+        return None, None
+
+    def warning(self, message):
+
+        class_name, function_name = self.get_location()
+
+        print(message)
 
         log_data = {
             "time": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
@@ -57,6 +73,40 @@ class ErrorHandler:
             "class": class_name,
             "function": function_name,
             "message": message,
+        }
+
+        self.write_log(log_data)
+
+    def error(self, message):
+
+        class_name, function_name = self.get_location()
+
+        print(message)
+
+        log_data = {
+            "time": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "level": "ERROR",
+            "class": class_name,
+            "function": function_name,
+            "message": message,
+        }
+
+        self.write_log(log_data)
+
+    def exception(self, e):
+
+        class_name, function_name = self.get_location()
+
+        tb = traceback.extract_tb(e.__traceback__)[-1]
+
+        log_data = {
+            "time": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "level": "EXCEPTION",
+            "class": class_name,
+            "function": function_name,
+            "message": str(e),
+            "line": tb.lineno,
+            "file": tb.filename,
         }
 
         self.write_log(log_data)
