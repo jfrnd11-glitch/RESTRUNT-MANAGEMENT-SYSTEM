@@ -1,7 +1,6 @@
 import json
 import os
 import msvcrt
-
 from PROJECT.LOGS.error_hendal import error_handler
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -49,7 +48,6 @@ def get_password(message):
 
     return password
 
-
 def signin():
 
     try:
@@ -60,9 +58,7 @@ def signin():
             print("\nNo account found.")
             print("Please create an Admin account first.")
             return None
-
         while True:
-
             print("\nSign In")
             print("-------")
             print("1. Login with User ID")
@@ -91,7 +87,6 @@ def signin():
                     continue
 
                 password = get_password("Password: ")
-
                 if user.get("password") == password:
 
                     print("\nLogin successful.")

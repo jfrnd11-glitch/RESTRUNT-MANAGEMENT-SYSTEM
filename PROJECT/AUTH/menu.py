@@ -1,11 +1,8 @@
 from PROJECT.AUTH.signin import signin
 from PROJECT.AUTH.singup import create_admin
-
 from PROJECT.DASHBOARD.admin_management import AdminManagement
 from PROJECT.DASHBOARD.staff_management import StaffManagement
-
 from PROJECT.LOGS.error_hendal import error_handler
-
 
 def main():
 
@@ -64,9 +61,7 @@ def main():
     except Exception as error:
 
         error_handler.log_exception("Main", "main", error)
-
         print("\nSomething went wrong.")
         print("Error has been saved in error.json.")
-
 
 main()

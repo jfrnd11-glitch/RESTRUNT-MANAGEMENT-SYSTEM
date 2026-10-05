@@ -42,36 +42,28 @@ def save_users(users):
 def get_password(message):
 
     print(message, end="", flush=True)
-
     password = ""
-
     while True:
 
         char = msvcrt.getwch()
-
         if char == "\r":
             print()
             break
 
         if char == "\b":
-
             if password:
                 password = password[:-1]
                 print("\b \b", end="", flush=True)
-
         else:
             password += char
             print("#", end="", flush=True)
 
     return password
 
-
 def get_user_id(users):
 
     while True:
-
         user_id = input("User ID: ").strip()
-
         if not user_id:
             print("User ID cannot be empty.")
 
@@ -153,7 +145,6 @@ def get_mobile(users):
 
         else:
             return mobile
-
 
 def get_aadhaar(users):
 
