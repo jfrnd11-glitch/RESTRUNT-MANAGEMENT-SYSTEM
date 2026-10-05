@@ -1,6 +1,6 @@
 import json
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
 from PROJECT.LOGS.error_hendal import error_handler
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -206,25 +206,126 @@ def get_tables_for_guests(guests):
         tables.append("2")
     return tables
 
-def get_available_tables(bookings, booking_date, booking_time):
+def get_booking_range(booking):
+    try:
+        start_time = datetime.strptime(
+            f"{booking['booking_date']} {booking['booking_time']}",
+            "%d-%m-%Y %I:%M %p"
+        )
+        duration = int(booking.get("duration", 1))
+        end_time = start_time + timedelta(hours=duration)
+        return start_time, end_time
+    except (KeyError, ValueError, TypeError):
+        return None, None
+
+
+def get_duration():
+    while True:
+        try:
+            duration = input("Enter Booking Duration (hours): ").strip()
+
+            if not duration:
+                print("Duration cannot be empty.")
+                error_handler.log_error(
+                    "BookingManagement", "get_duration",
+                    "Booking duration cannot be empty"
+                )
+                continue
+
+            if not duration.isdigit():
+                print("Duration must be a number.")
+                error_handler.log_error(
+                    "BookingManagement", "get_duration",
+                    f"Invalid duration: {duration}"
+                )
+                continue
+
+            duration = int(duration)
+
+            if duration < 1 or duration > 12:
+                print("Duration must be between 1 and 12 hours.")
+                error_handler.log_error(
+                    "BookingManagement", "get_duration",
+                    f"Invalid duration: {duration}"
+                )
+                continue
+
+            return duration
+
+        except Exception as e:
+            error_handler.log_exception("BookingManagement", "get_duration", e)
+            print("Something went wrong. Please try again.")
+
+
+def get_available_tables(
+    bookings,
+    booking_date,
+    booking_time,
+    duration=1,
+    exclude_booking_id=None
+):
+    requested_start = datetime.strptime(
+        f"{booking_date} {booking_time}",
+        "%d-%m-%Y %I:%M %p"
+    )
+    requested_end = requested_start + timedelta(hours=duration)
+
     booked_tables = []
+
     for booking in bookings:
         if booking.get("status") == "Cancelled":
             continue
-        if booking.get("booking_date") == booking_date and booking.get("booking_time") == booking_time:
+
+        if exclude_booking_id and booking.get("booking_id") == exclude_booking_id:
+            continue
+
+        booking_start, booking_end = get_booking_range(booking)
+
+        if booking_start is None:
+            continue
+
+        # Booking time overlap check
+        if requested_start < booking_end and requested_end > booking_start:
             booked_tables.extend(booking.get("table_number", []))
+
     available_tables = {}
+
     for size, tables in TABLES.items():
-        available_tables[size] = [table for table in tables if table not in booked_tables]
+        available_tables[size] = [
+            table for table in tables if table not in booked_tables
+        ]
+
     return available_tables
 
-def show_available_tables(bookings, booking_date, booking_time):
-    available = get_available_tables(bookings, booking_date, booking_time)
+def show_available_tables(
+    bookings,
+    booking_date,
+    booking_time,
+    duration=1,
+    exclude_booking_id=None
+):
+    available = get_available_tables(
+        bookings,
+        booking_date,
+        booking_time,
+        duration,
+        exclude_booking_id
+    )
+
+    start_time = datetime.strptime(
+        f"{booking_date} {booking_time}",
+        "%d-%m-%Y %I:%M %p"
+    )
+    end_time = start_time + timedelta(hours=duration)
+
     print("\n=========================================")
     print("          AVAILABLE TABLES")
     print("=========================================")
-    print(f"Date : {booking_date}")
-    print(f"Time : {booking_time}")
+    print(f"Date     : {booking_date}")
+    print(f"Time     : {booking_time}")
+    print(f"Duration : {duration} hour(s)")
+    print(f"End Time : {end_time.strftime('%I:%M %p')}")
+
     for size, tables in available.items():
         print(f"\n{size}-Seater Tables:")
         if tables:
@@ -232,34 +333,64 @@ def show_available_tables(bookings, booking_date, booking_time):
         else:
             print("  No tables available.")
 
-def select_tables(bookings, guests, booking_date, booking_time):
+def select_tables(
+    bookings,
+    guests,
+    booking_date,
+    booking_time,
+    duration=1,
+    exclude_booking_id=None
+):
     required_tables = get_tables_for_guests(guests)
-    available = get_available_tables(bookings, booking_date, booking_time)
+
+    available = get_available_tables(
+        bookings,
+        booking_date,
+        booking_time,
+        duration,
+        exclude_booking_id
+    )
+
     selected_tables = []
+
     print("\n=========================================")
     print("          TABLE SELECTION")
     print("=========================================")
-    print(f"Guests: {guests}")
+    print(f"Guests   : {guests}")
+    print(f"Duration : {duration} hour(s)")
+
     for size in required_tables:
         available_tables = available.get(size, [])
+
         if not available_tables:
             print(f"\nNo {size}-seater table available.")
-            error_handler.log_warning("BookingManagement", "select_tables", f"No {size}-seater table available")
+            error_handler.log_warning(
+                "BookingManagement", "select_tables",
+                f"No {size}-seater table available"
+            )
             return None
+
         print(f"\nAvailable {size}-seater tables:")
         print(", ".join(available_tables))
+
         while True:
             table = input(f"Select {size}-seater table: ").strip().upper()
+
             if table not in available_tables:
                 print("Invalid or unavailable table.")
-                error_handler.log_error("BookingManagement", "select_tables", f"Invalid or unavailable table: {table}")
+                error_handler.log_error(
+                    "BookingManagement", "select_tables",
+                    f"Invalid or unavailable table: {table}"
+                )
                 continue
+
             if table in selected_tables:
                 print("Table already selected.")
-                error_handler.log_warning("BookingManagement", "select_tables", f"Table already selected: {table}")
                 continue
+
             selected_tables.append(table)
             break
+
     return selected_tables
 
 def generate_booking_id(bookings):
@@ -280,9 +411,12 @@ def new_booking():
         mobile = get_mobile()
         booking_date = get_booking_date()
         booking_time = get_booking_time(booking_date)
+        duration = get_duration()
         guests = get_guests()
-        show_available_tables(bookings, booking_date, booking_time)
-        tables = select_tables(bookings, guests, booking_date, booking_time)
+        show_available_tables(bookings, booking_date, booking_time, duration)
+        tables = select_tables(
+            bookings, guests, booking_date, booking_time, duration
+        )
         if not tables:
             print("\nBooking could not be completed.")
             error_handler.log_warning("BookingManagement", "new_booking", "Booking could not be completed because table selection failed")
@@ -294,6 +428,7 @@ def new_booking():
             "mobile": mobile,
             "booking_date": booking_date,
             "booking_time": booking_time,
+            "duration": duration,
             "guests": guests,
             "table_number": tables,
             "status": "Pending"
@@ -309,6 +444,7 @@ def new_booking():
         print(f"Mobile     : {mobile}")
         print(f"Date       : {booking_date}")
         print(f"Time       : {booking_time}")
+        print(f"Duration   : {duration} hour(s)")
         print(f"Guests     : {guests}")
         print(f"Tables     : {', '.join(tables)}")
         print("Status     : Pending")
@@ -333,6 +469,7 @@ def view_bookings():
             print(f"Mobile     : {booking['mobile']}")
             print(f"Date       : {booking['booking_date']}")
             print(f"Time       : {booking['booking_time']}")
+            print(f"Duration   : {booking.get('duration', 1)} hour(s)")
             print(f"Guests     : {booking['guests']}")
             print(f"Tables     : {', '.join(booking['table_number'])}")
             print(f"Status     : {booking['status']}")
@@ -363,6 +500,7 @@ def search_booking():
                 print(f"Mobile     : {booking['mobile']}")
                 print(f"Date       : {booking['booking_date']}")
                 print(f"Time       : {booking['booking_time']}")
+                print(f"Duration   : {booking.get('duration', 1)} hour(s)")
                 print(f"Guests     : {booking['guests']}")
                 print(f"Tables     : {', '.join(booking['table_number'])}")
                 print(f"Status     : {booking['status']}")
@@ -400,6 +538,7 @@ def update_booking():
         print(f"Customer : {booking['customer_name']}")
         print(f"Date     : {booking['booking_date']}")
         print(f"Time     : {booking['booking_time']}")
+        print(f"Duration : {booking.get('duration', 1)} hour(s)")
         print(f"Guests   : {booking['guests']}")
         print(f"Tables   : {', '.join(booking['table_number'])}")
         print("\n1. Customer Name")
@@ -407,15 +546,17 @@ def update_booking():
         print("3. Date")
         print("4. Time")
         print("5. Guests")
-        print("6. Back")
+        print("6. Duration")
+        print("7. Back")
         choice = input("\nEnter your choice: ").strip()
         if choice == "1":
             booking["customer_name"] = get_customer_name()
         elif choice == "2":
             booking["mobile"] = get_mobile()
-        elif choice in ("3", "4", "5"):
+        elif choice in ("3", "4", "5", "6"):
             new_date = booking["booking_date"]
             new_time = booking["booking_time"]
+            new_duration = booking.get("duration", 1)
             new_guests = booking["guests"]
             if choice == "3":
                 new_date = get_booking_date()
@@ -425,23 +566,31 @@ def update_booking():
 
             elif choice == "4":
                 new_time = get_booking_time(new_date)
-            else:
+            elif choice == "5":
                 new_guests = get_guests()
+            else:
+                new_duration = get_duration()
             if not validate_booking_datetime(new_date, new_time):
                 print("\nBooking date and time must be in the future.")
                 return
 
-            show_available_tables(bookings, new_date, new_time)
-            tables = select_tables(bookings, new_guests, new_date, new_time)
+            show_available_tables(
+                bookings, new_date, new_time, new_duration, booking_id
+            )
+            tables = select_tables(
+                bookings, new_guests, new_date, new_time,
+                new_duration, booking_id
+            )
             if not tables:
                 print("\nBooking update cancelled.")
                 error_handler.log_warning("BookingManagement", "update_booking", f"Booking update cancelled: {booking_id}")
                 return
             booking["booking_date"] = new_date
             booking["booking_time"] = new_time
+            booking["duration"] = new_duration
             booking["guests"] = new_guests
             booking["table_number"] = tables
-        elif choice == "6":
+        elif choice == "7":
             return
         else:
             print("\nInvalid choice.")
@@ -554,7 +703,8 @@ def available_tables_menu():
         print("=========================================")
         booking_date = get_booking_date()
         booking_time = get_booking_time(booking_date)
-        show_available_tables(bookings, booking_date, booking_time)
+        duration = get_duration()
+        show_available_tables(bookings, booking_date, booking_time, duration)
     except Exception as e:
         error_handler.log_exception("BookingManagement", "available_tables_menu", e)
         print("\nUnable to check available tables.")
