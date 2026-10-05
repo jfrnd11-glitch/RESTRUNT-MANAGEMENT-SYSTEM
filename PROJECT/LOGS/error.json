@@ -363,5 +363,12 @@
         "class": "Billing",
         "function": "billing_menu",
         "message": "Billing Management closed"
+    },
+    {
+        "time": "2026-10-05 08:40:02",
+        "level": "ERROR",
+        "class": "BookingManagement",
+        "function": "validate_booking_datetime",
+        "message": "Past booking date/time entered: 05-10-2026 6:00 AM"
     }
 ]

@@ -22,5 +22,17 @@
             "T01"
         ],
         "status": "Pending"
+    },
+    {
+        "booking_id": "B0003",
+        "customer_name": "Amr",
+        "mobile": "7050973230",
+        "booking_date": "05-10-2026",
+        "booking_time": "8:50 AM",
+        "guests": 2,
+        "table_number": [
+            "T02"
+        ],
+        "status": "Pending"
     }
 ]
