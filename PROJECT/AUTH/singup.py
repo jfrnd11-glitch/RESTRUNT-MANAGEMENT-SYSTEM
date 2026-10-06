@@ -12,7 +12,6 @@ DATABASE_DIR = os.path.join(BASE_DIR, "DATABASE")
 
 FILE_NAME = os.path.join(DATABASE_DIR, "users.json")
 
-
 def load_users():
 
     if not os.path.exists(FILE_NAME):
