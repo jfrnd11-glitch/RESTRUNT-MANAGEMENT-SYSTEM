@@ -419,5 +419,12 @@
         "class": "Billing",
         "function": "generate_bill",
         "message": "Bill already exists for order: O001"
+    },
+    {
+        "time": "2026-10-06 13:23:16",
+        "level": "ERROR",
+        "class": "BookingManagement",
+        "function": "validate_booking_datetime",
+        "message": "Past booking date/time entered: 05-10-2026 2:00 PM"
     }
 ]
