@@ -349,7 +349,6 @@ def view_bills():
 
         print("Bills dekhne me error aaya!")
 
-
 def get_bill_id():
 
     while True:
@@ -471,26 +470,19 @@ def validate_card():
             log_error("validate_card", "CVV contains non-digit characters.")
 
             continue
-
         if len(cvv) not in (3, 4):
 
             print("CVV must be 3 or 4 digits!")
 
             log_error("validate_card", "Invalid CVV length.")
-
             continue
-
         break
 
     return "**** **** **** " + card[-4:]
 
-
 def update_payment():
-
     try:
-
         bills = load_bills()
-
         if not bills:
 
             print("\nNo bills found.")
@@ -512,16 +504,12 @@ def update_payment():
         selected_bill = None
 
         for bill in bills:
-
             if bill.get("bill_id", "").upper() == bill_id:
-
                 selected_bill = bill
                 break
 
         if selected_bill is None:
-
             print("Invalid Bill ID!")
-
             log_error("update_payment", f"Bill ID not found: {bill_id}")
 
             return
@@ -529,7 +517,6 @@ def update_payment():
         if selected_bill.get("payment_status", "Unpaid") == "Paid":
 
             print("Bill is already paid!")
-
             log_error("update_payment", f"Bill already paid: {bill_id}")
 
             return
@@ -540,33 +527,27 @@ def update_payment():
         while True:
 
             choice = input("Enter choice: ").strip()
-
             if choice in ("1", "2"):
                 break
 
             print("Invalid choice! Select 1 or 2.")
-
             log_error("update_payment", f"Invalid payment status choice: {choice}")
 
         if choice == "1":
-
             print("\n1. Cash")
             print("2. UPI")
             print("3. Card")
 
             while True:
-
                 method = input("Enter payment method: ").strip()
 
                 if method in ("1", "2", "3"):
                     break
 
                 print("Invalid payment method! " "Select 1, 2 or 3.")
-
                 log_error("update_payment", f"Invalid payment method: {method}")
 
             if method == "1":
-
                 selected_bill["payment_status"] = "Paid"
                 selected_bill["payment_method"] = "Cash"
                 selected_bill["payment_number"] = "Not Required"
@@ -574,7 +555,6 @@ def update_payment():
             elif method == "2":
 
                 upi = validate_upi()
-
                 selected_bill["payment_status"] = "Paid"
                 selected_bill["payment_method"] = "UPI"
                 selected_bill["payment_number"] = upi
@@ -582,7 +562,6 @@ def update_payment():
             elif method == "3":
 
                 card = validate_card()
-
                 selected_bill["payment_status"] = "Paid"
                 selected_bill["payment_method"] = "Card"
                 selected_bill["payment_number"] = card
@@ -597,19 +576,13 @@ def update_payment():
             return
 
         print("\nPayment updated successfully!")
-
         print("Bill ID:", selected_bill["bill_id"])
-
         print("Payment Status:", selected_bill["payment_status"])
-
         print("Payment Method:", selected_bill["payment_method"])
 
     except Exception as e:
-
         log_exception("update_payment", e)
-
         print("Payment update karte waqt error aaya!")
-
 
 def billing_menu():
 
@@ -621,28 +594,17 @@ def billing_menu():
         print("2. View Bills")
         print("3. Update Payment")
         print("4. Exit")
-
         choice = input("Enter choice: ").strip()
-
         if choice == "1":
-
             generate_bill()
-
         elif choice == "2":
-
             view_bills()
-
         elif choice == "3":
-
             update_payment()
-
         elif choice == "4":
 
             print("Billing Management closed.")
             break
-
         else:
-
             print("Invalid choice!")
-
             log_error("billing_menu", f"Invalid menu choice: {choice}")
