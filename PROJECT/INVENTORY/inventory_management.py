@@ -1,12 +1,8 @@
 import json
 import os
+
+from PROJECT.config import INVENTORY_FILE, LOW_STOCK_LIMIT, DATABASE_DIR
 from PROJECT.LOGS.error_hendal import error_handler
-
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DATABASE_DIR = os.path.join(BASE_DIR, "DATABASE")
-INVENTORY_FILE = os.path.join(DATABASE_DIR, "inventory.json")
-LOW_STOCK_LIMIT = 10
-
 
 class InventoryManagement:
 
@@ -236,7 +232,8 @@ class InventoryManagement:
                 break
             else:
                 error_handler.log_warning(
-                    "InventoryManagement", "show", "Invalid menu choice"
+                    "InventoryManagement", "show",
+                    f"Invalid menu choice: {choice}"
                 )
                 print("Invalid choice!")
 

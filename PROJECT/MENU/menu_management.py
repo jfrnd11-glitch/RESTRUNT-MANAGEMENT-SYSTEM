@@ -3,9 +3,8 @@ import os
 from colorama import init, Fore
 
 init(autoreset=True)
-
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-FILE_NAME = os.path.join(BASE_DIR, "DATABASE", "menu.json")
+from PROJECT.config import MENU_FILE
+FILE_NAME = MENU_FILE
 
 CATEGORIES = [
     "Breakfast",

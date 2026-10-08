@@ -1,14 +1,8 @@
 import json
 import os
 import re
-
 from PROJECT.LOGS.error_hendal import error_handler
-
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DATABASE_DIR = os.path.join(BASE_DIR, "DATABASE")
-MENU_FILE = os.path.join(DATABASE_DIR, "menu.json")
-ORDER_FILE = os.path.join(DATABASE_DIR, "orders.json")
-
+from PROJECT.config import MENU_FILE, ORDER_FILE
 
 class OrderManagement:
 
@@ -46,7 +40,7 @@ class OrderManagement:
 
     def save_orders(self, orders):
         try:
-            os.makedirs(DATABASE_DIR, exist_ok=True)
+            os.makedirs(exist_ok=True)
 
             with open(ORDER_FILE, "w") as file:
                 json.dump(orders, file, indent=4)

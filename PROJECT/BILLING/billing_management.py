@@ -1,18 +1,12 @@
+
 import json
 import os
 import re
 from datetime import datetime
-
+from PROJECT.config import ORDER_FILE, BILL_FILE
 from PROJECT.LOGS.error_hendal import error_handler
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DATABASE_DIR = os.path.join(BASE_DIR, "DATABASE")
-ORDER_FILE = os.path.join(DATABASE_DIR, "orders.json")
-BILL_FILE = os.path.join(DATABASE_DIR, "bills.json")
-
-
 class BillingManagement:
-
     TAX_RATE = 5
     DISCOUNT_LIMIT = 1000
     DISCOUNT_RATE = 10
@@ -24,24 +18,21 @@ class BillingManagement:
             error_handler.log_error("Billing", function, message)
 
     def load_data(self, file_name):
-        if not os.path.exists(file_name):
-            return []
-
         try:
             with open(file_name, "r", encoding="utf-8") as file:
                 data = json.load(file)
                 return data if isinstance(data, list) else []
+        except FileNotFoundError:
+            return []
         except (json.JSONDecodeError, OSError) as e:
             error_handler.exception(e)
             return []
 
     def save_bills(self, bills):
         try:
-            os.makedirs(DATABASE_DIR, exist_ok=True)
-
+            os.makedirs(os.path.dirname(BILL_FILE), exist_ok=True)
             with open(BILL_FILE, "w", encoding="utf-8") as file:
                 json.dump(bills, file, indent=4)
-
             return True
         except OSError as e:
             error_handler.exception(e)
@@ -59,32 +50,26 @@ class BillingManagement:
     def get_order_id(self):
         while True:
             order_id = input("Enter Order ID: ").strip().upper()
-
-            if re.fullmatch(r"O\d{3}", order_id):
+            if re.fullmatch(r"O\d{3,}", order_id):
                 return order_id
-
             print("Invalid Order ID. Example: O001")
-            self.log_error("get_order_id", order_id, "WARNING")
+            self.log_error("get_order_id", "Invalid Order ID", "WARNING")
 
     def get_customer_name(self):
         while True:
             name = input("Enter Customer Name: ").strip()
-
             if len(name) >= 3 and all(c.isalpha() or c.isspace() for c in name):
                 return name.title()
-
             print("Name must contain at least 3 letters.")
-            self.log_error("get_customer_name", name, "WARNING")
+            self.log_error("get_customer_name", "Invalid customer name", "WARNING")
 
     def get_mobile(self):
         while True:
             mobile = input("Enter Mobile Number: ").strip()
-
             if re.fullmatch(r"[6-9]\d{9}", mobile):
                 return mobile
-
             print("Enter a valid 10-digit mobile number.")
-            self.log_error("get_mobile", mobile, "WARNING")
+            self.log_error("get_mobile", "Invalid mobile number", "WARNING")
 
     def generate_bill(self):
         orders = self.load_data(ORDER_FILE)
@@ -97,20 +82,19 @@ class BillingManagement:
         for order in orders:
             print(
                 order.get("order_id"),
-                "| Table:",
-                order.get("table_no") or "None",
-                "| Status:",
-                order.get("status", "N/A"),
+                "| Table:", order.get("table_no") or "None",
+                "| Status:", order.get("status", "N/A")
             )
 
         order_id = self.get_order_id()
         order = next(
-            (o for o in orders if o.get("order_id", "").upper() == order_id), None
+            (o for o in orders if o.get("order_id", "").upper() == order_id),
+            None
         )
 
         if order is None or order.get("status", "").lower() == "cancelled":
             print("Order not found or order is cancelled.")
-            self.log_error("generate_bill", order_id, "WARNING")
+            self.log_error("generate_bill", "Order not found or cancelled", "WARNING")
             return
 
         if any(b.get("order_id", "").upper() == order_id for b in bills):
@@ -156,7 +140,7 @@ class BillingManagement:
             "grand_total": grand_total,
             "payment_status": "Unpaid",
             "payment_method": "Not Selected",
-            "payment_number": "Not Available",
+            "payment_number": "Not Available"
         }
 
         bills.append(bill)
@@ -221,39 +205,31 @@ class BillingManagement:
     def get_bill_id(self):
         while True:
             bill_id = input("Enter Bill ID: ").strip().upper()
-
             if re.fullmatch(r"B\d{3,}", bill_id):
                 return bill_id
-
             print("Invalid Bill ID. Example: B001")
-            self.log_error("get_bill_id", bill_id, "WARNING")
+            self.log_error("get_bill_id", "Invalid Bill ID", "WARNING")
 
     def validate_upi(self):
         while True:
             upi = input("Enter UPI ID: ").strip()
-
             if re.fullmatch(r"[A-Za-z0-9._-]+@[A-Za-z0-9.-]+", upi):
                 return upi
-
             print("Invalid UPI ID. Example: name@upi")
-            self.log_error("validate_upi", "Invalid UPI", "WARNING")
+            self.log_error("validate_upi", "Invalid UPI ID", "WARNING")
 
     def validate_card(self):
         while True:
             card = input("Enter 16 digit Card Number: ").strip().replace(" ", "")
-
             if card.isdigit() and len(card) == 16:
                 break
-
             print("Card number must contain 16 digits.")
             self.log_error("validate_card", "Invalid card number", "WARNING")
 
         while True:
             cvv = input("Enter CVV: ").strip()
-
             if cvv.isdigit() and len(cvv) in (3, 4):
                 break
-
             print("CVV must contain 3 or 4 digits.")
             self.log_error("validate_card", "Invalid CVV", "WARNING")
 
@@ -269,20 +245,20 @@ class BillingManagement:
         for bill in bills:
             print(
                 bill.get("bill_id"),
-                "|",
-                bill.get("customer_name"),
-                "|",
-                f"₹{float(bill.get('grand_total', 0)):.2f}",
-                "|",
-                bill.get("payment_status", "Unpaid"),
+                "|", bill.get("customer_name"),
+                "|", f"₹{float(bill.get('grand_total', 0)):.2f}",
+                "|", bill.get("payment_status", "Unpaid")
             )
 
         bill_id = self.get_bill_id()
-        bill = next((b for b in bills if b.get("bill_id", "").upper() == bill_id), None)
+        bill = next(
+            (b for b in bills if b.get("bill_id", "").upper() == bill_id),
+            None
+        )
 
         if bill is None:
             print("Bill ID not found.")
-            self.log_error("update_payment", bill_id, "WARNING")
+            self.log_error("update_payment", "Bill ID not found", "WARNING")
             return
 
         if bill.get("payment_status") == "Paid":
@@ -310,7 +286,7 @@ class BillingManagement:
                 payment_number = self.validate_card()
             else:
                 print("Invalid payment method.")
-                self.log_error("update_payment", method, "WARNING")
+                self.log_error("update_payment", "Invalid payment method", "WARNING")
                 return
 
             bill["payment_status"] = "Paid"
@@ -323,7 +299,7 @@ class BillingManagement:
             bill["payment_number"] = "Not Available"
         else:
             print("Invalid choice.")
-            self.log_error("update_payment", choice, "WARNING")
+            self.log_error("update_payment", "Invalid payment choice", "WARNING")
             return
 
         if self.save_bills(bills):
@@ -353,4 +329,4 @@ class BillingManagement:
                 break
             else:
                 print("Invalid choice.")
-                self.log_error("billing_menu", choice, "WARNING")
+                self.log_error("billing_menu", "Invalid menu choice", "WARNING")

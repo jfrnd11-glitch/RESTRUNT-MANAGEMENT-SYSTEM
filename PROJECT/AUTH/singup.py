@@ -5,9 +5,8 @@ import msvcrt
 import uuid
 
 from PROJECT.LOGS.error_hendal import error_handler
-
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-FILE_NAME = os.path.join(BASE_DIR, "DATABASE", "users.json")
+from PROJECT.config import USER_FILE
+FILE_NAME = USER_FILE
 
 
 class UserManagement:

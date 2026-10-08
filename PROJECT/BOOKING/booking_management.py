@@ -1,26 +1,24 @@
+
 import json
 import os
+import re
 from datetime import datetime, timedelta
 
+from PROJECT.config import BOOKING_FILE
 from PROJECT.LOGS.error_hendal import error_handler
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-FILE_NAME = os.path.join(BASE_DIR, "DATABASE", "booking.json")
-
 TABLES = {
-    "2": [f"T{i:02d}" for i in range(1, 11)],
-    "4": [f"T{i:02d}" for i in range(11, 21)],
-    "6": [f"T{i:02d}" for i in range(21, 26)]
+    "2": [f"T{i:02}" for i in range(1, 11)],
+    "4": [f"T{i:02}" for i in range(11, 21)],
+    "6": [f"T{i:02}" for i in range(21, 26)]
 }
 
 
 class BookingManagement:
-
     def load_bookings(self):
         try:
-            with open(FILE_NAME, "r", encoding="utf-8") as file:
-                data = json.load(file)
-                return data if isinstance(data, list) else []
+            with open(BOOKING_FILE, "r") as file:
+                return json.load(file)
         except FileNotFoundError:
             return []
         except (json.JSONDecodeError, OSError) as e:
@@ -29,397 +27,312 @@ class BookingManagement:
 
     def save_bookings(self, bookings):
         try:
-            os.makedirs(os.path.dirname(FILE_NAME), exist_ok=True)
-            with open(FILE_NAME, "w", encoding="utf-8") as file:
+            os.makedirs(os.path.dirname(BOOKING_FILE), exist_ok=True)
+            with open(BOOKING_FILE, "w") as file:
                 json.dump(bookings, file, indent=4)
-            return True
         except OSError as e:
             error_handler.exception(e)
-            print("Booking data could not be saved.")
-            return False
+            print("Booking NOT SAVE.")
 
-    def get_input(self, message):
-        while True:
-            value = input(message).strip()
-            if value:
-                return value
-            error_handler.warning("Empty input entered.")
-            print("Input cannot be empty.")
+    def generate_booking_id(self, bookings):
+        numbers = [
+            int(b["booking_id"][1:])
+            for b in bookings
+            if b.get("booking_id", "")[1:].isdigit()
+        ]
+        return f"B{max(numbers, default=0) + 1:04}"
 
-    def get_name(self):
+    def get_duration(self):
         while True:
-            name = self.get_input("Customer Name: ")
-            if len(name) >= 3 and name.replace(" ", "").isalpha():
-                return name.title()
-            error_handler.warning("Invalid customer name.")
-            print("Name must contain at least 3 letters.")
+            duration = input("Booking duration (hours): ").strip()
+            if duration.isdigit() and int(duration) > 0:
+                return int(duration)
+            print("DUSACTION TIME 1 SE JAYDA HONA CHAIYE.")
+            error_handler.warning("Invalid booking duration.")
 
-    def get_mobile(self):
+    def get_guests(self):
         while True:
-            mobile = self.get_input("Mobile Number: ")
-            if len(mobile) == 10 and mobile.isdigit():
-                return mobile
-            error_handler.warning("Invalid mobile number.")
-            print("Enter a 10-digit mobile number.")
+            guests = input("Number of guests: ").strip()
+            if guests.isdigit() and int(guests) > 0:
+                return int(guests)
+            print("Kam se kam 1 guest hona chahiye.")
+            error_handler.warning("Invalid guest count.")
 
-    def get_date(self):
+    def get_booking_datetime(self):
         while True:
-            date = self.get_input("Booking Date (DD-MM-YYYY): ")
+            date = input("Booking date (DD-MM-YYYY): ").strip()
+            time = input("Booking time (HH:MM AM/PM): ").strip()
+
             try:
-                booking_date = datetime.strptime(date, "%d-%m-%Y")
-                if booking_date.date() >= datetime.now().date():
-                    return date
-            except ValueError:
-                pass
-
-            error_handler.warning("Invalid booking date.")
-            print("Enter a valid current or future date.")
-
-    def get_time(self, date):
-        while True:
-            time = self.get_input("Booking Time (HH:MM AM/PM): ").upper()
-            try:
-                booking_time = datetime.strptime(
+                booking_dt = datetime.strptime(
                     f"{date} {time}", "%d-%m-%Y %I:%M %p"
                 )
-                if booking_time > datetime.now():
-                    return time
+                if booking_dt > datetime.now():
+                    return booking_dt
+                print("ENTER FUCTURE TIME AND DATE")
             except ValueError:
-                pass
+                print("Date YA TIME FORMATE IS ROUNG.")
 
             error_handler.warning("Invalid booking date or time.")
-            print("Enter a future time in HH:MM AM/PM format.")
 
-    def get_number(self, message, minimum, maximum):
-        while True:
-            value = self.get_input(message)
-            if value.isdigit() and minimum <= int(value) <= maximum:
-                return int(value)
-            error_handler.warning("Invalid number entered.")
-            print(f"Enter a number between {minimum} and {maximum}.")
+    def get_available_tables(self, bookings, booking_dt, duration):
+        available = {size: [] for size in TABLES}
+        end_time = booking_dt + timedelta(hours=duration)
 
-    def get_booking_range(self, booking):
-        try:
-            start = datetime.strptime(
-                booking["booking_date"] + " " + booking["booking_time"],
-                "%d-%m-%Y %I:%M %p"
-            )
-            end = start + timedelta(hours=int(booking.get("duration", 1)))
-            return start, end
-        except (KeyError, ValueError, TypeError):
-            return None, None
+        for size, tables in TABLES.items():
+            for table in tables:
+                occupied = False
 
-    def get_available_tables(self, bookings, date, time, duration, exclude_id=None):
-        start = datetime.strptime(
-            date + " " + time, "%d-%m-%Y %I:%M %p"
-        )
-        end = start + timedelta(hours=duration)
-        booked = []
+                for booking in bookings:
+                    if (
+                        table not in booking.get("table_number", [])
+                        and booking.get("table_number") != table
+                    ):
+                        continue
 
-        for booking in bookings:
-            if booking.get("status") == "Cancelled":
-                continue
-            if booking.get("booking_id") == exclude_id:
-                continue
+                    if booking.get("status") in ("Cancelled", "Completed"):
+                        continue
 
-            old_start, old_end = self.get_booking_range(booking)
+                    try:
+                        old_dt = datetime.strptime(
+                            f'{booking["booking_date"]} '
+                            f'{booking["booking_time"]}',
+                            "%d-%m-%Y %I:%M %p"
+                        )
+                        old_duration = int(booking.get("duration", 1))
+                        old_end = old_dt + timedelta(hours=old_duration)
 
-            if old_start and start < old_end and end > old_start:
-                booked.extend(booking.get("table_number", []))
+                        if booking_dt < old_end and end_time > old_dt:
+                            occupied = True
+                            break
+                    except (ValueError, KeyError, TypeError):
+                        continue
 
-        return {
-            size: [table for table in tables if table not in booked]
-            for size, tables in TABLES.items()
-        }
+                if not occupied:
+                    available[size].append(table)
 
-    def show_available_tables(self, available, date, time, duration):
-        end = datetime.strptime(
-            date + " " + time, "%d-%m-%Y %I:%M %p"
-        ) + timedelta(hours=duration)
+        return available
 
-        print("\nAvailable Tables")
-        print("Date:", date)
-        print("Time:", time)
-        print("Duration:", duration, "hour(s)")
-        print("End Time:", end.strftime("%I:%M %p"))
-
-        for size, tables in available.items():
-            print(f"{size}-Seater:", ", ".join(tables) or "No tables")
-
-    def select_tables(self, bookings, guests, date, time, duration, exclude_id=None):
-        available = self.get_available_tables(
-            bookings, date, time, duration, exclude_id
-        )
-
+    def select_tables(self, guests, available):
         selected = []
         remaining = guests
 
         while remaining > 0:
-            size = "6" if remaining > 4 else "4" if remaining > 2 else "2"
-            tables = available[size]
+            if remaining > 4:
+                sizes = ["6", "4", "2"]
+            elif remaining > 2:
+                sizes = ["4", "2", "6"]
+            else:
+                sizes = ["2", "4", "6"]
 
-            if not tables:
-                print("Required table is not available.")
-                error_handler.warning("Required booking table unavailable.")
-                return None
+            size = next((s for s in sizes if available[s]), None)
 
-            print(f"Available {size}-Seater:", ", ".join(tables))
-            table = self.get_input("Select Table: ").upper()
+            if size is None:
+                print("Itne guests ke liye available tables nahi hain.")
+                return []
 
-            if table not in tables:
-                print("Invalid or unavailable table.")
-                error_handler.warning("Invalid table selected.")
+            print(f"\nAvailable {size}-seater tables:")
+            for i, table in enumerate(available[size], 1):
+                print(f"{i}. {table}")
+
+            choice = input("Table number select karein: ").strip()
+
+            if not choice.isdigit() or not 1 <= int(choice) <= len(available[size]):
+                print("Invalid table selection.")
                 continue
 
+            table = available[size].pop(int(choice) - 1)
             selected.append(table)
-            available[size].remove(table)
             remaining -= int(size)
 
         return selected
 
-    def generate_booking_id(self, bookings):
-        number = 1
-        while any(b.get("booking_id") == f"B{number:04d}" for b in bookings):
-            number += 1
-        return f"B{number:04d}"
-
-    def new_booking(self):
+    def create_booking(self):
         bookings = self.load_bookings()
 
-        print("\nNew Booking")
-        name = self.get_name()
-        mobile = self.get_mobile()
-        date = self.get_date()
-        time = self.get_time(date)
-        duration = self.get_number("Duration (hours, 1-12): ", 1, 12)
-        guests = self.get_number("Number of Guests (1-30): ", 1, 30)
+        name = input("Customer name: ").strip()
+        if len(name) < 3 or not name.replace(" ", "").isalpha():
+            print("Valid name enter karein.")
+            error_handler.warning("Invalid customer name.")
+            return
 
-        available = self.get_available_tables(bookings, date, time, duration)
-        self.show_available_tables(available, date, time, duration)
+        mobile = input("Mobile number: ").strip()
+        if not re.fullmatch(r"\d{10}", mobile):
+            print("Mobile number 10 digits ka hona chahiye.")
+            error_handler.warning("Invalid mobile number.")
+            return
 
-        tables = self.select_tables(bookings, guests, date, time, duration)
+        booking_dt = self.get_booking_datetime()
+        guests = self.get_guests()
+        duration = self.get_duration()
+
+        available = self.get_available_tables(
+            bookings, booking_dt, duration
+        )
+        tables = self.select_tables(guests, available)
 
         if not tables:
-            print("Booking could not be completed.")
             return
 
         booking = {
             "booking_id": self.generate_booking_id(bookings),
             "customer_name": name,
             "mobile": mobile,
-            "booking_date": date,
-            "booking_time": time,
-            "duration": duration,
+            "booking_date": booking_dt.strftime("%d-%m-%Y"),
+            "booking_time": booking_dt.strftime("%I:%M %p"),
             "guests": guests,
+            "duration": duration,
             "table_number": tables,
             "status": "Pending"
         }
 
         bookings.append(booking)
-
-        if self.save_bookings(bookings):
-            print("Booking created successfully.")
-            print("Booking ID:", booking["booking_id"])
-            print("Tables:", ", ".join(tables))
+        self.save_bookings(bookings)
+        print(f"Booking successful. Booking ID: {booking['booking_id']}")
+        print(f"Tables: {', '.join(tables)}")
 
     def view_bookings(self):
         bookings = self.load_bookings()
 
         if not bookings:
-            print("No bookings found.")
+            print("Koi booking nahi hai.")
             return
 
-        for booking in bookings:
-            print("\nBooking ID:", booking.get("booking_id"))
-            print("Customer:", booking.get("customer_name"))
-            print("Mobile:", booking.get("mobile"))
-            print("Date:", booking.get("booking_date"))
-            print("Time:", booking.get("booking_time"))
-            print("Duration:", booking.get("duration", 1), "hour(s)")
-            print("Guests:", booking.get("guests"))
-            print("Tables:", ", ".join(booking.get("table_number", [])))
-            print("Status:", booking.get("status"))
+        for b in bookings:
+            tables = b.get("table_number", [])
+            if isinstance(tables, str):
+                tables = [tables]
+
+            print("-" * 40)
+            print("Booking ID:", b.get("booking_id"))
+            print("Customer:", b.get("customer_name"))
+            print("Mobile:", b.get("mobile"))
+            print("Date:", b.get("booking_date"))
+            print("Time:", b.get("booking_time"))
+            print("Guests:", b.get("guests"))
+            print("Duration:", b.get("duration", 1), "hours")
+            print("Tables:", ", ".join(tables))
+            print("Status:", b.get("status"))
 
     def search_booking(self):
+        booking_id = input("Booking ID: ").strip().upper()
         bookings = self.load_bookings()
-        booking_id = self.get_input("Enter Booking ID: ").upper()
 
-        booking = next(
-            (b for b in bookings if b.get("booking_id") == booking_id), None
-        )
-
-        if booking:
-            print("\nBooking Details")
-            for key, value in booking.items():
-                print(f"{key}: {value}")
-        else:
-            print("Booking not found.")
-            error_handler.warning("Booking not found.")
-
-    def update_booking(self):
-        bookings = self.load_bookings()
-        booking_id = self.get_input("Enter Booking ID: ").upper()
-
-        booking = next(
-            (b for b in bookings if b.get("booking_id") == booking_id), None
-        )
-
-        if not booking or booking.get("status") == "Cancelled":
-            print("Booking not found or already cancelled.")
-            return
-
-        print("\n1. Customer Name")
-        print("2. Mobile Number")
-        print("3. Date, Time, Guests and Tables")
-        print("4. Duration")
-        print("5. Back")
-
-        choice = input("Enter choice: ").strip()
-
-        if choice == "1":
-            booking["customer_name"] = self.get_name()
-        elif choice == "2":
-            booking["mobile"] = self.get_mobile()
-        elif choice in ("3", "4"):
-            date = booking["booking_date"]
-            time = booking["booking_time"]
-            guests = booking["guests"]
-            duration = booking.get("duration", 1)
-
-            if choice == "3":
-                date = self.get_date()
-                time = self.get_time(date)
-                guests = self.get_number("Number of Guests (1-30): ", 1, 30)
-            duration = self.get_number("Duration (hours, 1-12): ", 1, 12)
-
-            available = self.get_available_tables(
-                bookings, date, time, duration, booking_id
-            )
-            self.show_available_tables(available, date, time, duration)
-            tables = self.select_tables(
-                bookings, guests, date, time, duration, booking_id
-            )
-
-            if not tables:
-                print("Booking update cancelled.")
+        for booking in bookings:
+            if booking.get("booking_id") == booking_id:
+                print(json.dumps(booking, indent=4))
                 return
 
-            booking["booking_date"] = date
-            booking["booking_time"] = time
-            booking["guests"] = guests
-            booking["duration"] = duration
-            booking["table_number"] = tables
+        print("Booking nahi mili.")
 
-        elif choice == "5":
-            return
-        else:
-            error_handler.warning("Invalid booking update choice.")
-            print("Invalid choice.")
-            return
-
-        if self.save_bookings(bookings):
-            print("Booking updated successfully.")
-
-    def change_booking_status(self):
+    def update_status(self):
+        booking_id = input("Booking ID: ").strip().upper()
         bookings = self.load_bookings()
-        booking_id = self.get_input("Enter Booking ID: ").upper()
 
-        booking = next(
-            (b for b in bookings if b.get("booking_id") == booking_id), None
-        )
+        for booking in bookings:
+            if booking.get("booking_id") == booking_id:
+                print("1. Pending")
+                print("2. Completed")
+                print("3. Cancelled")
 
-        if not booking:
-            print("Booking not found.")
-            return
+                choice = input("Choice: ").strip()
+                statuses = {
+                    "1": "Pending",
+                    "2": "Completed",
+                    "3": "Cancelled"
+                }
 
-        print("1. Pending")
-        print("2. Confirmed")
-        print("3. Completed")
-        print("4. Cancelled")
+                if choice in statuses:
+                    booking["status"] = statuses[choice]
+                    self.save_bookings(bookings)
+                    print("Booking status updated.")
+                else:
+                    print("Invalid choice.")
+                return
 
-        statuses = {
-            "1": "Pending",
-            "2": "Confirmed",
-            "3": "Completed",
-            "4": "Cancelled"
-        }
+        print("Booking nahi mili.")
 
-        choice = input("Select Status: ").strip()
-
-        if choice not in statuses:
-            error_handler.warning("Invalid booking status.")
-            print("Invalid choice.")
-            return
-
-        booking["status"] = statuses[choice]
-
-        if self.save_bookings(bookings):
-            print("Status updated:", booking["status"])
-
-    def cancel_booking(self):
+    def update_booking(self):
+        booking_id = input("Booking ID: ").strip().upper()
         bookings = self.load_bookings()
-        booking_id = self.get_input("Enter Booking ID: ").upper()
 
-        booking = next(
-            (b for b in bookings if b.get("booking_id") == booking_id), None
-        )
+        for booking in bookings:
+            if booking.get("booking_id") != booking_id:
+                continue
 
-        if not booking:
-            print("Booking not found.")
+            if booking.get("status") in ("Cancelled", "Completed"):
+                print("Is booking ko update nahi kar sakte.")
+                return
+
+            print("1. Customer name")
+            print("2. Mobile number")
+            print("3. Booking date and time")
+            print("4. Guests and tables")
+            print("5. Duration")
+
+            choice = input("Choice: ").strip()
+
+            if choice == "1":
+                name = input("New name: ").strip()
+                if len(name) >= 3 and name.replace(" ", "").isalpha():
+                    booking["customer_name"] = name
+                else:
+                    print("Invalid name.")
+                    return
+
+            elif choice == "2":
+                mobile = input("New mobile: ").strip()
+                if re.fullmatch(r"\d{10}", mobile):
+                    booking["mobile"] = mobile
+                else:
+                    print("Invalid mobile number.")
+                    return
+
+            elif choice == "3":
+                new_dt = self.get_booking_datetime()
+                booking["booking_date"] = new_dt.strftime("%d-%m-%Y")
+                booking["booking_time"] = new_dt.strftime("%I:%M %p")
+
+            elif choice == "4":
+                booking["guests"] = self.get_guests()
+
+            elif choice == "5":
+                booking["duration"] = self.get_duration()
+
+            else:
+                print("Invalid choice.")
+                return
+
+            self.save_bookings(bookings)
+            print("Booking updated.")
             return
 
-        if booking.get("status") == "Cancelled":
-            print("Booking is already cancelled.")
-            return
-
-        confirm = input("Cancel this booking? (Y/N): ").strip().upper()
-
-        if confirm == "Y":
-            booking["status"] = "Cancelled"
-            if self.save_bookings(bookings):
-                print("Booking cancelled. Table is available again.")
-
-    def available_tables_menu(self):
-        bookings = self.load_bookings()
-        date = self.get_date()
-        time = self.get_time(date)
-        duration = self.get_number("Duration (hours, 1-12): ", 1, 12)
-
-        available = self.get_available_tables(bookings, date, time, duration)
-        self.show_available_tables(available, date, time, duration)
+        print("Booking nahi mili.")
 
     def booking_management(self):
         while True:
-            print("\nBooking Management")
-            print("1. New Booking")
+            print("\n--- TABLE BOOKING MANAGEMENT ---")
+            print("1. Create Booking")
             print("2. View Bookings")
             print("3. Search Booking")
             print("4. Update Booking")
-            print("5. Change Booking Status")
-            print("6. Cancel Booking")
-            print("7. Available Tables")
-            print("8. Back")
+            print("5. Update Booking Status")
+            print("6. Back")
 
-            choice = input("Enter choice: ").strip()
+            choice = input("Choice: ").strip()
 
-            actions = {
-                "1": self.new_booking,
-                "2": self.view_bookings,
-                "3": self.search_booking,
-                "4": self.update_booking,
-                "5": self.change_booking_status,
-                "6": self.cancel_booking,
-                "7": self.available_tables_menu
-            }
-
-            if choice == "8":
+            if choice == "1":
+                self.create_booking()
+            elif choice == "2":
+                self.view_bookings()
+            elif choice == "3":
+                self.search_booking()
+            elif choice == "4":
+                self.update_booking()
+            elif choice == "5":
+                self.update_status()
+            elif choice == "6":
                 break
-            elif choice in actions:
-                try:
-                    actions[choice]()
-                except Exception as e:
-                    error_handler.exception(e)
-                    print("Booking operation failed.")
             else:
-                error_handler.warning("Invalid booking menu choice.")
                 print("Invalid choice.")
+                error_handler.warning("Invalid booking menu choice.")
