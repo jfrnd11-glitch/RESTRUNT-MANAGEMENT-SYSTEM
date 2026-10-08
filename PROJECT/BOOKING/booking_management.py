@@ -124,11 +124,7 @@ def validate_booking_datetime(booking_date, booking_time):
         return False
 
     except Exception as e:
-        error_handler.log_exception(
-            "BookingManagement",
-            "validate_booking_datetime",
-            e
-        )
+        error_handler.log_exception("BookingManagement","validate_booking_datetime",e)
         print("Something went wrong. Please try again.")
         return False
 

@@ -24,5 +24,66 @@
         ],
         "total": 620,
         "status": "Pending"
+    },
+    {
+        "order_id": "O002",
+        "customer_name": "Manish Singh",
+        "order_type": "Takeaway",
+        "table_no": null,
+        "items": [
+            {
+                "category": "Chinese",
+                "name": "Veg Hakka Noodles",
+                "size": "Full",
+                "price": 180,
+                "quantity": 1,
+                "total": 180
+            },
+            {
+                "category": "Chinese",
+                "name": "Veg Fried Rice",
+                "size": "Half",
+                "price": 100,
+                "quantity": 1,
+                "total": 100
+            }
+        ],
+        "total": 280,
+        "status": "Pending"
+    },
+    {
+        "order_id": "O003",
+        "customer_name": "Sahil",
+        "order_type": "Takeaway",
+        "table_no": null,
+        "items": [
+            {
+                "category": "Beverages",
+                "name": "Mineral Water",
+                "size": "Small",
+                "price": 20,
+                "quantity": 12,
+                "total": 240
+            }
+        ],
+        "total": 240,
+        "status": "Pending"
+    },
+    {
+        "order_id": "O004",
+        "order_type": "Dine-In",
+        "table_no": "T01",
+        "items": [
+            {
+                "category": "Beverages",
+                "name": "Mineral Water",
+                "size": "Small",
+                "price": 20.0,
+                "quantity": 1,
+                "total": 20.0
+            }
+        ],
+        "total": 20.0,
+        "status": "Pending"
     }
 ]

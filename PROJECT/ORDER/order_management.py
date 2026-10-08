@@ -1,8 +1,10 @@
+
 import json
 import os
 import re
 
 from PROJECT.LOGS.error_hendal import error_handler
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATABASE_DIR = os.path.join(BASE_DIR, "DATABASE")
 MENU_FILE = os.path.join(DATABASE_DIR, "menu.json")
@@ -26,7 +28,7 @@ def load_menu():
     except FileNotFoundError:
         log_error("load_menu", "menu.json file not found.")
     except json.JSONDecodeError:
-        log_error("load_menu", "menu.json contains invalid JSON.")
+        log_error("load_menu", "Invalid menu.json.")
     except Exception as e:
         log_error("load_menu", str(e))
     return {}
@@ -40,7 +42,7 @@ def load_orders():
         with open(ORDER_FILE, "r") as file:
             return json.load(file)
     except json.JSONDecodeError:
-        log_error("load_orders", "orders.json contains invalid JSON.")
+        log_error("load_orders", "Invalid orders.json.")
     except Exception as e:
         log_error("load_orders", str(e))
     return []
@@ -49,10 +51,8 @@ def load_orders():
 def save_orders(orders):
     try:
         os.makedirs(DATABASE_DIR, exist_ok=True)
-
         with open(ORDER_FILE, "w") as file:
             json.dump(orders, file, indent=4)
-
         return True
     except Exception as e:
         log_error("save_orders", str(e))
@@ -61,53 +61,23 @@ def save_orders(orders):
 
 
 def generate_order_id(orders):
-    if not orders:
-        return "O001"
-
-    try:
-        number = int(orders[-1]["order_id"][1:]) + 1
-        return f"O{number:03d}"
-    except Exception as e:
-        log_error("generate_order_id", str(e))
-        return "O001"
-
-
-def get_customer_name():
-    while True:
-        name = input("Enter customer name: ").strip()
-
-        if not name:
-            print("Customer name cannot be empty.")
-            log_error("get_customer_name", "Customer name cannot be empty.", "WARNING")
-            continue
-
-        if not name.replace(" ", "").isalpha():
-            print("Name must contain only letters and spaces.")
-            log_error("get_customer_name", f"Invalid customer name: {name}", "WARNING")
-            continue
-
-        if len(name.replace(" ", "")) < 3:
-            print("Name must contain at least 3 letters.")
-            log_error(
-                "get_customer_name", "Customer name has less than 3 letters.", "WARNING"
-            )
-            continue
-
-        return name.title()
+    numbers = [
+        int(order["order_id"][1:])
+        for order in orders
+        if re.fullmatch(r"O\d+", order.get("order_id", ""))
+    ]
+    return f"O{max(numbers, default=0) + 1:03d}"
 
 
 def get_table_number():
     while True:
         table_no = input("Enter table number (T01-T25): ").strip().upper()
 
-        if not re.fullmatch(r"T(0[1-9]|1[0-9]|2[0-5])", table_no):
-            print("Invalid table number. Use T01 to T25.")
-            log_error(
-                "get_table_number", f"Invalid table number: {table_no}", "WARNING"
-            )
-            continue
+        if re.fullmatch(r"T(0[1-9]|1[0-9]|2[0-5])", table_no):
+            return table_no
 
-        return table_no
+        print("Invalid table number. Use T01 to T25.")
+        log_error("get_table_number", f"Invalid table: {table_no}", "WARNING")
 
 
 def show_orders(orders, title="========== ORDERS =========="):
@@ -115,32 +85,31 @@ def show_orders(orders, title="========== ORDERS =========="):
 
     for order in orders:
         order_type = order.get("order_type", "Dine-In")
-        table = order.get("table_no") if order_type == "Dine-In" else "N/A"
+        table = order.get("table_no") or "N/A"
 
         print(
-            f"{order['order_id']} | "
-            f"{order['customer_name']} | "
-            f"Type: {order_type} | "
-            f"Table: {table} | "
-            f"Status: {order['status']}"
+            f"{order.get('order_id', 'N/A')} | "
+            f"Type: {order_type} | Table: {table} | "
+            f"Status: {order.get('status', 'N/A')}"
         )
+
 
 def find_order(orders, order_id):
     for order in orders:
-        if order["order_id"].upper() == order_id:
+        if order.get("order_id", "").upper() == order_id:
             return order
     return None
+
 
 def get_order_id():
     while True:
         order_id = input("\nEnter Order ID: ").strip().upper()
 
-        if not re.fullmatch(r"O\d{3}", order_id):
-            print("Invalid Order ID. Example: O001")
-            log_error("get_order_id", f"Invalid Order ID format: {order_id}", "WARNING")
-            continue
+        if re.fullmatch(r"O\d{3}", order_id):
+            return order_id
 
-        return order_id
+        print("Invalid Order ID. Example: O001")
+        log_error("get_order_id", f"Invalid Order ID: {order_id}", "WARNING")
 
 
 def create_order():
@@ -153,9 +122,7 @@ def create_order():
         return
 
     print("\n========== CREATE ORDER ==========")
-    customer_name = get_customer_name()
-
-    print("\n1. Dine-In")
+    print("1. Dine-In")
     print("2. Takeaway")
 
     while True:
@@ -165,186 +132,116 @@ def create_order():
             order_type = "Dine-In"
             table_no = get_table_number()
             break
-
-        if choice == "2":
+        elif choice == "2":
             order_type = "Takeaway"
             table_no = None
             break
 
-        print("Invalid choice. Please select 1 or 2.")
-        log_error("create_order", f"Invalid order type choice: {choice}", "WARNING")
+        print("Select 1 or 2.")
+        log_error("create_order", f"Invalid order type: {choice}", "WARNING")
 
     items = []
-    total = 0
 
     while True:
-        print("\n---------- CATEGORIES ----------")
         categories = list(menu.keys())
 
+        print("\n---------- CATEGORIES ----------")
         for i, category in enumerate(categories, 1):
             print(f"{i}. {category}")
-
         print("0. Finish Order")
-        category_choice = input("\nEnter category: ").strip()
 
-        if category_choice == "0":
+        choice = input("Enter category: ").strip()
+
+        if choice == "0":
             break
-
-        if not category_choice.isdigit():
+        if not choice.isdigit() or not 1 <= int(choice) <= len(categories):
             print("Invalid category choice.")
-            log_error(
-                "create_order", f"Invalid category input: {category_choice}", "WARNING"
-            )
+            log_error("create_order", f"Invalid category: {choice}", "WARNING")
             continue
 
-        category_choice = int(category_choice)
-
-        if not 1 <= category_choice <= len(categories):
-            print("Invalid category choice.")
-            log_error(
-                "create_order",
-                f"Category number out of range: {category_choice}",
-                "WARNING",
-            )
-            continue
-
-        category = categories[category_choice - 1]
+        category = categories[int(choice) - 1]
         foods = menu[category]
+        food_names = list(foods.keys())
 
         while True:
             print(f"\n---------- {category.upper()} ----------")
-            food_names = list(foods.keys())
 
-            for i, food_name in enumerate(food_names, 1):
-                price_data = foods[food_name]
-
+            for i, name in enumerate(food_names, 1):
+                price_data = foods[name]
                 if isinstance(price_data, dict):
                     prices = " | ".join(
                         f"{size}: ₹{price}" for size, price in price_data.items()
                     )
-                    print(f"{i}. {food_name} ({prices})")
+                    print(f"{i}. {name} ({prices})")
                 else:
-                    print(f"{i}. {food_name} - ₹{price_data}")
+                    print(f"{i}. {name} - ₹{price_data}")
 
             print("0. Back")
-            food_choice = input("\nEnter food: ").strip()
+            choice = input("Enter food: ").strip()
 
-            if food_choice == "0":
+            if choice == "0":
                 break
-
-            if not food_choice.isdigit():
+            if not choice.isdigit() or not 1 <= int(choice) <= len(food_names):
                 print("Invalid food choice.")
-                log_error(
-                    "create_order", f"Invalid food input: {food_choice}", "WARNING"
-                )
+                log_error("create_order", f"Invalid food: {choice}", "WARNING")
                 continue
 
-            food_choice = int(food_choice)
-
-            if not 1 <= food_choice <= len(food_names):
-                print("Invalid food choice.")
-                log_error(
-                    "create_order",
-                    f"Food number out of range: {food_choice}",
-                    "WARNING",
-                )
-                continue
-
-            food_name = food_names[food_choice - 1]
+            food_name = food_names[int(choice) - 1]
             price_data = foods[food_name]
             selected_size = "Regular"
 
             if isinstance(price_data, dict):
                 sizes = list(price_data.keys())
 
-                print(f"\n---------- {food_name} ----------")
                 for i, size in enumerate(sizes, 1):
                     print(f"{i}. {size} - ₹{price_data[size]}")
 
-                while True:
-                    size_choice = input("\nEnter size: ").strip()
+                size_choice = input("Enter size: ").strip()
 
-                    if not size_choice.isdigit():
-                        print("Invalid size choice.")
-                        log_error(
-                            "create_order",
-                            f"Invalid size input: {size_choice}",
-                            "WARNING",
-                        )
-                        continue
-
-                    size_choice = int(size_choice)
-
-                    if not 1 <= size_choice <= len(sizes):
-                        print("Invalid size choice.")
-                        log_error(
-                            "create_order",
-                            f"Size number out of range: {size_choice}",
-                            "WARNING",
-                        )
-                        continue
-
-                    selected_size = sizes[size_choice - 1]
-                    selected_price = price_data[selected_size]
-                    break
-            else:
-                selected_price = price_data
-
-            while True:
-                quantity_input = input("Enter quantity: ").strip()
-
-                if not quantity_input.isdigit() or int(quantity_input) <= 0:
-                    print("Quantity must be greater than 0.")
-                    log_error(
-                        "create_order", f"Invalid quantity: {quantity_input}", "WARNING"
-                    )
+                if not size_choice.isdigit() or not 1 <= int(size_choice) <= len(sizes):
+                    print("Invalid size choice.")
+                    log_error("create_order", f"Invalid size: {size_choice}", "WARNING")
                     continue
 
-                quantity = int(quantity_input)
-                break
+                selected_size = sizes[int(size_choice) - 1]
+                selected_price = float(price_data[selected_size])
+            else:
+                selected_price = float(price_data)
 
+            quantity_input = input("Enter quantity: ").strip()
+
+            if not quantity_input.isdigit() or int(quantity_input) <= 0:
+                print("Quantity must be greater than 0.")
+                log_error("create_order", f"Invalid quantity: {quantity_input}", "WARNING")
+                continue
+
+            quantity = int(quantity_input)
             item_total = selected_price * quantity
 
-            items.append(
-                {
-                    "category": category,
-                    "name": food_name,
-                    "size": selected_size,
-                    "price": selected_price,
-                    "quantity": quantity,
-                    "total": item_total,
-                }
-            )
+            items.append({
+                "category": category,
+                "name": food_name,
+                "size": selected_size,
+                "price": selected_price,
+                "quantity": quantity,
+                "total": round(item_total, 2),
+            })
 
-            total += item_total
+            print(f"{food_name} ({selected_size}) x {quantity} = ₹{item_total:.2f}")
 
-            print(f"\n{food_name} ({selected_size}) x {quantity} " f"added successfully.")
-            print(f"Item Total: ₹{item_total}")
-
-            while True:
-                another = (
-                    input("\nAdd another food from this category? (y/n): ")
-                    .strip()
-                    .lower()
-                )
-
-                if another in ("y", "n"):
-                    break
-
-                print("Please enter only y or n.")
-                log_error("create_order", f"Invalid y/n choice: {another}", "WARNING")
-
-            if another == "n":
+            another = input("Add another food from this category? (y/n): ").strip().lower()
+            if another != "y":
                 break
 
     if not items:
-        print("\nNo food selected. Order cancelled.")
-        log_error("create_order", "Order cancelled because no food was selected.", "WARNING")
+        print("No food selected. Order cancelled.")
+        log_error("create_order", "No items selected.", "WARNING")
         return
+
+    total = round(sum(item["total"] for item in items), 2)
 
     order = {
         "order_id": generate_order_id(orders),
-        "customer_name": customer_name,
         "order_type": order_type,
         "table_no": table_no,
         "items": items,
@@ -358,23 +255,20 @@ def create_order():
         return
 
     print("\n========== ORDER CREATED ==========")
-    print(f"Order ID     : {order['order_id']}")
-    print(f"Customer     : {order['customer_name']}")
-    print(f"Order Type   : {order['order_type']}")
+    print("Order ID:", order["order_id"])
+    print("Order Type:", order_type)
 
-    if order["order_type"] == "Dine-In":
-        print(f"Table Number : {order['table_no']}")
+    if table_no:
+        print("Table Number:", table_no)
 
-    print("\nItems:")
-    for item in order["items"]:
+    for item in items:
         print(
             f"{item['name']} ({item['size']}) x "
-            f"{item['quantity']} = ₹{item['total']}"
+            f"{item['quantity']} = ₹{item['total']:.2f}"
         )
 
-    print("-----------------------------------")
-    print(f"Total        : ₹{order['total']}")
-    print(f"Status       : {order['status']}")
+    print("Total: ₹{:.2f}".format(total))
+    print("Status:", order["status"])
     print("Order saved successfully!")
 
 
@@ -385,27 +279,20 @@ def view_orders():
         print("\nNo orders found.")
         return
 
-    print("\n========== ALL ORDERS ==========")
-
     for order in orders:
-        order_type = order.get("order_type", "Dine-In")
-        table = order.get("table_no") if order_type == "Dine-In" else "N/A"
+        show_orders([order], "========== ORDER DETAILS ==========")
 
-        print(f"\nOrder ID     : {order['order_id']}")
-        print(f"Customer     : {order['customer_name']}")
-        print(f"Order Type   : {order_type}")
-        print(f"Table Number : {table}")
-        print(f"Status       : {order['status']}")
-        print("\nItems:")
-
-        for item in order["items"]:
+        for item in order.get("items", []):
             print(
-                f"  {item['name']} ({item['size']}) "
-                f"x {item['quantity']} = ₹{item['total']}"
+                f"{item.get('name', 'Unknown')} "
+                f"({item.get('size', 'Regular')}) x "
+                f"{item.get('quantity', 1)} = "
+                f"₹{float(item.get('total', 0)):.2f}"
             )
 
-        print(f"Total        : ₹{order['total']}")
+        print(f"Total: ₹{float(order.get('total', 0)):.2f}")
         print("-" * 40)
+
 
 def update_order_status():
     orders = load_orders()
@@ -415,57 +302,34 @@ def update_order_status():
         return
 
     show_orders(orders)
-
     order_id = get_order_id()
     order = find_order(orders, order_id)
 
     if order is None:
         print("Order ID not found.")
-        log_error("update_order_status", f"Order ID not found: {order_id}", "WARNING")
+        log_error("update_order_status", f"Order not found: {order_id}", "WARNING")
         return
 
-    if order["status"] == "Cancelled":
-        print("Cancelled order status cannot be changed.")
-        log_error(
-            "update_order_status",
-            f"Attempted to update cancelled order: {order_id}",
-            "WARNING",
-        )
-        return
-
-    if order["status"] == "Served":
-        print("Order is already served.")
-        log_error(
-            "update_order_status",
-            f"Attempted to update served order: {order_id}",
-            "WARNING",
-        )
+    if order.get("status") in ("Cancelled", "Served"):
+        print("This order status cannot be changed.")
         return
 
     statuses = {"1": "Pending", "2": "Preparing", "3": "Ready", "4": "Served"}
 
-    print("\n1. Pending")
-    print("2. Preparing")
-    print("3. Ready")
-    print("4. Served")
+    for key, status in statuses.items():
+        print(f"{key}. {status}")
 
-    while True:
-        choice = input("Select new status: ").strip()
+    choice = input("Select new status: ").strip()
 
-        if choice in statuses:
-            break
-
-        print("Invalid choice. Please select 1 to 4.")
-        log_error("update_order_status", f"Invalid status choice: {choice}", "WARNING")
+    if choice not in statuses:
+        print("Invalid choice.")
+        log_error("update_order_status", f"Invalid status: {choice}", "WARNING")
+        return
 
     order["status"] = statuses[choice]
 
-    if not save_orders(orders):
-        return
-
-    print("\nOrder status updated successfully!")
-    print(f"Order ID : {order['order_id']}")
-    print(f"Status   : {order['status']}")
+    if save_orders(orders):
+        print("Order status updated successfully!")
 
 
 def cancel_order():
@@ -476,35 +340,26 @@ def cancel_order():
         return
 
     show_orders(orders)
-
     order_id = get_order_id()
     order = find_order(orders, order_id)
 
     if order is None:
         print("Order ID not found.")
-        log_error("cancel_order", f"Order ID not found: {order_id}", "WARNING")
+        log_error("cancel_order", f"Order not found: {order_id}", "WARNING")
         return
 
-    if order["status"] == "Served":
+    if order.get("status") == "Served":
         print("Served order cannot be cancelled.")
-        log_error(
-            "cancel_order", f"Attempted to cancel served order: {order_id}", "WARNING"
-        )
         return
 
-    if order["status"] == "Cancelled":
+    if order.get("status") == "Cancelled":
         print("Order is already cancelled.")
-        log_error("cancel_order", f"Order already cancelled: {order_id}", "WARNING")
         return
 
     order["status"] = "Cancelled"
 
-    if not save_orders(orders):
-        return
-
-    print("\nOrder cancelled successfully!")
-    print(f"Order ID : {order['order_id']}")
-    print(f"Status   : {order['status']}")
+    if save_orders(orders):
+        print("Order cancelled successfully!")
 
 
 def order_menu():
@@ -530,5 +385,5 @@ def order_menu():
             print("Exit Order Management.")
             break
         else:
-            print("Invalid choice. Please select 1 to 5.")
-            log_error("order_menu", f"Invalid menu choice: {choice}", "WARNING")
+            print("Invalid choice.")
+            log_error("order_menu", f"Invalid choice: {choice}", "WARNING")

@@ -426,5 +426,19 @@
         "class": "BookingManagement",
         "function": "validate_booking_datetime",
         "message": "Past booking date/time entered: 05-10-2026 2:00 PM"
+    },
+    {
+        "time": "2026-10-06 14:57:45",
+        "level": "ERROR",
+        "class": "Billing",
+        "function": "generate_bill",
+        "message": "Bill already exists for order: O002"
+    },
+    {
+        "time": "2026-10-08 08:36:04",
+        "level": "WARNING",
+        "class": null,
+        "function": "signin",
+        "message": "Invalid choice. Please enter 1, 2 or 3."
     }
 ]

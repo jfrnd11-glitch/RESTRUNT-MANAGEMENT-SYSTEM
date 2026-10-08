@@ -33,5 +33,95 @@
         "payment_status": "Paid",
         "payment_method": "UPI",
         "payment_number": "1234"
+    },
+    {
+        "bill_id": "B002",
+        "order_id": "O002",
+        "customer_name": "Manish Singh",
+        "table_no": null,
+        "date": "2026-10-06",
+        "time": "14:56:47",
+        "items": [
+            {
+                "category": "Chinese",
+                "name": "Veg Hakka Noodles",
+                "size": "Full",
+                "price": 180,
+                "quantity": 1,
+                "total": 180
+            },
+            {
+                "category": "Chinese",
+                "name": "Veg Fried Rice",
+                "size": "Half",
+                "price": 100,
+                "quantity": 1,
+                "total": 100
+            }
+        ],
+        "subtotal": 280.0,
+        "discount_rate": 0,
+        "discount": 0.0,
+        "tax_rate": 5,
+        "tax": 14.0,
+        "grand_total": 294.0,
+        "payment_status": "Unpaid",
+        "payment_method": "Not Selected",
+        "payment_number": "Not Available"
+    },
+    {
+        "bill_id": "B003",
+        "order_id": "O003",
+        "customer_name": "Sahil",
+        "table_no": null,
+        "date": "2026-10-08",
+        "time": "08:38:27",
+        "items": [
+            {
+                "category": "Beverages",
+                "name": "Mineral Water",
+                "size": "Small",
+                "price": 20,
+                "quantity": 12,
+                "total": 240
+            }
+        ],
+        "subtotal": 240.0,
+        "discount_rate": 0,
+        "discount": 0.0,
+        "tax_rate": 5,
+        "tax": 12.0,
+        "grand_total": 252.0,
+        "payment_status": "Unpaid",
+        "payment_method": "Not Selected",
+        "payment_number": "Not Available"
+    },
+    {
+        "bill_id": "B004",
+        "order_id": "O004",
+        "customer_name": "Sahil Kumar",
+        "mobile": "8734091258",
+        "table_no": "T01",
+        "date": "2026-10-08",
+        "time": "09:57:32",
+        "items": [
+            {
+                "category": "Beverages",
+                "name": "Mineral Water",
+                "size": "Small",
+                "price": 20.0,
+                "quantity": 1,
+                "total": 20.0
+            }
+        ],
+        "subtotal": 20.0,
+        "discount_rate": 0,
+        "discount": 0.0,
+        "tax_rate": 5,
+        "tax": 1.0,
+        "grand_total": 21.0,
+        "payment_status": "Unpaid",
+        "payment_method": "Not Selected",
+        "payment_number": "Not Available"
     }
 ]

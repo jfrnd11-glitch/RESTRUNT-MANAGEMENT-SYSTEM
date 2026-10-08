@@ -242,13 +242,9 @@ def view_food():
             continue
 
         print()
-        print(
-            Fore.YELLOW
-            + f"==================== {category.upper()} ===================="
-        )
+        print(Fore.YELLOW+ f"==================== {category.upper()} ====================")
 
         print_menu_table(foods)
-
 
 def find_food(menu):
     category = select_category()
@@ -275,7 +271,6 @@ def find_food(menu):
 
         except ValueError:
             print(Fore.RED + "Please enter a number!")
-
 
 def update_food():
     menu = load_menu()
@@ -418,7 +413,6 @@ def delete_food():
     else:
 
         print(Fore.RED + "\nPlease enter yes or no!")
-
 
 def menu_management():
     while True:

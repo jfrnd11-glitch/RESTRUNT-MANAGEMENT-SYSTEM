@@ -2,599 +2,346 @@ import json
 import os
 import re
 from datetime import datetime
-
 from PROJECT.LOGS.error_hendal import error_handler
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATABASE_DIR = os.path.join(BASE_DIR, "DATABASE")
-
 ORDER_FILE = os.path.join(DATABASE_DIR, "orders.json")
 BILL_FILE = os.path.join(DATABASE_DIR, "bills.json")
-
 
 TAX_RATE = 5
 DISCOUNT_LIMIT = 1000
 DISCOUNT_RATE = 10
 
-
-def log_error(function_name, message):
+def log_error(function_name, message, level="ERROR"):
     try:
-        error_handler.log_error("Billing", function_name, message)
+        if level == "WARNING":
+            error_handler.log_warning("Billing", function_name, message)
+        else:
+            error_handler.log_error("Billing", function_name, message)
     except Exception:
         pass
 
-
-def log_warning(function_name, message):
-    try:
-        error_handler.log_warning("Billing", function_name, message)
-    except Exception:
-        pass
-
-
-def log_exception(function_name, exception):
-    try:
-        error_handler.log_exception("Billing", function_name, exception)
-    except Exception:
-        pass
-
-
-def load_orders():
-
-    if not os.path.exists(ORDER_FILE):
+def load_data(file_name):
+    if not os.path.exists(file_name):
         return []
-
     try:
-        with open(ORDER_FILE, "r") as file:
-            return json.load(file)
-
-    except json.JSONDecodeError as e:
-        log_exception("load_orders", e)
-        return []
-
+        with open(file_name, "r") as file:
+            data = json.load(file)
+            return data if isinstance(data, list) else []
     except Exception as e:
-        log_exception("load_orders", e)
+        log_error("load_data", str(e))
         return []
-
-
-def load_bills():
-
-    if not os.path.exists(BILL_FILE):
-        return []
-
-    try:
-        with open(BILL_FILE, "r") as file:
-            return json.load(file)
-
-    except json.JSONDecodeError as e:
-        log_exception("load_bills", e)
-        return []
-
-    except Exception as e:
-        log_exception("load_bills", e)
-        return []
-
 
 def save_bills(bills):
-
     try:
         os.makedirs(DATABASE_DIR, exist_ok=True)
-
         with open(BILL_FILE, "w") as file:
             json.dump(bills, file, indent=4)
-
         return True
-
     except Exception as e:
-        log_exception("save_bills", e)
+        log_error("save_bills", str(e))
         print("Bill save karne me error aaya!")
         return False
 
-
 def generate_bill_id(bills):
-
-    if not bills:
-        return "B001"
-
-    highest_number = 0
-
-    for bill in bills:
-
-        bill_id = bill.get("bill_id", "")
-
-        if re.fullmatch(r"B\d+", bill_id):
-
-            number = int(bill_id[1:])
-
-            if number > highest_number:
-                highest_number = number
-
-    return f"B{highest_number + 1:03d}"
+    numbers = [
+        int(bill["bill_id"][1:])
+        for bill in bills
+        if re.fullmatch(r"B\d+", bill.get("bill_id", ""))
+    ]
+    return f"B{max(numbers, default=0) + 1:03d}"
 
 
 def get_order_id():
-
     while True:
+        order_id = input("Enter Order ID: ").strip().upper()
+        if re.fullmatch(r"O\d{3}", order_id):
+            return order_id
+        print("Invalid Order ID! Example: O001")
+        log_error("get_order_id", f"Invalid Order ID: {order_id}", "WARNING")
 
-        order_id = input("\nEnter Order ID: ").strip().upper()
 
-        if not order_id:
+def get_customer_name():
+    while True:
+        name = input("Enter Customer Name: ").strip()
+        if len(name) >= 3 and all(char.isalpha() or char == " " for char in name):
+            return name.title()
+        print("Name must contain at least 3 letters.")
+        log_error("get_customer_name", f"Invalid name: {name}", "WARNING")
 
-            print("Order ID cannot be empty.")
 
-            log_error("get_order_id", "Order ID cannot be empty.")
-
-            continue
-
-        if not re.fullmatch(r"O\d{3}", order_id):
-
-            print("Invalid Order ID! Example: O001")
-
-            log_error("get_order_id", f"Invalid Order ID format: {order_id}")
-
-            continue
-
-        return order_id
+def get_mobile():
+    while True:
+        mobile = input("Enter Mobile Number: ").strip()
+        if re.fullmatch(r"[6-9]\d{9}", mobile):
+            return mobile
+        print("Enter a valid 10-digit mobile number.")
+        log_error("get_mobile", f"Invalid mobile: {mobile}", "WARNING")
 
 
 def generate_bill():
+    orders = load_data(ORDER_FILE)
+    bills = load_data(BILL_FILE)
+
+    if not orders:
+        print("No orders found.")
+        log_error("generate_bill", "No orders found.", "WARNING")
+        return
+
+    print("\n========== ORDERS ==========")
+    for order in orders:
+        print(
+            f"{order.get('order_id', 'N/A')} | "
+            f"Table: {order.get('table_no') or 'None'} | "
+            f"Status: {order.get('status', 'N/A')}"
+        )
+
+    order_id = get_order_id()
+    order = next((o for o in orders if o.get("order_id", "").upper() == order_id), None)
+
+    if order is None:
+        print("Order ID not found.")
+        log_error("generate_bill", f"Order not found: {order_id}", "WARNING")
+        return
+
+    if order.get("status", "").lower() == "cancelled":
+        print("Cancelled order cannot be billed.")
+        log_error("generate_bill", f"Cancelled order: {order_id}", "WARNING")
+        return
+
+    if any(b.get("order_id", "").upper() == order_id for b in bills):
+        print("Bill already generated for this order.")
+        log_error("generate_bill", f"Duplicate bill: {order_id}", "WARNING")
+        return
+
+    items = order.get("items", [])
+    if not items:
+        print("Order has no items.")
+        log_error("generate_bill", f"No items in order: {order_id}", "WARNING")
+        return
 
     try:
-
-        orders = load_orders()
-
-        if not orders:
-
-            print("\nNo orders found.")
-
-            log_warning("generate_bill", "No orders found.")
-
-            return
-
-        print("\n========== ORDERS ==========")
-
-        for order in orders:
-
-            print(
-                f"{order.get('order_id', 'N/A')} | "
-                f"{order.get('customer_name', 'N/A')} | "
-                f"Table: {order.get('table_no', 'None')} | "
-                f"Status: {order.get('status', 'N/A')}"
-            )
-
-        order_id = get_order_id()
-
-        selected_order = None
-
-        for order in orders:
-
-            if order.get("order_id", "").upper() == order_id:
-
-                selected_order = order
-                break
-
-        if selected_order is None:
-
-            print("Invalid Order ID!")
-
-            log_error("generate_bill", f"Order ID not found: {order_id}")
-
-            return
-
-        if selected_order.get("status", "").lower() == "cancelled":
-
-            print("Cancelled order cannot be billed!")
-
-            log_error("generate_bill", f"Cancelled order cannot be billed: {order_id}")
-
-            return
-
-        bills = load_bills()
-
-        for bill in bills:
-
-            if bill.get("order_id", "").upper() == order_id:
-
-                print("Bill already generated for this order!")
-
-                log_error("generate_bill", f"Bill already exists for order: {order_id}")
-
-                return
-
-        items = selected_order.get("items", [])
-
-        if not items:
-
-            print("Order me koi item nahi hai!")
-
-            log_error("generate_bill", f"No items found in order: {order_id}")
-
-            return
-
-        try:
-
-            subtotal = sum(float(item.get("total", 0)) for item in items)
-
-        except (TypeError, ValueError) as e:
-
-            print("Order item total invalid hai!")
-
-            log_exception("generate_bill", e)
-
-            return
-
+        subtotal = sum(float(item["total"]) for item in items)
         if subtotal <= 0:
+            raise ValueError("Subtotal must be greater than zero.")
+    except (KeyError, TypeError, ValueError) as e:
+        print("Invalid order item total.")
+        log_error("generate_bill", str(e))
+        return
 
-            print("Invalid subtotal!")
+    customer_name = get_customer_name()
+    mobile = get_mobile()
 
-            log_error("generate_bill", f"Invalid subtotal for order: {order_id}")
+    discount_rate = DISCOUNT_RATE if subtotal > DISCOUNT_LIMIT else 0
+    discount = round(subtotal * discount_rate / 100, 2)
+    after_discount = subtotal - discount
+    tax = round(after_discount * TAX_RATE / 100, 2)
+    grand_total = round(after_discount + tax, 2)
+    now = datetime.now()
 
-            return
+    bill = {
+        "bill_id": generate_bill_id(bills),
+        "order_id": order["order_id"],
+        "customer_name": customer_name,
+        "mobile": mobile,
+        "table_no": order.get("table_no"),
+        "date": now.strftime("%Y-%m-%d"),
+        "time": now.strftime("%H:%M:%S"),
+        "items": items,
+        "subtotal": round(subtotal, 2),
+        "discount_rate": discount_rate,
+        "discount": discount,
+        "tax_rate": TAX_RATE,
+        "tax": tax,
+        "grand_total": grand_total,
+        "payment_status": "Unpaid",
+        "payment_method": "Not Selected",
+        "payment_number": "Not Available",
+    }
 
-        # Discount only when subtotal is greater than 1000
-        if subtotal > DISCOUNT_LIMIT:
+    bills.append(bill)
+    if not save_bills(bills):
+        return
 
-            discount_rate = DISCOUNT_RATE
+    print("\n========== BILL ==========")
+    print("Bill ID:", bill["bill_id"])
+    print("Order ID:", bill["order_id"])
+    print("Customer:", customer_name)
+    print("Mobile:", mobile)
+    print("Table:", bill["table_no"] or "None")
+    print("Date:", bill["date"])
+    print("Time:", bill["time"])
+    print("\nItems:")
+    print(f"{'Item':22} {'Qty':5} {'Price':10} {'Total':10}")
+    print("-" * 50)
 
-        else:
+    for item in items:
+        name = item.get("name", item.get("item_name", "Unknown"))
+        quantity = int(item.get("quantity", item.get("qty", 1)))
+        price = float(item.get("price", 0))
+        total = float(item.get("total", price * quantity))
+        print(f"{name:22} {quantity:<5} ₹{price:<9.2f} ₹{total:.2f}")
 
-            discount_rate = 0
-
-        discount = subtotal * discount_rate / 100
-
-        after_discount = subtotal - discount
-
-        tax = after_discount * TAX_RATE / 100
-
-        grand_total = after_discount + tax
-
-        current_datetime = datetime.now()
-
-        bill = {
-            "bill_id": generate_bill_id(bills),
-            "order_id": selected_order["order_id"],
-            "customer_name": selected_order["customer_name"],
-            "table_no": selected_order.get("table_no", "None"),
-            "date": current_datetime.strftime("%Y-%m-%d"),
-            "time": current_datetime.strftime("%H:%M:%S"),
-            "items": selected_order.get("items", []),
-            "subtotal": round(subtotal, 2),
-            "discount_rate": discount_rate,
-            "discount": round(discount, 2),
-            "tax_rate": TAX_RATE,
-            "tax": round(tax, 2),
-            "grand_total": round(grand_total, 2),
-            "payment_status": "Unpaid",
-            "payment_method": "Not Selected",
-            "payment_number": "Not Available",
-        }
-
-        bills.append(bill)
-
-        if not save_bills(bills):
-
-            bills.pop()
-            return
-
-        print("\n========== BILL ==========")
-
-        print("Bill ID:", bill["bill_id"])
-        print("Order ID:", bill["order_id"])
-        print("Customer:", bill["customer_name"])
-        print("Table:", bill["table_no"])
-        print("Date:", bill["date"])
-        print("Time:", bill["time"])
-
-        print("\nSubtotal:", f"₹{subtotal:.2f}")
-        print(f"Discount ({discount_rate}%):", f"₹{discount:.2f}")
-        print(f"Tax ({TAX_RATE}%):", f"₹{tax:.2f}")
-        print("Grand Total:", f"₹{grand_total:.2f}")
-
-        print("Payment Status:", bill["payment_status"])
-
-        print("\nBill generated successfully!")
-
-    except Exception as e:
-
-        log_exception("generate_bill", e)
-
-        print("Bill generate karte waqt error aaya!")
+    print("-" * 50)
+    print(f"Subtotal: ₹{subtotal:.2f}")
+    print(f"Discount ({discount_rate}%): ₹{discount:.2f}")
+    print(f"Tax ({TAX_RATE}%): ₹{tax:.2f}")
+    print(f"Grand Total: ₹{grand_total:.2f}")
+    print("Payment Status: Unpaid")
+    print("Bill generated successfully!")
 
 
 def view_bills():
+    bills = load_data(BILL_FILE)
+    if not bills:
+        print("No bills found.")
+        return
 
-    try:
+    print("\n========== ALL BILLS ==========")
+    for bill in bills:
+        print("\n------------------------------")
+        print("Bill ID:", bill.get("bill_id", "N/A"))
+        print("Order ID:", bill.get("order_id", "N/A"))
+        print("Customer:", bill.get("customer_name", "N/A"))
+        print("Mobile:", bill.get("mobile", "N/A"))
+        print("Table:", bill.get("table_no") or "None")
+        print("Date:", bill.get("date", "N/A"))
+        print("Time:", bill.get("time", "N/A"))
+        print("\nItems:")
 
-        bills = load_bills()
+        for item in bill.get("items", []):
+            name = item.get("name", item.get("item_name", "Unknown"))
+            qty = item.get("quantity", item.get("qty", 1))
+            price = float(item.get("price", 0))
+            total = float(item.get("total", price * int(qty)))
+            print(f"{name} x {qty} | ₹{price:.2f} | ₹{total:.2f}")
 
-        if not bills:
+        print(f"Subtotal: ₹{float(bill.get('subtotal', 0)):.2f}")
+        print(f"Discount: ₹{float(bill.get('discount', 0)):.2f}")
+        print(f"Tax: ₹{float(bill.get('tax', 0)):.2f}")
+        print(f"Grand Total: ₹{float(bill.get('grand_total', 0)):.2f}")
+        print("Payment Status:", bill.get("payment_status", "Unpaid"))
+        print("Payment Method:", bill.get("payment_method", "Not Selected"))
+        print("Payment Number:", bill.get("payment_number", "Not Available"))
 
-            print("\nNo bills found.")
-            return
-
-        print("\n========== ALL BILLS ==========")
-
-        for bill in bills:
-
-            print("\n------------------------------")
-
-            print("Bill ID:", bill.get("bill_id", "N/A"))
-
-            print("Order ID:", bill.get("order_id", "N/A"))
-
-            print("Customer:", bill.get("customer_name", "N/A"))
-
-            print("Table:", bill.get("table_no", "None"))
-
-            print("Date:", bill.get("date", "N/A"))
-
-            print("Time:", bill.get("time", "N/A"))
-
-            print("Subtotal:", f"₹{float(bill.get('subtotal', 0)):.2f}")
-
-            print("Discount:", f"₹{float(bill.get('discount', 0)):.2f}")
-
-            print("Tax:", f"₹{float(bill.get('tax', 0)):.2f}")
-
-            print("Grand Total:", f"₹{float(bill.get('grand_total', 0)):.2f}")
-
-            print("Payment Status:", bill.get("payment_status", "Unpaid"))
-
-            print("Payment Method:", bill.get("payment_method", "Not Selected"))
-
-            print("Payment Number:", bill.get("payment_number", "Not Available"))
-
-    except Exception as e:
-
-        log_exception("view_bills", e)
-
-        print("Bills dekhne me error aaya!")
 
 def get_bill_id():
-
     while True:
-
-        bill_id = input("\nEnter Bill ID: ").strip().upper()
-
-        if not bill_id:
-
-            print("Bill ID cannot be empty.")
-
-            log_error("get_bill_id", "Bill ID cannot be empty.")
-
-            continue
-
-        if not re.fullmatch(r"B\d{3}", bill_id):
-
-            print("Invalid Bill ID! Example: B001")
-
-            log_error("get_bill_id", f"Invalid Bill ID format: {bill_id}")
-
-            continue
-
-        return bill_id
+        bill_id = input("Enter Bill ID: ").strip().upper()
+        if re.fullmatch(r"B\d{3,}", bill_id):
+            return bill_id
+        print("Invalid Bill ID! Example: B001")
+        log_error("get_bill_id", f"Invalid Bill ID: {bill_id}", "WARNING")
 
 
 def validate_upi():
-
     while True:
-
         upi = input("Enter UPI ID: ").strip()
-
-        if not upi:
-
-            print("UPI ID cannot be empty!")
-
-            log_error("validate_upi", "UPI ID cannot be empty.")
-
-            continue
-
-        if " " in upi:
-
-            print("UPI ID cannot contain spaces!")
-
-            log_error("validate_upi", f"UPI ID contains spaces: {upi}")
-
-            continue
-
-        if upi.count("@") != 1:
-
-            print("Invalid UPI ID! " "Example: name@upi")
-
-            log_error("validate_upi", f"Invalid UPI ID format: {upi}")
-
-            continue
-
-        username, provider = upi.split("@")
-
-        if not username or not provider:
-
-            print("Invalid UPI ID! " "Example: name@upi")
-
-            log_error("validate_upi", f"Invalid UPI ID: {upi}")
-
-            continue
-
-        if not re.fullmatch(r"[A-Za-z0-9._-]+", username):
-
-            print("Invalid UPI username!")
-
-            log_error("validate_upi", f"Invalid UPI username: {upi}")
-
-            continue
-
-        if not re.fullmatch(r"[A-Za-z0-9.-]+", provider):
-
-            print("Invalid UPI provider!")
-
-            log_error("validate_upi", f"Invalid UPI provider: {upi}")
-
-            continue
-
-        return upi
+        if re.fullmatch(r"[A-Za-z0-9._-]+@[A-Za-z0-9.-]+", upi):
+            return upi
+        print("Invalid UPI ID! Example: name@upi")
+        log_error("validate_upi", f"Invalid UPI: {upi}", "WARNING")
 
 
 def validate_card():
+    while True:
+        card = input("Enter 16 digit Card Number: ").strip().replace(" ", "")
+        if card.isdigit() and len(card) == 16:
+            break
+        print("Card number must contain exactly 16 digits.")
+        log_error("validate_card", "Invalid card number.", "WARNING")
 
     while True:
-
-        card = input("Enter 16 digit Card Number: ").strip()
-
-        card = card.replace(" ", "")
-
-        if not card.isdigit():
-
-            print("Card number must contain only digits!")
-
-            log_error("validate_card", "Card number contains non-digit characters.")
-
-            continue
-
-        if len(card) != 16:
-
-            print("Card number must be exactly 16 digits!")
-
-            log_error("validate_card", "Invalid card number length.")
-
-            continue
-
-        break
-
-    while True:
-
         cvv = input("Enter CVV: ").strip()
-
-        if not cvv.isdigit():
-
-            print("CVV must contain only digits!")
-
-            log_error("validate_card", "CVV contains non-digit characters.")
-
-            continue
-        if len(cvv) not in (3, 4):
-
-            print("CVV must be 3 or 4 digits!")
-
-            log_error("validate_card", "Invalid CVV length.")
-            continue
-        break
+        if cvv.isdigit() and len(cvv) in (3, 4):
+            break
+        print("CVV must contain 3 or 4 digits.")
+        log_error("validate_card", "Invalid CVV.", "WARNING")
 
     return "**** **** **** " + card[-4:]
 
+
 def update_payment():
-    try:
-        bills = load_bills()
-        if not bills:
+    bills = load_data(BILL_FILE)
+    if not bills:
+        print("No bills found.")
+        return
 
-            print("\nNo bills found.")
+    print("\n========== BILLS ==========")
+    for bill in bills:
+        print(
+            f"{bill.get('bill_id', 'N/A')} | "
+            f"{bill.get('customer_name', 'N/A')} | "
+            f"₹{float(bill.get('grand_total', 0)):.2f} | "
+            f"{bill.get('payment_status', 'Unpaid')}"
+        )
+
+    bill_id = get_bill_id()
+    bill = next((b for b in bills if b.get("bill_id", "").upper() == bill_id), None)
+
+    if bill is None:
+        print("Bill ID not found.")
+        log_error("update_payment", f"Bill not found: {bill_id}", "WARNING")
+        return
+
+    if bill.get("payment_status") == "Paid":
+        print("Bill is already paid.")
+        return
+
+    print("\n1. Paid")
+    print("2. Unpaid")
+    choice = input("Enter choice: ").strip()
+
+    if choice == "1":
+        print("\n1. Cash")
+        print("2. UPI")
+        print("3. Card")
+        method = input("Enter payment method: ").strip()
+
+        if method == "1":
+            payment_method = "Cash"
+            payment_number = "Not Required"
+        elif method == "2":
+            payment_method = "UPI"
+            payment_number = validate_upi()
+        elif method == "3":
+            payment_method = "Card"
+            payment_number = validate_card()
+        else:
+            print("Invalid payment method.")
+            log_error("update_payment", f"Invalid method: {method}", "WARNING")
             return
 
-        print("\n========== BILLS ==========")
+        bill["payment_status"] = "Paid"
+        bill["payment_method"] = payment_method
+        bill["payment_number"] = payment_number
 
-        for bill in bills:
+    elif choice == "2":
+        bill["payment_status"] = "Unpaid"
+        bill["payment_method"] = "Not Selected"
+        bill["payment_number"] = "Not Available"
+    else:
+        print("Invalid choice.")
+        log_error("update_payment", f"Invalid status choice: {choice}", "WARNING")
+        return
 
-            print(
-                f"{bill.get('bill_id', 'N/A')} | "
-                f"{bill.get('customer_name', 'N/A')} | "
-                f"₹{float(bill.get('grand_total', 0)):.2f} | "
-                f"{bill.get('payment_status', 'Unpaid')}"
-            )
+    if save_bills(bills):
+        print("Payment updated successfully!")
+        print("Bill ID:", bill["bill_id"])
+        print("Payment Status:", bill["payment_status"])
+        print("Payment Method:", bill["payment_method"])
 
-        bill_id = get_bill_id()
-
-        selected_bill = None
-
-        for bill in bills:
-            if bill.get("bill_id", "").upper() == bill_id:
-                selected_bill = bill
-                break
-
-        if selected_bill is None:
-            print("Invalid Bill ID!")
-            log_error("update_payment", f"Bill ID not found: {bill_id}")
-
-            return
-
-        if selected_bill.get("payment_status", "Unpaid") == "Paid":
-
-            print("Bill is already paid!")
-            log_error("update_payment", f"Bill already paid: {bill_id}")
-
-            return
-
-        print("\n1. Paid")
-        print("2. Unpaid")
-
-        while True:
-
-            choice = input("Enter choice: ").strip()
-            if choice in ("1", "2"):
-                break
-
-            print("Invalid choice! Select 1 or 2.")
-            log_error("update_payment", f"Invalid payment status choice: {choice}")
-
-        if choice == "1":
-            print("\n1. Cash")
-            print("2. UPI")
-            print("3. Card")
-
-            while True:
-                method = input("Enter payment method: ").strip()
-
-                if method in ("1", "2", "3"):
-                    break
-
-                print("Invalid payment method! " "Select 1, 2 or 3.")
-                log_error("update_payment", f"Invalid payment method: {method}")
-
-            if method == "1":
-                selected_bill["payment_status"] = "Paid"
-                selected_bill["payment_method"] = "Cash"
-                selected_bill["payment_number"] = "Not Required"
-
-            elif method == "2":
-
-                upi = validate_upi()
-                selected_bill["payment_status"] = "Paid"
-                selected_bill["payment_method"] = "UPI"
-                selected_bill["payment_number"] = upi
-
-            elif method == "3":
-
-                card = validate_card()
-                selected_bill["payment_status"] = "Paid"
-                selected_bill["payment_method"] = "Card"
-                selected_bill["payment_number"] = card
-
-        elif choice == "2":
-
-            selected_bill["payment_status"] = "Unpaid"
-            selected_bill["payment_method"] = "Not Selected"
-            selected_bill["payment_number"] = "Not Available"
-
-        if not save_bills(bills):
-            return
-
-        print("\nPayment updated successfully!")
-        print("Bill ID:", selected_bill["bill_id"])
-        print("Payment Status:", selected_bill["payment_status"])
-        print("Payment Method:", selected_bill["payment_method"])
-
-    except Exception as e:
-        log_exception("update_payment", e)
-        print("Payment update karte waqt error aaya!")
 
 def billing_menu():
-
     while True:
-
         print("\n========== BILLING MANAGEMENT ==========")
-
         print("1. Generate Bill")
         print("2. View Bills")
         print("3. Update Payment")
         print("4. Exit")
         choice = input("Enter choice: ").strip()
+
         if choice == "1":
             generate_bill()
         elif choice == "2":
@@ -602,9 +349,8 @@ def billing_menu():
         elif choice == "3":
             update_payment()
         elif choice == "4":
-
             print("Billing Management closed.")
             break
         else:
-            print("Invalid choice!")
-            log_error("billing_menu", f"Invalid menu choice: {choice}")
+            print("Invalid choice.")
+            log_error("billing_menu", f"Invalid choice: {choice}", "WARNING")
