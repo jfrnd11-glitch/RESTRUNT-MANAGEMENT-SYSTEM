@@ -440,5 +440,126 @@
         "class": null,
         "function": "signin",
         "message": "Invalid choice. Please enter 1, 2 or 3."
+    },
+    {
+        "time": "2026-10-08 11:20:31",
+        "level": "WARNING",
+        "class": null,
+        "function": "signin",
+        "message": "User ID or Email not found."
+    },
+    {
+        "time": "2026-10-08 11:22:09",
+        "level": "ERROR",
+        "class": "AdminManagement",
+        "function": "show",
+        "message": "Invalid choice entered: 11"
+    },
+    {
+        "time": "2026-10-08 11:30:47",
+        "level": "ERROR",
+        "class": "BookingManagement",
+        "function": "get_booking_date",
+        "message": "Past booking date entered: 07-10-2026"
+    },
+    {
+        "time": "2026-10-08 11:32:28",
+        "level": "ERROR",
+        "class": "BookingManagement",
+        "function": "get_mobile",
+        "message": "Mobile number is not exactly 10 digits"
+    },
+    {
+        "time": "2026-10-08 11:33:00",
+        "level": "ERROR",
+        "class": "BookingManagement",
+        "function": "get_booking_time",
+        "message": "Invalid booking time: 11 AM"
+    },
+    {
+        "time": "2026-10-08 11:35:53",
+        "level": "ERROR",
+        "class": "BookingManagement",
+        "function": "change_booking_status",
+        "message": "Invalid status choice: f2"
+    },
+    {
+        "time": "2026-10-08 11:40:14",
+        "level": "WARNING",
+        "class": "OrderManagement",
+        "function": "create_order",
+        "message": "Invalid category: 16, 14"
+    },
+    {
+        "time": "2026-10-08 11:41:10",
+        "level": "WARNING",
+        "class": "OrderManagement",
+        "function": "create_order",
+        "message": "Invalid food: 1,2"
+    },
+    {
+        "time": "2026-10-08 11:43:36",
+        "level": "WARNING",
+        "class": "Billing",
+        "function": "get_mobile",
+        "message": "Invalid mobile: 62876065760"
+    },
+    {
+        "time": "2026-10-08 11:43:43",
+        "level": "WARNING",
+        "class": "Billing",
+        "function": "get_mobile",
+        "message": "Invalid mobile: 3234623576"
+    },
+    {
+        "time": "2026-10-08 11:43:46",
+        "level": "WARNING",
+        "class": "Billing",
+        "function": "get_mobile",
+        "message": "Invalid mobile: 5324652647809"
+    },
+    {
+        "time": "2026-10-08 11:49:57",
+        "level": "WARNING",
+        "class": "Billing",
+        "function": "get_order_id",
+        "message": "Invalid Order ID: O0006"
+    },
+    {
+        "time": "2026-10-08 12:30:00",
+        "level": "WARNING",
+        "class": "Billing",
+        "function": "billing_menu",
+        "message": "Invalid choice: python -u \"c:\\RESTRUNT-MANAGEMENT-SYSTEM\\main.py\""
+    },
+    {
+        "time": "2026-10-08 13:02:15",
+        "level": "EXCEPTION",
+        "class": null,
+        "function": "main",
+        "message": "'AdminManagement' object has no attribute 'show'",
+        "line": 28,
+        "file": "C:\\RESTRUNT-MANAGEMENT-SYSTEM\\PROJECT\\AUTH\\menu.py"
+    },
+    {
+        "time": "2026-10-08 13:11:11",
+        "level": "WARNING",
+        "class": "BookingManagement",
+        "function": "get_number",
+        "message": "Invalid number entered."
+    },
+    {
+        "time": "2026-10-08 13:12:09",
+        "level": "WARNING",
+        "class": "BookingManagement",
+        "function": "select_tables",
+        "message": "Invalid table selected."
+    },
+    {
+        "time": "2026-10-08 13:12:29",
+        "level": "WARNING",
+        "class": "BookingManagement",
+        "function": "select_tables",
+        "message": "Invalid table selected."
     }
 ]

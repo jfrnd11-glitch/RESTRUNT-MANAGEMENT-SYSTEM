@@ -1,12 +1,16 @@
-from PROJECT.MENU.menu_management import view_food
-from PROJECT.BOOKING.booking_management import booking_management
-from PROJECT.ORDER.order_management import order_menu, update_order_status
-from PROJECT.BILLING.billing_management import billing_menu
+from PROJECT.MENU.menu_management import MenuManagement
+from PROJECT.BOOKING.booking_management import BookingManagement
+from PROJECT.ORDER.order_management import OrderManagement
+from PROJECT.BILLING.billing_management import BillingManagement
 from PROJECT.LOGS.error_hendal import error_handler
 
 class StaffManagement:
     def __init__(self, user):
         self.user = user
+        self.menu = MenuManagement()
+        self.booking = BookingManagement()
+        self.order = OrderManagement()
+        self.billing = BillingManagement()
 
     def show(self):
         try:
@@ -27,25 +31,24 @@ class StaffManagement:
                 choice = input("\nEnter your choice: ").strip()
 
                 if choice == "1":
-                    view_food()
+                    self.menu.view_food()
                 elif choice == "2":
-                    booking_management()
+                    self.booking.booking_management()
                 elif choice == "3":
-                    order_menu()
+                    self.order.show()
                 elif choice == "4":
-                    update_order_status()
+                    self.order.update_order_status()
                 elif choice == "5":
-                    billing_menu()
+                    self.billing.billing_menu()
                 elif choice == "6":
                     print("\nReturning to previous menu.")
                     break
                 else:
                     print("\nInvalid choice.")
-                    error_handler.log_error(
-                        "StaffManagement", "show",
-                        f"Invalid choice: {choice}"
+                    error_handler.warning(
+                        f"StaffManagement: Invalid choice: {choice}"
                     )
 
         except Exception as e:
-            error_handler.log_exception("StaffManagement", "show", e)
+            error_handler.exception(e)
             print("\nSomething went wrong.")

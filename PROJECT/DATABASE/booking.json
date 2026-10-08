@@ -59,5 +59,61 @@
             "T01"
         ],
         "status": "Confirmed"
+    },
+    {
+        "booking_id": "B0006",
+        "customer_name": "Aryan Verma",
+        "mobile": "6287606576",
+        "booking_date": "9-10-2026",
+        "booking_time": "11:00 AM",
+        "duration": 2,
+        "guests": 6,
+        "table_number": [
+            "T21"
+        ],
+        "status": "Confirmed"
+    },
+    {
+        "booking_id": "B0007",
+        "customer_name": "Aryan",
+        "mobile": "6287606576",
+        "booking_date": "9-10-2026",
+        "booking_time": "09:00 AM",
+        "duration": 1,
+        "guests": 4,
+        "table_number": [
+            "T14"
+        ],
+        "status": "Pending"
+    },
+    {
+        "booking_id": "B0008",
+        "customer_name": "Abhishek",
+        "mobile": "8271097128",
+        "booking_date": "15-10-2026",
+        "booking_time": "10:00 AM",
+        "duration": 2,
+        "guests": 6,
+        "table_number": [
+            "T21"
+        ],
+        "status": "Confirmed"
+    },
+    {
+        "booking_id": "B0009",
+        "customer_name": "Abhi",
+        "mobile": "7589982309",
+        "booking_date": "12-10-2026",
+        "booking_time": "11:00 AM",
+        "duration": 3,
+        "guests": 30,
+        "table_number": [
+            "T21",
+            "T22",
+            "T23",
+            "T24",
+            "T25"
+        ],
+        "status": "Pending"
     }
 ]

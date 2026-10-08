@@ -474,12 +474,5 @@
         "category": "Beverages",
         "quantity": 200,
         "unit": "bottle"
-    },
-    {
-        "item_id": "I069",
-        "name": "Soft Drink",
-        "category": "Beverages",
-        "quantity": 150,
-        "unit": "bottle"
     }
 ]

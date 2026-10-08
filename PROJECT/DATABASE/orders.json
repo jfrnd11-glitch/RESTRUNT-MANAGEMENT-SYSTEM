@@ -85,5 +85,56 @@
         ],
         "total": 20.0,
         "status": "Pending"
+    },
+    {
+        "order_id": "O005",
+        "order_type": "Dine-In",
+        "table_no": "T14",
+        "items": [
+            {
+                "category": "Tea & Coffee",
+                "name": "Masala Chai",
+                "size": "Medium",
+                "price": 50.0,
+                "quantity": 4,
+                "total": 200.0
+            }
+        ],
+        "total": 200.0,
+        "status": "Pending"
+    },
+    {
+        "order_id": "O006",
+        "order_type": "Dine-In",
+        "table_no": "T21",
+        "items": [
+            {
+                "category": "Rice & Biryani",
+                "name": "Chicken Biryani",
+                "size": "Full",
+                "price": 260.0,
+                "quantity": 6,
+                "total": 1560.0
+            }
+        ],
+        "total": 1560.0,
+        "status": "Pending"
+    },
+    {
+        "order_id": "O007",
+        "order_type": "Dine-In",
+        "table_no": "T25",
+        "items": [
+            {
+                "category": "Beverages",
+                "name": "Mineral Water",
+                "size": "Large",
+                "price": 60.0,
+                "quantity": 9,
+                "total": 540.0
+            }
+        ],
+        "total": 540.0,
+        "status": "Pending"
     }
 ]
