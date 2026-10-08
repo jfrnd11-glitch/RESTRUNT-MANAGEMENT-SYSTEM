@@ -1,0 +1,41 @@
+[
+    {
+        "user_id": "0001",
+        "name": "Jayant kumar",
+        "email": "jayant123@gmail.com",
+        "mobile": "7050973230",
+        "aadhaar": "288786964658",
+        "password": "Jayant@123",
+        "role": "admin"
+    },
+    {
+        "user_id": "0012",
+        "name": "sumit kumar",
+        "email": "sumit123@gmail.com",
+        "mobile": "7482950459",
+        "aadhaar": "780536510954",
+        "password": "Sumit@321",
+        "role": "staff",
+        "created_by": "0001"
+    },
+    {
+        "user_id": "2405057766",
+        "name": "ravi singh",
+        "email": "ravi123@gmail.com",
+        "mobile": "8463902766",
+        "aadhaar": "845282937452",
+        "password": "Ravi@4321",
+        "role": "staff",
+        "created_by": "0001"
+    },
+    {
+        "user_id": "1174581695",
+        "name": "rohit kumar",
+        "email": "rohit123@gmail.com",
+        "mobile": "8452091564",
+        "aadhaar": "123456789006",
+        "password": "Rohit@000",
+        "role": "staff",
+        "created_by": "0001"
+    }
+]

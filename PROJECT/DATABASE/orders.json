@@ -1,0 +1,140 @@
+[
+    {
+        "order_id": "O001",
+        "customer_name": "ARY",
+        "order_type": "Dine-In",
+        "table_no": "T01",
+        "items": [
+            {
+                "category": "Salad",
+                "name": "Chicken Salad",
+                "size": "Half",
+                "price": 120,
+                "quantity": 2,
+                "total": 240
+            },
+            {
+                "category": "Salad",
+                "name": "Chicken Salad",
+                "size": "Full",
+                "price": 190,
+                "quantity": 2,
+                "total": 380
+            }
+        ],
+        "total": 620,
+        "status": "Pending"
+    },
+    {
+        "order_id": "O002",
+        "customer_name": "Manish Singh",
+        "order_type": "Takeaway",
+        "table_no": null,
+        "items": [
+            {
+                "category": "Chinese",
+                "name": "Veg Hakka Noodles",
+                "size": "Full",
+                "price": 180,
+                "quantity": 1,
+                "total": 180
+            },
+            {
+                "category": "Chinese",
+                "name": "Veg Fried Rice",
+                "size": "Half",
+                "price": 100,
+                "quantity": 1,
+                "total": 100
+            }
+        ],
+        "total": 280,
+        "status": "Pending"
+    },
+    {
+        "order_id": "O003",
+        "customer_name": "Sahil",
+        "order_type": "Takeaway",
+        "table_no": null,
+        "items": [
+            {
+                "category": "Beverages",
+                "name": "Mineral Water",
+                "size": "Small",
+                "price": 20,
+                "quantity": 12,
+                "total": 240
+            }
+        ],
+        "total": 240,
+        "status": "Pending"
+    },
+    {
+        "order_id": "O004",
+        "order_type": "Dine-In",
+        "table_no": "T01",
+        "items": [
+            {
+                "category": "Beverages",
+                "name": "Mineral Water",
+                "size": "Small",
+                "price": 20.0,
+                "quantity": 1,
+                "total": 20.0
+            }
+        ],
+        "total": 20.0,
+        "status": "Pending"
+    },
+    {
+        "order_id": "O005",
+        "order_type": "Dine-In",
+        "table_no": "T14",
+        "items": [
+            {
+                "category": "Tea & Coffee",
+                "name": "Masala Chai",
+                "size": "Medium",
+                "price": 50.0,
+                "quantity": 4,
+                "total": 200.0
+            }
+        ],
+        "total": 200.0,
+        "status": "Pending"
+    },
+    {
+        "order_id": "O006",
+        "order_type": "Dine-In",
+        "table_no": "T21",
+        "items": [
+            {
+                "category": "Rice & Biryani",
+                "name": "Chicken Biryani",
+                "size": "Full",
+                "price": 260.0,
+                "quantity": 6,
+                "total": 1560.0
+            }
+        ],
+        "total": 1560.0,
+        "status": "Pending"
+    },
+    {
+        "order_id": "O007",
+        "order_type": "Dine-In",
+        "table_no": "T25",
+        "items": [
+            {
+                "category": "Beverages",
+                "name": "Mineral Water",
+                "size": "Large",
+                "price": 60.0,
+                "quantity": 9,
+                "total": 540.0
+            }
+        ],
+        "total": 540.0,
+        "status": "Pending"
+    }
+]

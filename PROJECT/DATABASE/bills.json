@@ -1,0 +1,211 @@
+[
+    {
+        "bill_id": "B001",
+        "order_id": "O001",
+        "customer_name": "ARY",
+        "table_no": "T01",
+        "date": "2026-10-04",
+        "time": "07:43:44",
+        "items": [
+            {
+                "category": "Salad",
+                "name": "Chicken Salad",
+                "size": "Half",
+                "price": 120,
+                "quantity": 2,
+                "total": 240
+            },
+            {
+                "category": "Salad",
+                "name": "Chicken Salad",
+                "size": "Full",
+                "price": 190,
+                "quantity": 2,
+                "total": 380
+            }
+        ],
+        "subtotal": 620.0,
+        "discount_rate": 0,
+        "discount": 0.0,
+        "tax_rate": 5,
+        "tax": 31.0,
+        "grand_total": 651.0,
+        "payment_status": "Paid",
+        "payment_method": "UPI",
+        "payment_number": "1234"
+    },
+    {
+        "bill_id": "B002",
+        "order_id": "O002",
+        "customer_name": "Manish Singh",
+        "table_no": null,
+        "date": "2026-10-06",
+        "time": "14:56:47",
+        "items": [
+            {
+                "category": "Chinese",
+                "name": "Veg Hakka Noodles",
+                "size": "Full",
+                "price": 180,
+                "quantity": 1,
+                "total": 180
+            },
+            {
+                "category": "Chinese",
+                "name": "Veg Fried Rice",
+                "size": "Half",
+                "price": 100,
+                "quantity": 1,
+                "total": 100
+            }
+        ],
+        "subtotal": 280.0,
+        "discount_rate": 0,
+        "discount": 0.0,
+        "tax_rate": 5,
+        "tax": 14.0,
+        "grand_total": 294.0,
+        "payment_status": "Unpaid",
+        "payment_method": "Not Selected",
+        "payment_number": "Not Available"
+    },
+    {
+        "bill_id": "B003",
+        "order_id": "O003",
+        "customer_name": "Sahil",
+        "table_no": null,
+        "date": "2026-10-08",
+        "time": "08:38:27",
+        "items": [
+            {
+                "category": "Beverages",
+                "name": "Mineral Water",
+                "size": "Small",
+                "price": 20,
+                "quantity": 12,
+                "total": 240
+            }
+        ],
+        "subtotal": 240.0,
+        "discount_rate": 0,
+        "discount": 0.0,
+        "tax_rate": 5,
+        "tax": 12.0,
+        "grand_total": 252.0,
+        "payment_status": "Unpaid",
+        "payment_method": "Not Selected",
+        "payment_number": "Not Available"
+    },
+    {
+        "bill_id": "B004",
+        "order_id": "O004",
+        "customer_name": "Sahil Kumar",
+        "mobile": "8734091258",
+        "table_no": "T01",
+        "date": "2026-10-08",
+        "time": "09:57:32",
+        "items": [
+            {
+                "category": "Beverages",
+                "name": "Mineral Water",
+                "size": "Small",
+                "price": 20.0,
+                "quantity": 1,
+                "total": 20.0
+            }
+        ],
+        "subtotal": 20.0,
+        "discount_rate": 0,
+        "discount": 0.0,
+        "tax_rate": 5,
+        "tax": 1.0,
+        "grand_total": 21.0,
+        "payment_status": "Unpaid",
+        "payment_method": "Not Selected",
+        "payment_number": "Not Available"
+    },
+    {
+        "bill_id": "B005",
+        "order_id": "O005",
+        "customer_name": "Aryan",
+        "mobile": "6287606567",
+        "table_no": "T14",
+        "date": "2026-10-08",
+        "time": "11:44:17",
+        "items": [
+            {
+                "category": "Tea & Coffee",
+                "name": "Masala Chai",
+                "size": "Medium",
+                "price": 50.0,
+                "quantity": 4,
+                "total": 200.0
+            }
+        ],
+        "subtotal": 200.0,
+        "discount_rate": 0,
+        "discount": 0.0,
+        "tax_rate": 5,
+        "tax": 10.0,
+        "grand_total": 210.0,
+        "payment_status": "Unpaid",
+        "payment_method": "Not Selected",
+        "payment_number": "Not Available"
+    },
+    {
+        "bill_id": "B006",
+        "order_id": "O006",
+        "customer_name": "Abhishk",
+        "mobile": "8271096128",
+        "table_no": "T21",
+        "date": "2026-10-08",
+        "time": "11:52:22",
+        "items": [
+            {
+                "category": "Rice & Biryani",
+                "name": "Chicken Biryani",
+                "size": "Full",
+                "price": 260.0,
+                "quantity": 6,
+                "total": 1560.0
+            }
+        ],
+        "subtotal": 1560.0,
+        "discount_rate": 10,
+        "discount": 156.0,
+        "tax_rate": 5,
+        "tax": 70.2,
+        "grand_total": 1474.2,
+        "payment_status": "Paid",
+        "payment_method": "Cash",
+        "payment_number": "Not Required"
+    },
+    {
+        "bill_id": "B007",
+        "order_id": "O007",
+        "customer_name": "Abhisheak",
+        "mobile": "7639812098",
+        "table_no": "T25",
+        "date": "2026-10-08",
+        "time": "13:16:21",
+        "items": [
+            {
+                "category": "Beverages",
+                "name": "Mineral Water",
+                "size": "Large",
+                "price": 60.0,
+                "quantity": 9,
+                "total": 540.0
+            }
+        ],
+        "subtotal": 540.0,
+        "discount_rate": 0,
+        "discount": 0.0,
+        "tax_rate": 5,
+        "tax": 27.0,
+        "grand_total": 567.0,
+        "payment_status": "Paid",
+        "payment_method": "UPI",
+        "payment_number": "jayant@upi"
+    }
+]

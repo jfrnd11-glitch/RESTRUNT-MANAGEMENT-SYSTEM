@@ -1,0 +1,565 @@
+[
+    {
+        "time": "2026-09-30 10:13:06",
+        "level": "EXCEPTION",
+        "class": null,
+        "function": "test_error",
+        "message": "invalid literal for int() with base 10: 'abc'",
+        "line": 10,
+        "file": "C:\\RESTRUNT-MANAGEMENT-SYSTEM\\PROJECT\\LOGS\\test_error.py"
+    },
+    {
+        "time": "2026-09-30 12:32:53",
+        "level": "ERROR",
+        "class": "Signin",
+        "function": "signin",
+        "message": "User ID not found: 73537"
+    },
+    {
+        "time": "2026-09-30 13:03:07",
+        "level": "ERROR",
+        "class": "Signin",
+        "function": "signin",
+        "message": "Incorrect password for User ID: 0001"
+    },
+    {
+        "time": "2026-09-30 13:03:34",
+        "level": "ERROR",
+        "class": "BookingManagement",
+        "function": "booking_management",
+        "message": "Invalid menu choice: 9"
+    },
+    {
+        "time": "2026-10-01 10:07:55",
+        "level": "INFO",
+        "class": "AdminManagement",
+        "function": "dashboard",
+        "message": "Dashboard opened successfully"
+    },
+    {
+        "time": "2026-10-01 10:08:17",
+        "level": "INFO",
+        "class": "BookingManagement",
+        "function": "view_bookings",
+        "message": "1 booking(s) displayed"
+    },
+    {
+        "time": "2026-10-01 11:19:40",
+        "level": "ERROR",
+        "class": "BookingManagement",
+        "function": "booking_management",
+        "message": "Invalid menu choice: 9"
+    },
+    {
+        "time": "2026-10-01 11:20:15",
+        "level": "ERROR",
+        "class": "BookingManagement",
+        "function": "get_mobile",
+        "message": "Mobile number is not exactly 10 digits"
+    },
+    {
+        "time": "2026-10-01 11:20:28",
+        "level": "ERROR",
+        "class": "BookingManagement",
+        "function": "get_mobile",
+        "message": "Mobile number is not exactly 10 digits"
+    },
+    {
+        "time": "2026-10-01 11:22:41",
+        "level": "INFO",
+        "class": "BookingManagement",
+        "function": "new_booking",
+        "message": "Booking created successfully: B0002"
+    },
+    {
+        "time": "2026-10-01 11:22:51",
+        "level": "INFO",
+        "class": "BookingManagement",
+        "function": "view_bookings",
+        "message": "2 booking(s) displayed"
+    },
+    {
+        "time": "2026-10-01 14:09:38",
+        "level": "INFO",
+        "class": "AdminManagement",
+        "function": "view_staff",
+        "message": "Staff list viewed"
+    },
+    {
+        "time": "2026-10-01 14:10:28",
+        "level": "INFO",
+        "class": "BookingManagement",
+        "function": "available_tables_menu",
+        "message": "Available tables checked"
+    },
+    {
+        "time": "2026-10-01 14:11:03",
+        "level": "ERROR",
+        "class": "BookingManagement",
+        "function": "change_booking_status",
+        "message": "Booking not found: B001"
+    },
+    {
+        "time": "2026-10-01 14:11:20",
+        "level": "INFO",
+        "class": "BookingManagement",
+        "function": "view_bookings",
+        "message": "2 booking(s) displayed"
+    },
+    {
+        "time": "2026-10-01 14:12:11",
+        "level": "INFO",
+        "class": "BookingManagement",
+        "function": "change_booking_status",
+        "message": "Status changed for B0002: Confirmed"
+    },
+    {
+        "time": "2026-10-01 14:12:58",
+        "level": "INFO",
+        "class": "BookingManagement",
+        "function": "view_bookings",
+        "message": "2 booking(s) displayed"
+    },
+    {
+        "time": "2026-10-01 14:13:27",
+        "level": "INFO",
+        "class": "BookingManagement",
+        "function": "booking_management",
+        "message": "Booking Management closed"
+    },
+    {
+        "time": "2026-10-01 14:18:49",
+        "level": "WARNING",
+        "class": "Billing",
+        "function": "generate_bill",
+        "message": "Cancelled order: O001"
+    },
+    {
+        "time": "2026-10-01 14:18:55",
+        "level": "EXCEPTION",
+        "class": "Billing",
+        "function": "view_bills",
+        "message": "'date'",
+        "line": 138,
+        "file": "c:\\RESTRUNT-MANAGEMENT-SYSTEM\\PROJECT\\BILLING\\billing_management.py"
+    },
+    {
+        "time": "2026-10-01 14:20:02",
+        "level": "WARNING",
+        "class": "Billing",
+        "function": "update_payment",
+        "message": "Bill already paid: B001"
+    },
+    {
+        "time": "2026-10-01 14:20:17",
+        "level": "WARNING",
+        "class": "Billing",
+        "function": "generate_bill",
+        "message": "Cancelled order: O001"
+    },
+    {
+        "time": "2026-10-01 14:20:22",
+        "level": "INFO",
+        "class": "Billing",
+        "function": "billing_menu",
+        "message": "Billing Management closed"
+    },
+    {
+        "time": "2026-10-01 14:37:45",
+        "level": "INFO",
+        "class": "Billing",
+        "function": "generate_bill",
+        "message": "Bill generated successfully: B002"
+    },
+    {
+        "time": "2026-10-01 14:39:06",
+        "level": "INFO",
+        "class": "Billing",
+        "function": "update_payment",
+        "message": "Payment updated for Bill: B002"
+    },
+    {
+        "time": "2026-10-01 14:39:11",
+        "level": "EXCEPTION",
+        "class": "Billing",
+        "function": "view_bills",
+        "message": "'date'",
+        "line": 138,
+        "file": "c:\\RESTRUNT-MANAGEMENT-SYSTEM\\PROJECT\\BILLING\\billing_management.py"
+    },
+    {
+        "time": "2026-10-01 14:39:39",
+        "level": "EXCEPTION",
+        "class": "Billing",
+        "function": "view_bills",
+        "message": "'date'",
+        "line": 138,
+        "file": "c:\\RESTRUNT-MANAGEMENT-SYSTEM\\PROJECT\\BILLING\\billing_management.py"
+    },
+    {
+        "time": "2026-10-01 14:52:24",
+        "level": "INFO",
+        "class": "Billing",
+        "function": "billing_menu",
+        "message": "Billing Management closed"
+    },
+    {
+        "time": "2026-10-01 14:54:10",
+        "level": "INFO",
+        "class": "Billing",
+        "function": "view_bills",
+        "message": "2 bill(s) displayed"
+    },
+    {
+        "time": "2026-10-01 15:09:59",
+        "level": "INFO",
+        "class": "Billing",
+        "function": "billing_menu",
+        "message": "Billing Management closed"
+    },
+    {
+        "time": "2026-10-01 15:10:17",
+        "level": "INFO",
+        "class": "AdminManagement",
+        "function": "show",
+        "message": "Admin logged out"
+    },
+    {
+        "time": "2026-10-01 15:15:21",
+        "level": "INFO",
+        "class": "AdminManagement",
+        "function": "show",
+        "message": "Admin logged out"
+    },
+    {
+        "time": "2026-10-01 15:16:56",
+        "level": "INFO",
+        "class": "AdminManagement",
+        "function": "show",
+        "message": "Admin logged out"
+    },
+    {
+        "time": "2026-10-04 07:32:03",
+        "level": "ERROR",
+        "class": "AdminManagement",
+        "function": "show",
+        "message": "Invalid choice entered: -1"
+    },
+    {
+        "time": "2026-10-04 07:32:06",
+        "level": "ERROR",
+        "class": "AdminManagement",
+        "function": "show",
+        "message": "Invalid choice entered: 0"
+    },
+    {
+        "time": "2026-10-04 07:32:09",
+        "level": "INFO",
+        "class": "AdminManagement",
+        "function": "dashboard",
+        "message": "Dashboard opened successfully"
+    },
+    {
+        "time": "2026-10-04 07:32:36",
+        "level": "INFO",
+        "class": "AdminManagement",
+        "function": "dashboard",
+        "message": "Dashboard opened successfully"
+    },
+    {
+        "time": "2026-10-04 07:34:49",
+        "level": "ERROR",
+        "class": "BookingManagement",
+        "function": "get_booking_date",
+        "message": "Past booking date entered: 21-9-2025"
+    },
+    {
+        "time": "2026-10-04 07:35:46",
+        "level": "ERROR",
+        "class": "BookingManagement",
+        "function": "get_booking_time",
+        "message": "Invalid booking time: 00"
+    },
+    {
+        "time": "2026-10-04 07:36:29",
+        "level": "INFO",
+        "class": "BookingManagement",
+        "function": "new_booking",
+        "message": "Booking created successfully: B0001"
+    },
+    {
+        "time": "2026-10-04 07:36:37",
+        "level": "INFO",
+        "class": "BookingManagement",
+        "function": "view_bookings",
+        "message": "1 booking(s) displayed"
+    },
+    {
+        "time": "2026-10-04 07:37:02",
+        "level": "ERROR",
+        "class": "BookingManagement",
+        "function": "change_booking_status",
+        "message": "Booking not found: B001"
+    },
+    {
+        "time": "2026-10-04 07:37:18",
+        "level": "INFO",
+        "class": "BookingManagement",
+        "function": "change_booking_status",
+        "message": "Status changed for B0001: Confirmed"
+    },
+    {
+        "time": "2026-10-04 07:37:57",
+        "level": "INFO",
+        "class": "BookingManagement",
+        "function": "available_tables_menu",
+        "message": "Available tables checked"
+    },
+    {
+        "time": "2026-10-04 07:38:42",
+        "level": "INFO",
+        "class": "BookingManagement",
+        "function": "new_booking",
+        "message": "Booking created successfully: B0002"
+    },
+    {
+        "time": "2026-10-04 07:39:32",
+        "level": "INFO",
+        "class": "BookingManagement",
+        "function": "booking_management",
+        "message": "Booking Management closed"
+    },
+    {
+        "time": "2026-10-04 07:43:44",
+        "level": "INFO",
+        "class": "Billing",
+        "function": "generate_bill",
+        "message": "Bill generated successfully: B001"
+    },
+    {
+        "time": "2026-10-04 07:44:00",
+        "level": "INFO",
+        "class": "Billing",
+        "function": "view_bills",
+        "message": "1 bill(s) displayed"
+    },
+    {
+        "time": "2026-10-04 07:45:34",
+        "level": "INFO",
+        "class": "Billing",
+        "function": "update_payment",
+        "message": "Payment updated for Bill: B001"
+    },
+    {
+        "time": "2026-10-04 07:45:52",
+        "level": "INFO",
+        "class": "Billing",
+        "function": "view_bills",
+        "message": "1 bill(s) displayed"
+    },
+    {
+        "time": "2026-10-04 07:46:15",
+        "level": "INFO",
+        "class": "Billing",
+        "function": "billing_menu",
+        "message": "Billing Management closed"
+    },
+    {
+        "time": "2026-10-05 08:40:02",
+        "level": "ERROR",
+        "class": "BookingManagement",
+        "function": "validate_booking_datetime",
+        "message": "Past booking date/time entered: 05-10-2026 6:00 AM"
+    },
+    {
+        "time": "2026-10-05 13:36:42",
+        "level": "WARNING",
+        "class": null,
+        "function": "signin",
+        "message": "Incorrect password."
+    },
+    {
+        "time": "2026-10-05 13:37:05",
+        "level": "WARNING",
+        "class": null,
+        "function": "signin",
+        "message": "User ID not found."
+    },
+    {
+        "time": "2026-10-05 13:43:55",
+        "level": "WARNING",
+        "class": null,
+        "function": "get_aadhaar",
+        "message": "Aadhaar must contain exactly 12 digits."
+    },
+    {
+        "time": "2026-10-05 13:44:03",
+        "level": "WARNING",
+        "class": null,
+        "function": "get_aadhaar",
+        "message": "Aadhaar must contain exactly 12 digits."
+    },
+    {
+        "time": "2026-10-05 21:21:25",
+        "level": "WARNING",
+        "class": null,
+        "function": "signin",
+        "message": "Invalid choice. Please enter 1, 2 or 3."
+    },
+    {
+        "time": "2026-10-05 21:21:45",
+        "level": "WARNING",
+        "class": null,
+        "function": "signin",
+        "message": "Incorrect password."
+    },
+    {
+        "time": "2026-10-05 21:24:14",
+        "level": "ERROR",
+        "class": "Billing",
+        "function": "generate_bill",
+        "message": "Bill already exists for order: O001"
+    },
+    {
+        "time": "2026-10-06 13:23:16",
+        "level": "ERROR",
+        "class": "BookingManagement",
+        "function": "validate_booking_datetime",
+        "message": "Past booking date/time entered: 05-10-2026 2:00 PM"
+    },
+    {
+        "time": "2026-10-06 14:57:45",
+        "level": "ERROR",
+        "class": "Billing",
+        "function": "generate_bill",
+        "message": "Bill already exists for order: O002"
+    },
+    {
+        "time": "2026-10-08 08:36:04",
+        "level": "WARNING",
+        "class": null,
+        "function": "signin",
+        "message": "Invalid choice. Please enter 1, 2 or 3."
+    },
+    {
+        "time": "2026-10-08 11:20:31",
+        "level": "WARNING",
+        "class": null,
+        "function": "signin",
+        "message": "User ID or Email not found."
+    },
+    {
+        "time": "2026-10-08 11:22:09",
+        "level": "ERROR",
+        "class": "AdminManagement",
+        "function": "show",
+        "message": "Invalid choice entered: 11"
+    },
+    {
+        "time": "2026-10-08 11:30:47",
+        "level": "ERROR",
+        "class": "BookingManagement",
+        "function": "get_booking_date",
+        "message": "Past booking date entered: 07-10-2026"
+    },
+    {
+        "time": "2026-10-08 11:32:28",
+        "level": "ERROR",
+        "class": "BookingManagement",
+        "function": "get_mobile",
+        "message": "Mobile number is not exactly 10 digits"
+    },
+    {
+        "time": "2026-10-08 11:33:00",
+        "level": "ERROR",
+        "class": "BookingManagement",
+        "function": "get_booking_time",
+        "message": "Invalid booking time: 11 AM"
+    },
+    {
+        "time": "2026-10-08 11:35:53",
+        "level": "ERROR",
+        "class": "BookingManagement",
+        "function": "change_booking_status",
+        "message": "Invalid status choice: f2"
+    },
+    {
+        "time": "2026-10-08 11:40:14",
+        "level": "WARNING",
+        "class": "OrderManagement",
+        "function": "create_order",
+        "message": "Invalid category: 16, 14"
+    },
+    {
+        "time": "2026-10-08 11:41:10",
+        "level": "WARNING",
+        "class": "OrderManagement",
+        "function": "create_order",
+        "message": "Invalid food: 1,2"
+    },
+    {
+        "time": "2026-10-08 11:43:36",
+        "level": "WARNING",
+        "class": "Billing",
+        "function": "get_mobile",
+        "message": "Invalid mobile: 62876065760"
+    },
+    {
+        "time": "2026-10-08 11:43:43",
+        "level": "WARNING",
+        "class": "Billing",
+        "function": "get_mobile",
+        "message": "Invalid mobile: 3234623576"
+    },
+    {
+        "time": "2026-10-08 11:43:46",
+        "level": "WARNING",
+        "class": "Billing",
+        "function": "get_mobile",
+        "message": "Invalid mobile: 5324652647809"
+    },
+    {
+        "time": "2026-10-08 11:49:57",
+        "level": "WARNING",
+        "class": "Billing",
+        "function": "get_order_id",
+        "message": "Invalid Order ID: O0006"
+    },
+    {
+        "time": "2026-10-08 12:30:00",
+        "level": "WARNING",
+        "class": "Billing",
+        "function": "billing_menu",
+        "message": "Invalid choice: python -u \"c:\\RESTRUNT-MANAGEMENT-SYSTEM\\main.py\""
+    },
+    {
+        "time": "2026-10-08 13:02:15",
+        "level": "EXCEPTION",
+        "class": null,
+        "function": "main",
+        "message": "'AdminManagement' object has no attribute 'show'",
+        "line": 28,
+        "file": "C:\\RESTRUNT-MANAGEMENT-SYSTEM\\PROJECT\\AUTH\\menu.py"
+    },
+    {
+        "time": "2026-10-08 13:11:11",
+        "level": "WARNING",
+        "class": "BookingManagement",
+        "function": "get_number",
+        "message": "Invalid number entered."
+    },
+    {
+        "time": "2026-10-08 13:12:09",
+        "level": "WARNING",
+        "class": "BookingManagement",
+        "function": "select_tables",
+        "message": "Invalid table selected."
+    },
+    {
+        "time": "2026-10-08 13:12:29",
+        "level": "WARNING",
+        "class": "BookingManagement",
+        "function": "select_tables",
+        "message": "Invalid table selected."
+    }
+]
