@@ -115,5 +115,18 @@
             "T25"
         ],
         "status": "Pending"
+    },
+    {
+        "booking_id": "B0010",
+        "customer_name": "tabish raja",
+        "mobile": "8965432098",
+        "booking_date": "12-10-2026",
+        "booking_time": "06:00 AM",
+        "guests": 1,
+        "duration": 1,
+        "table_number": [
+            "T01"
+        ],
+        "status": "Pending"
     }
 ]

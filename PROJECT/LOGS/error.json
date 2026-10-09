@@ -561,5 +561,12 @@
         "class": "BookingManagement",
         "function": "select_tables",
         "message": "Invalid table selected."
+    },
+    {
+        "time": "2026-10-09 14:07:20",
+        "level": "WARNING",
+        "class": "BookingManagement",
+        "function": "get_booking_datetime",
+        "message": "Invalid booking date or time."
     }
 ]

@@ -1,5 +1,4 @@
 from PROJECT.AUTH.signin import SignIn
-from PROJECT.AUTH.singup import UserManagement
 from PROJECT.DASHBOARD.admin_management import AdminManagement
 from PROJECT.DASHBOARD.staff_management import StaffManagement
 from PROJECT.LOGS.error_hendal import error_handler
@@ -7,8 +6,6 @@ from PROJECT.LOGS.error_hendal import error_handler
 
 def main():
     try:
-        UserManagement().create_admin()
-
         login = SignIn()
 
         while True:
