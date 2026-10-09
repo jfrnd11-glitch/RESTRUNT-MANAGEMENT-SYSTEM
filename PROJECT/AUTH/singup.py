@@ -6,14 +6,16 @@ import uuid
 
 from PROJECT.LOGS.error_hendal import error_handler
 from PROJECT.config import USER_FILE
+
 FILE_NAME = USER_FILE
 
-class UserManagement:
 
+class UserManagement:
     def load_users(self):
         try:
             with open(FILE_NAME, "r", encoding="utf-8") as file:
-                return json.load(file)
+                users = json.load(file)
+                return users if isinstance(users, list) else []
         except FileNotFoundError:
             return []
         except (json.JSONDecodeError, OSError) as e:
@@ -24,7 +26,7 @@ class UserManagement:
         try:
             os.makedirs(os.path.dirname(FILE_NAME), exist_ok=True)
             with open(FILE_NAME, "w", encoding="utf-8") as file:
-                json.dump(users, file, indent=4)
+                json.dump(users, file, indent=4, ensure_ascii=False)
             return True
         except OSError as e:
             error_handler.exception(e)
@@ -47,6 +49,15 @@ class UserManagement:
             elif char not in ("\x00", "\xe0"):
                 password += char
                 print("#", end="", flush=True)
+
+    def valid_password(self, password):
+        return (
+            len(password) >= 8
+            and re.search(r"[A-Z]", password)
+            and re.search(r"[a-z]", password)
+            and re.search(r"\d", password)
+            and re.search(r"[^A-Za-z0-9]", password)
+        )
 
     def create_admin(self):
         users = self.load_users()
@@ -81,25 +92,16 @@ class UserManagement:
             error_handler.warning("User ID already exists.")
             return
 
-        if any(u.get("email", "").lower() == email for u in users):
-            error_handler.warning("Email already registered.")
-            return
-
-        if any(u.get("mobile") == mobile for u in users):
-            error_handler.warning("Mobile already registered.")
-            return
-
-        if any(u.get("aadhaar") == aadhaar for u in users):
-            error_handler.warning("Aadhaar already registered.")
-            return
-
-        if (
-            len(password) < 8
-            or not re.search(r"[A-Z]", password)
-            or not re.search(r"[a-z]", password)
-            or not re.search(r"\d", password)
-            or not re.search(r"[^A-Za-z0-9]", password)
+        if any(
+            u.get("email", "").lower() == email
+            or u.get("mobile") == mobile
+            or u.get("aadhaar") == aadhaar
+            for u in users
         ):
+            error_handler.warning("Email, mobile or Aadhaar already registered.")
+            return
+
+        if not self.valid_password(password):
             error_handler.warning("Password does not meet requirements.")
             return
 
@@ -152,13 +154,7 @@ class UserManagement:
             error_handler.warning("Email, mobile or Aadhaar already registered.")
             return
 
-        if (
-            len(password) < 8
-            or not re.search(r"[A-Z]", password)
-            or not re.search(r"[a-z]", password)
-            or not re.search(r"\d", password)
-            or not re.search(r"[^A-Za-z0-9]", password)
-        ):
+        if not self.valid_password(password):
             error_handler.warning("Password does not meet requirements.")
             return
 
@@ -200,11 +196,15 @@ class UserManagement:
             print(user["user_id"], user["name"])
 
         staff_id = input("Enter Staff ID: ").strip()
-        users = [
+        remaining_users = [
             u
             for u in users
             if not (u.get("user_id") == staff_id and u.get("role") == "staff")
         ]
 
-        if self.save_users(users):
+        if len(remaining_users) == len(users):
+            error_handler.warning("Staff ID not found.")
+            return
+
+        if self.save_users(remaining_users):
             print("Staff removed successfully.")
