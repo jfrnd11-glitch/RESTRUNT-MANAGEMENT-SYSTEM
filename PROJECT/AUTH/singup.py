@@ -6,7 +6,6 @@ import uuid
 
 from PROJECT.LOGS.error_hendal import error_handler
 from PROJECT.config import USER_FILE
-
 FILE_NAME = USER_FILE
 
 
