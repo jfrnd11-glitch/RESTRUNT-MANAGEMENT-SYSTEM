@@ -47,7 +47,7 @@ class UserManagement:
                     print("\b \b", end="", flush=True)
             elif char not in ("\x00", "\xe0"):
                 password += char
-                print("#", end="", flush=True)
+                print("*", end="", flush=True)
 
     def create_admin(self):
         users = self.load_users()
@@ -201,11 +201,7 @@ class UserManagement:
             print(user["user_id"], user["name"])
 
         staff_id = input("Enter Staff ID: ").strip()
-        users = [
-            u
-            for u in users
-            if not (u.get("user_id") == staff_id and u.get("role") == "staff")
-        ]
+        users = [u for u in users if not (u.get("user_id") == staff_id and u.get("role") == "staff")]
 
         if self.save_users(users):
             print("Staff removed successfully.")
