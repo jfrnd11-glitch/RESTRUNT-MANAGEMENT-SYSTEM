@@ -9,9 +9,7 @@ from PROJECT.ORDER.order_management import OrderManagement
 from PROJECT.BILLING.billing_management import BillingManagement
 from PROJECT.INVENTORY.inventory_management import InventoryManagement
 from PROJECT.LOGS.error_hendal import error_handler
-
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DATABASE_DIR = os.path.join(BASE_DIR, "DATABASE")
+from PROJECT.config import DATABASE_DIR
 
 
 class AdminManagement:
@@ -29,7 +27,7 @@ class AdminManagement:
             print("\n=========================================")
             print("            ADMIN DASHBOARD")
             print("=========================================")
-            print("Name :", self.user["name"])
+            print("Name :", self.user.get("name", "Admin"))
             print("Role : ADMIN")
             print("-----------------------------------------")
             print("1. Dashboard")
@@ -43,9 +41,9 @@ class AdminManagement:
             print("9. View Staff")
             print("10. Logout")
 
-            choice = input("\nEnter your choice: ").strip()
-
             try:
+                choice = input("\nEnter your choice: ").strip()
+
                 if choice == "1":
                     self.dashboard()
                 elif choice == "2":
@@ -59,7 +57,7 @@ class AdminManagement:
                 elif choice == "6":
                     self.inventory.show()
                 elif choice == "7":
-                    self.users.add_staff(self.user["user_id"])
+                    self.users.add_staff(self.user.get("user_id"))
                 elif choice == "8":
                     self.users.remove_staff()
                 elif choice == "9":
@@ -68,19 +66,26 @@ class AdminManagement:
                     print("Logging out...")
                     break
                 else:
-                    print("Invalid choice.")
                     error_handler.warning(f"Invalid admin choice: {choice}")
+                    print("Invalid choice. Try again.")
+
+            except KeyboardInterrupt:
+                print("\nLogging out...")
+                break
             except Exception as e:
                 error_handler.exception(e)
                 print("Operation failed. Check error.json.")
 
     def load_json_file(self, filename):
         path = os.path.join(DATABASE_DIR, filename)
+
         try:
             with open(path, "r", encoding="utf-8") as file:
                 data = json.load(file)
-                return data if isinstance(data, list) else []
+                return data if isinstance(data, (list, dict)) else []
+
         except FileNotFoundError:
+            error_handler.warning(f"{filename} file not found.")
             return []
         except (json.JSONDecodeError, OSError) as e:
             error_handler.exception(e)
@@ -101,62 +106,107 @@ class AdminManagement:
 
     def get_total_menu(self):
         menu = self.load_json_file("menu.json")
+
         if isinstance(menu, list):
             return len(menu)
-        return sum(len(items) for items in menu.values()
-                   if isinstance(items, (list, dict))) if isinstance(menu, dict) else 0
+
+        if isinstance(menu, dict):
+            return sum(
+                len(items) if isinstance(items, (list, dict)) else 0
+                for items in menu.values()
+            )
+
+        return 0
 
     def get_today_bookings(self):
         bookings = self.load_json_file("booking.json")
         today = datetime.now().strftime("%d-%m-%Y")
+
+        if not isinstance(bookings, list):
+            return 0
+
         return sum(
-            1 for b in bookings
-            if b.get("booking_date") == today
-            and b.get("status") != "Cancelled"
+            1
+            for booking in bookings
+            if isinstance(booking, dict)
+            and booking.get("booking_date") == today
+            and booking.get("status") != "Cancelled"
         )
 
     def get_today_orders(self):
         orders = self.load_json_file("orders.json")
         today = datetime.now().strftime("%Y-%m-%d")
+
+        if not isinstance(orders, list):
+            return 0
+
         return sum(
-            1 for o in orders
-            if o.get("date") == today
-            and o.get("status") != "Cancelled"
+            1
+            for order in orders
+            if isinstance(order, dict)
+            and order.get("date") == today
+            and order.get("status") != "Cancelled"
         )
 
     def get_today_sales(self):
         bills = self.load_json_file("bills.json")
         today = datetime.now().strftime("%Y-%m-%d")
         total = 0
+
+        if not isinstance(bills, list):
+            return total
+
         for bill in bills:
+            if not isinstance(bill, dict):
+                continue
+
             if bill.get("date") == today and bill.get("payment_status") == "Paid":
                 try:
                     total += float(bill.get("grand_total", 0))
                 except (TypeError, ValueError) as e:
                     error_handler.exception(e)
+
         return total
 
     def get_paid_bills(self):
         bills = self.load_json_file("bills.json")
-        return sum(1 for b in bills if b.get("payment_status") == "Paid")
+
+        if not isinstance(bills, list):
+            return 0
+
+        return sum(
+            1
+            for bill in bills
+            if isinstance(bill, dict) and bill.get("payment_status") == "Paid"
+        )
 
     def get_unpaid_bills(self):
         bills = self.load_json_file("bills.json")
-        return sum(1 for b in bills if b.get("payment_status") == "Unpaid")
+
+        if not isinstance(bills, list):
+            return 0
+
+        return sum(
+            1
+            for bill in bills
+            if isinstance(bill, dict) and bill.get("payment_status") == "Unpaid"
+        )
 
     def view_staff(self):
         users = self.users.load_users()
-        staff = [u for u in users if u.get("role") == "staff"]
+        staff = [user for user in users if user.get("role") == "staff"]
 
         if not staff:
             print("No staff account found.")
             return
 
+        print("\n========== STAFF DETAILS ==========")
+
         for user in staff:
-            print("\nUser ID :", user.get("user_id"))
-            print("Name    :", user.get("name"))
-            print("Email   :", user.get("email"))
-            print("Mobile  :", user.get("mobile"))
+            print("\nUser ID :", user.get("user_id", "N/A"))
+            print("Name    :", user.get("name", "N/A"))
+            print("Email   :", user.get("email", "N/A"))
+            print("Mobile  :", user.get("mobile", "N/A"))
 
     def menu_management(self):
         while True:
@@ -167,18 +217,26 @@ class AdminManagement:
             print("4. Delete Food")
             print("5. Back")
 
-            choice = input("Enter your choice: ").strip()
+            try:
+                choice = input("Enter your choice: ").strip()
 
-            if choice == "1":
-                self.menu.add_food()
-            elif choice == "2":
-                self.menu.view_food()
-            elif choice == "3":
-                self.menu.update_food()
-            elif choice == "4":
-                self.menu.delete_food()
-            elif choice == "5":
+                if choice == "1":
+                    self.menu.add_food()
+                elif choice == "2":
+                    self.menu.view_food()
+                elif choice == "3":
+                    self.menu.update_food()
+                elif choice == "4":
+                    self.menu.delete_food()
+                elif choice == "5":
+                    break
+                else:
+                    error_handler.warning(f"Invalid menu choice: {choice}")
+                    print("Invalid choice. Try again.")
+
+            except KeyboardInterrupt:
+                print("\nReturning to Admin Dashboard.")
                 break
-            else:
-                error_handler.warning(f"Invalid menu choice: {choice}")
-                print("Invalid choice.")
+            except Exception as e:
+                error_handler.exception(e)
+                print("Menu operation failed. Check error.json.")

@@ -1,5 +1,4 @@
 import json
-import os
 import msvcrt
 from PROJECT.LOGS.error_hendal import error_handler
 from PROJECT.config import USER_FILE
